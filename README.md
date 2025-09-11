@@ -9,6 +9,9 @@ This handbook serves as a living document for all interns and mentors at PearlTh
 ### [Handbook](./Handbook/Index.md)
 Core documentation including welcome guides, policies, and guidelines
 
+### [Handbook](./Handbook/WeeklyPlan.md)
+Weekly Plans – Patient & Doctor Experience
+
 ### [Programme Structure](./Programme-Structure/Index.md)
 Detailed breakdown of weekly objectives, tasks, and learning outcomes
 
