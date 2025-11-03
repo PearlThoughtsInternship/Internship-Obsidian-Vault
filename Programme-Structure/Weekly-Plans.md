@@ -9,6 +9,32 @@
 ## Patient Experience
 
 ### Week 1: Registration & Onboarding
+
+Project Initialization and Authentication 
+
+Objective: Set the foundation for the project and implement the authentication system. 
+Tasks: 
+
+Initialize Project: Start the backend project using the NestJS framework. 
+
+API Testing Setup: Create a Hopsotch workspace for testing API endpoints. 
+
+Design ER Diagram: Prepare an Entity-Relationship (ER) diagram to visualize database relationships. 
+
+Authentication Endpoints:+ 
+Implement endpoint for user signup: 
+
+POST /api/v1/auth/signup 
+
+Implement endpoint for user signin: 
+
+POST /api/v1/auth/signin 
+
+Implement endpoint for user signout: 
+
+POST /api/v1/auth/signout 
+
+ 
 **Objectives:** Help patients locate the app, register, verify, and complete onboarding.
  
 **Experience Flow:**  
