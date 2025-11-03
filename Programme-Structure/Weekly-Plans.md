@@ -5,56 +5,38 @@
 2. [Doctor Experience](#doctor-experience)  
 
 ---
-
 ## Patient Experience
 
-### Week 1: Registration & Onboarding
+Week 1: Registration & Onboarding
 
-Project Initialization and Authentication 
+Theme: Project Initialization and Authentication
 
-Objective: Set the foundation for the project and implement the authentication system. 
-Tasks: 
+🎯 Objectives
 
-Initialize Project: Start the backend project using the NestJS framework. 
+-Set up the foundational backend project structure using NestJS.
+-Help patients locate the app, register, verify, and complete onboarding.
+-Implement secure authentication using Google OAuth with role-based access (Doctor / Patient).
 
-API Testing Setup: Create a Hopsotch workspace for testing API endpoints. 
+🧭 Experience Flow
 
-Design ER Diagram: Prepare an Entity-Relationship (ER) diagram to visualize database relationships. 
+-Locate the app.
+-Register via email / phone / Google OAuth (social login).
+-Verify identity via OTP or email verification.
+-Choose role (Doctor / Patient) during Google login or registration.
+-Complete onboarding walkthrough.
 
-Authentication Endpoints:+ 
-Implement endpoint for user signup: 
+🧩 Tasks
+Project Setup
 
-POST /api/v1/auth/signup 
+-Initialize the backend project using NestJS framework.
+-Set up API testing using Hoppscotch workspace.
+-Design an ER Diagram to visualize database relationships.
 
-Implement endpoint for user signin: 
+Authentication Endpoints
 
-POST /api/v1/auth/signin 
-
-Implement endpoint for user signout: 
-
-POST /api/v1/auth/signout 
-
- 
-**Objectives:** Help patients locate the app, register, verify, and complete onboarding.
- 
-**Experience Flow:**  
-- Locate the app.  
-- Register via email/phone/social login.  
-- Verify identity via OTP/email.  
-- Complete onboarding walkthrough.
- 
-**Technical Implementation:**  
-- **Entities:** Patient, Profile, VerificationToken, OnboardingStatus  
-- **Relationships:**  
-  - Patient ↔ Profile (1:1)  
-  - Patient ↔ VerificationToken (1:N)  
-  - Patient ↔ OnboardingStatus (1:1)  
- 
-**Tasks:**  
-- Backend APIs: registration, verification, onboarding status  
-- Database tables: patients, profiles, verification_tokens  
- 
----
+-POST /api/v1/auth/signup → User registration (email/phone or Google OAuth).
+-POST /api/v1/auth/signin → User login.
+-POST /api/v1/auth/signout → User logout.
  
 ### Week 2: Appointment Making
 **Objectives:** Allow patients to book appointments easily.
