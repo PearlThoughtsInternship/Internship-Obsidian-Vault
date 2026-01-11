@@ -43,7 +43,8 @@ Technical guides, learning materials, and useful links
 
 - **Backend Developer Internship**
 - **Full Stack Developer Internship**
-- **AI Internship Program**
+- **DevOps Engineer Internship** - [[DevOps/OKR|DevOps OKR]]
+- **AI Engineering Internship** - [[AI-Internship/Index|AI-Driven Legacy Modernization]]
 
 ---
 
