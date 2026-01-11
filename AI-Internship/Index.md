@@ -294,10 +294,11 @@ By the end of this internship, you will:
 ## Getting Started
 
 1. Read this overview completely
-2. Review the [[Validation-Projects|Validation Projects]] in detail
-3. Choose your track (A, B, C, or D)
-4. Set up your development environment
-5. Join the #ai-internship Slack channel
+2. **Understand your role**: [[Organizational-Context|How You Fit Into PearlThoughts]]
+3. Review the [[Validation-Projects|Validation Projects]] in detail
+4. Choose your track (A, B, C, or D)
+5. Set up your development environment
+6. Join the #ai-internship Slack channel
 
 ---
 
