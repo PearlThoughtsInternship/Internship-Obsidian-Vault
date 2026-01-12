@@ -5,6 +5,55 @@
 
 ---
 
+## Before You Begin: Setting Expectations
+
+### The Reality of This Internship
+
+We're a **small organization** with limited time and resources. We offered this internship **without any fee** because we believe in sharing knowledge and growing the next generation of engineers. But we need you to understand something important:
+
+**Think of this like being dropped in the Amazon rainforest.**
+
+You have:
+- A compass (this documentation)
+- Some basic tools (the target codebases, concepts explained here)
+- Radio contact to base camp (our mentors — but we can only respond so often)
+
+You don't have:
+- A guide holding your hand through every step
+- Someone doing the work for you
+- Unlimited mentor time
+
+### What This Means for You
+
+We understand:
+- **You're new to your career** — this might be your first real technical challenge
+- **Remote work is hard** — no one sitting next to you to ask questions
+- **The topics are complex** — DDD, AST parsing, embeddings are not simple
+- **You're passionate** — you wouldn't be here otherwise
+
+We commit to:
+- **Sharing our knowledge** even during busy schedules
+- **Reviewing your work** and giving feedback
+- **Answering questions** when you're truly stuck (not when you haven't tried)
+
+We expect you to:
+- **Research first, ask second** — Google it, read the docs, try things
+- **Show initiative** — don't wait for instructions, figure it out
+- **Document your struggles** — "I tried X, Y, Z and still stuck" is a valid question
+- **Produce tangible results** — something working, not just "I read the docs"
+
+### Why This Matters
+
+Your performance this week determines whether we continue together. We have limited mentorship capacity — we invest it in people who demonstrate they can:
+
+1. **Survive with limited guidance** (the rainforest test)
+2. **Learn independently** (we can't teach everything)
+3. **Deliver results** (talk is cheap, show us)
+
+This is not about being harsh. It's about being honest about our constraints and your opportunity.
+
+---
+
 ## What This Week Is About
 
 This is your **pre-internship filter week**. We're evaluating whether:
