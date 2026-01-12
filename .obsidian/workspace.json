@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Handbook/Welcome.md",
+                "file": "Handbook/Index.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Welcome"
+              "title": "Index"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Handbook/Welcome.md",
+                "file": "Handbook/Policies-and-Guidelines.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Welcome"
+              "title": "Backlinks for Policies-and-Guidelines"
             }
           },
           {
@@ -169,18 +169,43 @@
       "bases:Create new base": false
     }
   },
-  "active": "39bf76e3f0d9683f",
+  "active": "7b2639f993ac1e83",
   "lastOpenFiles": [
-    "Handbook/Policies-and-Guidelines.md",
-    "Templates/PR-Template.md",
-    "Support/Index.md",
-    "Support/Mentors.md",
-    "Teams/Index.md",
-    "Teams/Daily-Standup-Template.md",
-    "Resources/Quick-Start.md",
-    "Programme-Structure/Weekly-Plans.md",
-    "Programme-Structure/Index.md",
-    "Handbook/Welcome.md",
-    "Handbook/Index.md"
+    "AI-Internship/08-Exercises/03-OKR.md",
+    "AI-Internship/08-Exercises/02-Submission-Checklist.md",
+    "AI-Internship/08-Exercises/01-Pre-Internship-Requirements.md",
+    "AI-Internship/07-Technical-Architecture/02-Quality-Metrics.md",
+    "AI-Internship/07-Technical-Architecture/01-Architecture-Overview.md",
+    "AI-Internship/06-Code-Intelligence/06-CodeCompass-Learnings.md",
+    "AI-Internship/06-Code-Intelligence/05-Commercial-Tools.md",
+    "AI-Internship/06-Code-Intelligence/04-Graph-Extraction.md",
+    "AI-Internship/06-Code-Intelligence/03-Indexing-Strategies.md",
+    "AI-Internship/06-Code-Intelligence/02-AST-vs-Text-Chunking.md",
+    "AI-Internship/06-Code-Intelligence/01-What-Is-Code-Intelligence.md",
+    "AI-Internship/05-DDD-Concepts/05-Applied-To-Projects.md",
+    "AI-Internship/05-DDD-Concepts/04-Tactical-Patterns.md",
+    "AI-Internship/05-DDD-Concepts/03-Strategic-Design.md",
+    "AI-Internship/05-DDD-Concepts/02-Bounded-Contexts.md",
+    "AI-Internship/05-DDD-Concepts/01-Why-DDD-Matters.md",
+    "AI-Internship/04-Target-Projects/05-Validation-Projects.md",
+    "AI-Internship/04-Target-Projects/04-Bahmni-Core-Domain-Analysis.md",
+    "AI-Internship/04-Target-Projects/03-OpenElis-Domain-Analysis.md",
+    "AI-Internship/04-Target-Projects/02-ERPNext-Domain-Analysis.md",
+    "AI-Internship/04-Target-Projects/01-Choosing-Your-Project.md",
+    "AI-Internship/03-Market-Research/03-AI-Coding-Tools-Comparison.md",
+    "AI-Internship/03-Market-Research/02-Market-Analysis.md",
+    "AI-Internship/03-Market-Research/01-Existing-Tools-Research.md",
+    "AI-Internship/02-Understanding-Legacy/04-Terminology-Glossary.md",
+    "AI-Internship/02-Understanding-Legacy/03-Real-World-Examples.md",
+    "AI-Internship/08-Exercises",
+    "AI-Internship/07-Technical-Architecture",
+    "AI-Internship/06-Code-Intelligence",
+    "AI-Internship/05-DDD-Concepts",
+    "AI-Internship/04-Target-Projects",
+    "AI-Internship/03-Market-Research",
+    "AI-Internship/02-Understanding-Legacy",
+    "AI-Internship/01-Getting-Started",
+    "DevOps",
+    "Requirements"
   ]
 }

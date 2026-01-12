@@ -6,365 +6,146 @@
 
 ---
 
-## How to Navigate This Documentation
+## How to Use This Documentation
 
 ### Recommended: Obsidian Desktop App
 
-For the best experience navigating this documentation, we recommend using **[Obsidian](https://obsidian.md/)** - a free knowledge base app that works on local Markdown files.
-
-**Why Obsidian?**
-- **Graph View**: Visualize connections between documents
-- **Quick Navigation**: `Ctrl/Cmd + O` to jump to any document
+Download **[Obsidian](https://obsidian.md/)** for the best experience:
+- **Graph View**: Visualize document connections
+- **Quick Navigation**: `Ctrl/Cmd + O` to jump anywhere
 - **Backlinks**: See which documents reference the current one
-- **Local-first**: All files stay on your machine
 
-**Setup**:
-1. Download Obsidian from [obsidian.md](https://obsidian.md/)
-2. Clone this repository
-3. Open the `AI-Internship` folder as a vault in Obsidian
-
-**Alternative**: You can also browse via GitHub web UI - all links work in both environments.
+**Setup**: Open the `AI-Internship` folder as a vault in Obsidian.
 
 ---
 
-## Master Document Index
+## Documentation Structure
 
-### Start Here (Orientation)
+### 01 - Getting Started
+| # | Document | Description |
+|---|----------|-------------|
+| 1.1 | [[01-Getting-Started/01-Organizational-Context\|Organizational Context]] | Your role in PearlThoughts |
+| 1.2 | [[01-Getting-Started/02-Goals-and-Expectations\|Goals & Expectations]] | 4-week plan, deliverables |
+| 1.3 | [[01-Getting-Started/03-What-You-Build\|What You Build]] | Form factors, AI setup, workflow |
 
-| # | Document | Description | Read When |
-|---|----------|-------------|-----------|
-| 1 | **[This Index](./00-Index.md)** | Overview, theme, tracks | First day |
-| 2 | [Organizational Context](./01-Organizational-Context.md) | Your role in PearlThoughts (Team Topologies) | First day |
-| 3 | [Goals & Expectations](./02-Goals-and-Expectations.md) | 4-week plan, deliverables, success criteria | First day |
+### 02 - Understanding Legacy Systems
+| # | Document | Description |
+|---|----------|-------------|
+| 2.1 | [[02-Understanding-Legacy/01-What-Is-Legacy\|What Is Legacy Code?]] | Hidden value in old systems |
+| 2.2 | [[02-Understanding-Legacy/02-Why-Modernize\|Why Modernize?]] | Business case, rewrite fallacy |
+| 2.3 | [[02-Understanding-Legacy/03-Real-World-Examples\|Real-World Examples]] | COBOL banking, NHS, airlines |
+| 2.4 | [[02-Understanding-Legacy/04-Terminology-Glossary\|Terminology Glossary]] | All key terms defined |
 
-### Week 1: Research Phase
+### 03 - Market Research
+| # | Document | Description |
+|---|----------|-------------|
+| 3.1 | [[03-Market-Research/01-Existing-Tools-Research\|Existing Tools Research]] | GitHub Copilot, Amazon Q, etc. |
+| 3.2 | [[03-Market-Research/02-Market-Analysis\|Market Analysis]] | $300B+ market opportunity |
+| 3.3 | [[03-Market-Research/03-AI-Coding-Tools-Comparison\|AI Coding Tools Comparison]] | How Cursor, Aider work internally |
 
-| # | Document | Description | Read When |
-|---|----------|-------------|-----------|
-| 4 | [Existing Tools Research](./03-Existing-Tools-Research.md) | Commercial & open source tools (GitHub Copilot, Amazon Q, GPT-Migrate) | Week 1 |
-| 5 | [Market Analysis](./04-Market-Analysis.md) | $300B+ market, why consultants still needed | Week 1 |
-| 6 | [AI Coding Tools Comparison](./05-AI-Coding-Tools-Comparison.md) | How Cursor, Aider, OpenCode, Claude Code work internally | Week 1 |
+### 04 - Target Projects
+| # | Document | Description |
+|---|----------|-------------|
+| 4.1 | [[04-Target-Projects/01-Choosing-Your-Project\|Choosing Your Project]] | Decision matrix |
+| 4.2 | [[04-Target-Projects/02-ERPNext-Domain-Analysis\|ERPNext Analysis]] | Frappe framework, DocTypes |
+| 4.3 | [[04-Target-Projects/03-OpenElis-Domain-Analysis\|OpenElis Analysis]] | Laboratory LIMS system |
+| 4.4 | [[04-Target-Projects/04-Bahmni-Core-Domain-Analysis\|Bahmni Analysis]] | Healthcare EMR system |
+| 4.5 | [[04-Target-Projects/05-Validation-Projects\|Validation Projects]] | Testing against real systems |
 
-### Week 2-3: Build Phase
+### 05 - DDD Concepts
+| # | Document | Description |
+|---|----------|-------------|
+| 5.1 | [[05-DDD-Concepts/01-Why-DDD-Matters\|Why DDD Matters]] | Why AI tool builders need DDD |
+| 5.2 | [[05-DDD-Concepts/02-Bounded-Contexts\|Bounded Contexts]] | Context boundaries, ACL |
+| 5.3 | [[05-DDD-Concepts/03-Strategic-Design\|Strategic Design]] | Subdomains, context mapping |
+| 5.4 | [[05-DDD-Concepts/04-Tactical-Patterns\|Tactical Patterns]] | Entities, Aggregates, Events |
+| 5.5 | [[05-DDD-Concepts/05-Applied-To-Projects\|Applied to Projects]] | DDD in ERPNext/OpenElis/Bahmni |
 
-| # | Document | Description | Read When |
-|---|----------|-------------|-----------|
-| 7 | [Technical Architecture](./06-Technical-Architecture.md) | 4-mode knowledge extraction (text, symbol, runtime, workflow) | Week 2 |
-| 8 | [Quality Metrics](./07-Quality-Metrics.md) | How to measure tool quality (RAGAs, MLflow, test cases) | Week 2-3 |
-| 9 | [Validation Projects](./08-Validation-Projects.md) | Target systems: Bahmni, ERPNext, Odoo | Week 2-4 |
+### 06 - Code Intelligence
+| # | Document | Description |
+|---|----------|-------------|
+| 6.1 | [[06-Code-Intelligence/01-What-Is-Code-Intelligence\|What Is Code Intelligence?]] | Core concepts, architecture |
+| 6.2 | [[06-Code-Intelligence/02-AST-vs-Text-Chunking\|AST vs Text Chunking]] | Parsing strategies compared |
+| 6.3 | [[06-Code-Intelligence/03-Indexing-Strategies\|Indexing Strategies]] | Complete indexing pipeline |
+| 6.4 | [[06-Code-Intelligence/04-Graph-Extraction\|Graph Extraction]] | Call graphs, relationships |
+| 6.5 | [[06-Code-Intelligence/05-Commercial-Tools\|Commercial Tools]] | Cursor, Sourcegraph, Amazon Q |
+| 6.6 | [[06-Code-Intelligence/06-CodeCompass-Learnings\|CodeCompass Learnings]] | Real implementation insights |
 
-### Practical Guide
+### 07 - Technical Architecture
+| # | Document | Description |
+|---|----------|-------------|
+| 7.1 | [[07-Technical-Architecture/01-Architecture-Overview\|Architecture Overview]] | 4-mode knowledge extraction |
+| 7.2 | [[07-Technical-Architecture/02-Quality-Metrics\|Quality Metrics]] | RAGAs, MLflow, test cases |
 
-| # | Document | Description | Read When |
-|---|----------|-------------|-----------|
-| 10 | [What You Build](./10-What-You-Build.md) | Form factors, AI setup, daily workflow, testing | Before Week 2 |
-
-### Progress Tracking
-
-| # | Document | Description | Read When |
-|---|----------|-------------|-----------|
-| 11 | [OKR](./09-OKR.md) | Objectives & Key Results by track | Weekly |
+### 08 - Exercises
+| # | Document | Description |
+|---|----------|-------------|
+| 8.1 | [[08-Exercises/01-Pre-Internship-Requirements\|Pre-Internship Requirements]] | **START HERE** - Week 1 tasks |
+| 8.2 | [[08-Exercises/02-Submission-Checklist\|Submission Checklist]] | Deliverables, quality criteria |
+| 8.3 | [[08-Exercises/03-OKR\|OKR]] | Objectives & Key Results |
 
 ---
 
-## Quick Links by Topic
+## Quick Start Path
 
-### Understanding the Problem
+```
+For interns starting TODAY:
 
-- [Market Analysis](./04-Market-Analysis.md) - Why legacy modernization is hard
-- [Index](./00-Index.md#the-problem-were-solving) - Technical debt statistics
-- [Organizational Context](./01-Organizational-Context.md#the-current-reality-cursor-ai-alone) - What's missing in current tools
-
-### Understanding Existing Tools
-
-- [Existing Tools Research](./03-Existing-Tools-Research.md) - Tool-by-tool breakdown
-- [AI Coding Tools Comparison](./05-AI-Coding-Tools-Comparison.md) - Architecture deep dive
-- [Market Analysis](./04-Market-Analysis.md#what-actually-exists-2025-landscape) - Commercial landscape
-
-### Building Your Solution
-
-- [What You Build](./10-What-You-Build.md) - Form factors, AI infrastructure, daily workflow
-- [Technical Architecture](./06-Technical-Architecture.md) - 4-mode extraction approach
-- [Quality Metrics](./07-Quality-Metrics.md) - Measuring success
-- [Goals & Expectations](./02-Goals-and-Expectations.md#week-2-build-phase) - Week 2 tasks
-
-### Validation & Testing
-
-- [Validation Projects](./08-Validation-Projects.md) - Bahmni, ERPNext, Odoo details
-- [Quality Metrics](./07-Quality-Metrics.md#building-a-test-suite) - Test case format
-- [Goals & Expectations](./02-Goals-and-Expectations.md#week-4-verify--document-phase) - Verification approach
+1. Read → 08-Exercises/01-Pre-Internship-Requirements
+2. Choose → 04-Target-Projects/01-Choosing-Your-Project
+3. Learn → 02-Understanding-Legacy/04-Terminology-Glossary
+4. Understand → 05-DDD-Concepts/01-Why-DDD-Matters
+5. Build → 06-Code-Intelligence/03-Indexing-Strategies
+6. Submit → 08-Exercises/02-Submission-Checklist
+```
 
 ---
 
 ## The Problem We're Solving
 
-Every enterprise faces the same challenge: **legacy systems that are too valuable to abandon but too complex to understand**. These systems contain decades of business logic, evolved over years of real-world usage, embedded in millions of lines of code that no single person fully comprehends.
+Every enterprise faces the same challenge: **legacy systems that are too valuable to abandon but too complex to understand**.
 
-### The Scale of Technical Debt
+### Scale of Technical Debt
 
-- **$300B+ annual market** for legacy modernization ([Market Analysis](./04-Market-Analysis.md))
-- Average enterprise maintains **15+ year old core systems**
+- **$300B+ annual market** for legacy modernization
 - **70% of modernization projects fail** due to lost business logic
-- **85% of critical business rules** exist only in code, not documentation
+- **85% of critical business rules** exist only in code
 
-### Why Current Approaches Fail
+### Why Current Tools Fail
 
-| Approach | Problem | Learn More |
-|----------|---------|------------|
-| **Manual Analysis** | Takes years, expensive, experts retire mid-project | [Market Analysis](./04-Market-Analysis.md#reason-3-undocumented-business-logic) |
-| **Big Bang Rewrite** | Loses embedded business logic, high failure rate | [Goals](./02-Goals-and-Expectations.md#strangler-fig-pattern) |
-| **Lift and Shift** | Moves the mess to cloud, doesn't fix technical debt | [Market Analysis](./04-Market-Analysis.md#reason-1-extreme-context-specificity) |
-| **Traditional Tools** | Static analysis only, miss runtime behavior | [Technical Architecture](./06-Technical-Architecture.md#the-problem-with-single-mode-indexing) |
-
----
-
-## The AI-Powered Solution
-
-We're building tools that **understand code like an expert developer** - not just syntax, but semantics, relationships, and business intent.
-
-### Beyond Archaeological Indexing
-
-Tools like Cursor, GitHub Copilot, and other AI editors provide basic code exploration with what we call "archaeological indexing" - they index files and symbols, enabling search and autocomplete. But this approach has fundamental limitations. See [AI Coding Tools Comparison](./05-AI-Coding-Tools-Comparison.md) for detailed analysis.
-
-```
-┌────────────────────────────────────────────────────────────────┐
-│           CURRENT AI EDITORS (Archaeological Indexing)         │
-├────────────────────────────────────────────────────────────────┤
-│  ✓ File-level indexing                                         │
-│  ✓ Symbol search (functions, classes)                          │
-│  ✓ Basic autocomplete                                          │
-│  ✗ No semantic understanding                                   │
-│  ✗ No cross-file business logic tracking                       │
-│  ✗ No runtime behavior awareness                               │
-│  ✗ No enterprise context (wikis, tickets, decisions)           │
-│  ✗ Cannot answer "why was this built this way?"                │
-└────────────────────────────────────────────────────────────────┘
-```
-
-### Our Approach: Holistic Enterprise Intelligence
-
-We go beyond simple indexing to build a **complete knowledge model** of the enterprise system. See [Technical Architecture](./06-Technical-Architecture.md) for implementation details.
-
-```
-┌────────────────────────────────────────────────────────────────┐
-│           OUR APPROACH (Holistic Enterprise Intelligence)      │
-├────────────────────────────────────────────────────────────────┤
-│                                                                │
-│  1. SEMANTIC CHUNKING (Mode 1: Text Chunks)                    │
-│     └── Intelligent code splitting at function/class level     │
-│     └── Preserves context (imports, docstrings, decorators)    │
-│     └── Vector embeddings for semantic search                  │
-│                                                                │
-│  2. GRAPH EXTRACTION (Mode 2: Symbol Chunks)                   │
-│     └── Call graphs (who calls whom)                           │
-│     └── Dependency graphs (what depends on what)               │
-│     └── Data flow graphs (how data moves through system)       │
-│     └── Domain boundaries (implicit bounded contexts)          │
-│                                                                │
-│  3. AST ANALYSIS (tree-sitter)                                 │
-│     └── Deep syntax tree parsing                               │
-│     └── Pattern extraction (ORM relations, validations)        │
-│     └── Business rule identification                           │
-│     └── Framework-specific analysis                            │
-│                                                                │
-│  4. RUNTIME LOGS (Mode 3: Runtime Traces)                      │
-│     └── Production trace analysis                              │
-│     └── Hot path identification                                │
-│     └── Error pattern clustering                               │
-│     └── Performance bottleneck discovery                       │
-│                                                                │
-│  5. ENTERPRISE CONTEXT (Mode 4: Workflows)                     │
-│     └── Wiki/Confluence integration                            │
-│     └── Jira/ticket history                                    │
-│     └── Git commit archaeology                                 │
-│     └── Architecture Decision Records (ADRs)                   │
-│                                                                │
-└────────────────────────────────────────────────────────────────┘
-```
+| Approach | Problem |
+|----------|---------|
+| Manual Analysis | Takes years, expensive |
+| Big Bang Rewrite | Loses embedded logic, high failure |
+| Current AI Tools | Surface-level only, miss semantics |
 
 ---
 
 ## What You'll Build
 
-### The Code Synthesizer Tool
+A tool that understands code like an expert developer — not just syntax, but semantics, relationships, and business intent.
 
-A developer tool that augments AI editors by providing deep enterprise codebase understanding. See [Organizational Context](./01-Organizational-Context.md#the-augmented-reality-with-your-tools) for detailed examples of how this compares to current tools.
+### Key Capabilities
 
-```
-Developer Query                          System Response
-─────────────────────────────────────────────────────────────────
-"How does discount                  →    Retrieves:
- calculation work?"                      • DiscountService.calculateDiscounts()
-                                         • CustomerTier logic
-                                         • Promo code validation
-                                         • Related tests
-                                         • Git history of changes
-                                         • Jira tickets explaining business rules
-
-"What breaks if I change            →    Impact analysis:
- the Order model?"                       • 47 direct callers
-                                         • 12 services affected
-                                         • 3 API endpoints impacted
-                                         • Test coverage: 67%
-                                         • Risk assessment: HIGH
-```
-
-### Key Capabilities to Implement
-
-| Capability | Description | AI Technique | Learn More |
-|------------|-------------|--------------|------------|
-| **Semantic Search** | Find code by intent, not just keywords | RAG, Embeddings | [Technical Architecture](./06-Technical-Architecture.md#mode-1-text-based-chunks) |
-| **GraphRAG** | Vector search + graph traversal | Hybrid Retrieval | [Technical Architecture](./06-Technical-Architecture.md#mode-4-workflowcall-graphs) |
-| **Domain Discovery** | Auto-identify bounded contexts | Clustering | [Goals](./02-Goals-and-Expectations.md#track-c-domain-discovery) |
-| **Parity Tracking** | Map legacy→modern coverage | Semantic Similarity | [Goals](./02-Goals-and-Expectations.md#track-d-migration-automation) |
-| **Impact Analysis** | "What breaks if I change X?" | Graph Algorithms | [Organizational Context](./01-Organizational-Context.md#example-3-impact-analysis-in-odoo) |
-
----
-
-## Target Systems for Validation
-
-We validate on **real enterprise open-source systems**. See [Validation Projects](./08-Validation-Projects.md) for detailed breakdowns.
-
-| System | Stack | Domain | Size | Why |
-|--------|-------|--------|------|-----|
-| **[Bahmni](./08-Validation-Projects.md#1-bahmni-healthcare)** | Java, Spring | Healthcare | ~500K LOC | Medical domain, compliance |
-| **[ERPNext](./08-Validation-Projects.md#2-erpnext-business-erp)** | Python, Frappe | ERP | ~1M LOC | Full business domain |
-| **[Odoo](./08-Validation-Projects.md#3-odoo-modules-modular-erp)** | Python, PostgreSQL | Modular ERP | ~2M LOC | Bounded contexts |
-
----
-
-## Internship Tracks
-
-Choose your focus area. See [Goals & Expectations](./02-Goals-and-Expectations.md) for week-by-week breakdown and [OKR](./09-OKR.md) for success metrics.
-
-### Track A: Knowledge Extraction
-- Build semantic chunking pipeline for Java/Python
-- Implement graph extraction (call graphs, dependencies)
-- **Validation**: Apply to [Bahmni's clinical module](./08-Validation-Projects.md#1-bahmni-healthcare)
-- **Deep dive**: [Technical Architecture - Symbol Chunks](./06-Technical-Architecture.md#mode-2-symbol-chunks-ast-based)
-
-### Track B: Intelligent Retrieval
-- Build RAG pipeline for code understanding
-- Implement GraphRAG (vector + graph hybrid)
-- **Validation**: Answer questions about [ERPNext accounting](./08-Validation-Projects.md#2-erpnext-business-erp)
-- **Deep dive**: [Quality Metrics - RAG Quality](./07-Quality-Metrics.md#category-1-rag-retrieval-quality)
-
-### Track C: Domain Discovery
-- Implement clustering for bounded context detection
-- Build visualization for domain boundaries
-- **Validation**: Auto-discover [Odoo module boundaries](./08-Validation-Projects.md#3-odoo-modules-modular-erp)
-- **Deep dive**: [Technical Architecture - Workflows](./06-Technical-Architecture.md#mode-4-workflowcall-graphs)
-
-### Track D: Migration Automation
-- Build parity tracking system (legacy↔modern mapping)
-- Create AI migration agents for code transformation
-- **Validation**: Migrate one [Bahmni service](./08-Validation-Projects.md#1-bahmni-healthcare)
-- **Deep dive**: [Goals - Week 3 Migrate Phase](./02-Goals-and-Expectations.md#week-3-migrate-phase)
+| Capability | AI Technique |
+|------------|--------------|
+| Semantic Search | RAG, Embeddings |
+| Graph Traversal | GraphRAG |
+| Domain Discovery | Clustering |
+| Impact Analysis | Graph Algorithms |
 
 ---
 
 ## Technology Stack
 
-| Layer | Technologies | Learn More |
-|-------|--------------|------------|
-| **Languages** | TypeScript, Python | |
-| **Frameworks** | NestJS, FastAPI | |
-| **Embeddings** | Ollama, OpenAI, Sentence Transformers | [Technical Architecture](./06-Technical-Architecture.md#open-source-libraries-to-use) |
-| **Vector Store** | LanceDB, SQLite | [AI Tools Comparison](./05-AI-Coding-Tools-Comparison.md#from-cursor-embedding-cache) |
-| **Graph** | Graphology, SQLite CTEs | [Technical Architecture](./06-Technical-Architecture.md#mode-4-workflowcall-graphs) |
-| **Parsing** | tree-sitter | [Technical Architecture](./06-Technical-Architecture.md#mode-2-symbol-chunks-ast-based) |
-| **LLM** | Claude, GPT-4, Llama, Groq | |
+| Layer | Technologies |
+|-------|--------------|
+| Languages | TypeScript, Python |
+| Embeddings | Ollama, OpenAI |
+| Vector Store | LanceDB, SQLite |
+| Parsing | tree-sitter |
+| LLM | Claude, GPT-4 |
 
 ---
 
-## Learning Outcomes
-
-By the end of this internship, you will:
-
-1. **Understand RAG deeply** - Not just tutorials, but production systems ([Quality Metrics](./07-Quality-Metrics.md))
-2. **Work with knowledge graphs** - Graph algorithms for code intelligence ([Technical Architecture](./06-Technical-Architecture.md))
-3. **Build AI agents** - Practical experience with LLM orchestration ([Goals](./02-Goals-and-Expectations.md#week-3-migrate-phase))
-4. **Apply to real systems** - Validate on actual enterprise codebases ([Validation Projects](./08-Validation-Projects.md))
-5. **Contribute to open source** - Your work helps real modernization projects
-
----
-
-## Getting Started Checklist
-
-| # | Action | Document | Status |
-|---|--------|----------|--------|
-| 1 | Read this overview completely | [Index](./00-Index.md) | ☐ |
-| 2 | Understand your role in the organization | [Organizational Context](./01-Organizational-Context.md) | ☐ |
-| 3 | Review 4-week goals and expectations | [Goals & Expectations](./02-Goals-and-Expectations.md) | ☐ |
-| 4 | Research existing AI modernization tools | [Existing Tools Research](./03-Existing-Tools-Research.md) | ☐ |
-| 5 | Understand the market landscape | [Market Analysis](./04-Market-Analysis.md) | ☐ |
-| 6 | Study how AI coding tools work | [AI Coding Tools Comparison](./05-AI-Coding-Tools-Comparison.md) | ☐ |
-| 7 | Learn the technical architecture | [Technical Architecture](./06-Technical-Architecture.md) | ☐ |
-| 8 | Understand quality measurement | [Quality Metrics](./07-Quality-Metrics.md) | ☐ |
-| 9 | Review validation projects | [Validation Projects](./08-Validation-Projects.md) | ☐ |
-| 10 | **Read practical build guide** | [What You Build](./10-What-You-Build.md) | ☐ |
-| 11 | Choose your track (A, B, C, or D) | [OKR](./09-OKR.md) | ☐ |
-| 12 | Set up AI infrastructure (Ollama + Groq) | [What You Build](./10-What-You-Build.md#setting-up-the-recommended-stack) | ☐ |
-| 13 | Set up development environment | See mentor | ☐ |
-| 14 | Join #ai-internship Slack channel | | ☐ |
-
----
-
-## Related Resources
-
-- [Intern Handbook](../Handbook/Index.md)
-- [Programme Structure](../Programme-Structure/Index.md)
-- [Meet Your Mentors](../Support/Mentors.md)
-- [Quick Start Guide](../Resources/Quick-Start.md)
-
----
-
-## Document Relationships
-
-```
-                    ┌─────────────────┐
-                    │   00-Index.md   │ ◄── You are here
-                    │   (Overview)    │
-                    └────────┬────────┘
-                             │
-         ┌───────────────────┼───────────────────┐
-         │                   │                   │
-         ▼                   ▼                   ▼
-┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
-│ 01-Org Context  │ │ 02-Goals &      │ │ 08-Validation   │
-│ (Your Role)     │ │ Expectations    │ │ Projects        │
-└────────┬────────┘ └────────┬────────┘ └────────┬────────┘
-         │                   │                   │
-         │    ┌──────────────┴──────────────┐    │
-         │    │                             │    │
-         ▼    ▼                             ▼    ▼
-┌─────────────────┐                 ┌─────────────────┐
-│ Research Docs   │                 │ Technical Docs  │
-│ ├── 03-Existing │                 │ ├── 06-Technical│
-│ │   Tools       │◄───────────────►│ │   Architecture│
-│ ├── 04-Market   │                 │ └── 07-Quality  │
-│ │   Analysis    │                 │     Metrics     │
-│ └── 05-AI Tools │                 │                 │
-│     Comparison  │                 │                 │
-└─────────────────┘                 └─────────────────┘
-         │                                   │
-         └───────────────┬───────────────────┘
-                         │
-                         ▼
-              ┌─────────────────────┐
-              │ 10-What-You-Build   │ ◄── Practical Guide
-              │ (Form Factor, AI,   │
-              │  Testing, Workflow) │
-              └──────────┬──────────┘
-                         │
-                         ▼
-                 ┌─────────────────┐
-                 │    09-OKR.md    │
-                 │ (Track Progress)│
-                 └─────────────────┘
-```
-
----
-
-*Last Updated: 2025-01-12*
-*Program Lead: Engineering Team*
+*Last Updated: 2026-01-12*
