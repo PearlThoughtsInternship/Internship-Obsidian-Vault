@@ -175,6 +175,23 @@ A tool that understands code like an expert developer — not just syntax, but *
 
 ---
 
+## 📦 Reference Implementation
+
+Before you build, study this working example:
+
+**[code-analyzer-demo](https://github.com/PearlThoughtsInternship/code-analyzer-demo)** — A Python tool demonstrating core concepts
+
+| What | Why Study It |
+|------|--------------|
+| Commit history | Shows the 4-day learning journey, not just final code |
+| Heavy comments | Every function explains WHY, not just WHAT |
+| "If I Were an Intern" | Models the thinking process you should document |
+| Real output | Tested against ERPNext with actual results |
+
+**Don't copy it.** Understand it. Build your own version with YOUR insights.
+
+---
+
 ## 📖 How to Use This Documentation
 
 ### Recommended: Obsidian Desktop App

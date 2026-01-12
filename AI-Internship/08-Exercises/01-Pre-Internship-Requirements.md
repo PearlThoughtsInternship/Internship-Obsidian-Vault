@@ -115,6 +115,26 @@ my-tool/
 └── REFLECTION.md
 ```
 
+### Reference Implementation
+
+We've built a working example to inspire you (not to copy):
+
+**[code-analyzer-demo](https://github.com/PearlThoughtsInternship/code-analyzer-demo)** — ~1000 lines of Python
+
+This repo demonstrates:
+- AST-based entity extraction
+- Call graph detection (who calls whom)
+- JSON, Markdown, and Mermaid output
+- **"If I Were an Intern" section** — showing the thinking process, not just code
+
+**How to use it:**
+1. Study the commit history — it tells the story of building the tool over 4 days
+2. Read the comments — they explain WHY, not just WHAT
+3. Run it against ERPNext to see real output
+4. Build your OWN version — don't copy, understand and adapt
+
+**Important**: Your submission should NOT be a copy of this. We're looking for YOUR approach, YOUR learning journey, YOUR insights.
+
 ---
 
 ## Technical Requirements
