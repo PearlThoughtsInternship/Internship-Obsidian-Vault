@@ -450,7 +450,7 @@ bun run cli test:retrieval test-suite.yaml
 - [Existing Tools Research](./03-Existing-Tools-Research.md)
 - [Goals & Expectations](./02-Goals-and-Expectations.md)
 - [Validation Projects](./08-Validation-Projects.md)
-- [Back to Index](./00-Index.md)
+- [Back to Index](./README.md)
 
 ---
 

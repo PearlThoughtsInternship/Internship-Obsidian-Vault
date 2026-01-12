@@ -404,10 +404,10 @@ Enterprise modernization patterns (DDD, Strangler Fig, ACL) remain essential. AI
 
 ## Related
 
-- [[Index|AI Internship Overview]]
-- [[Existing-Tools-Research|Existing Tools Landscape]]
-- [[Validation-Projects|Target Projects]]
-- [[Organizational-Context|Your Role in PearlThoughts]]
+- [AI Internship Overview](../README.md)
+- [Existing Tools Landscape](../03-Market-Research/01-Existing-Tools-Research.md)
+- [Target Projects](../04-Target-Projects/05-Validation-Projects.md)
+- [Your Role in PearlThoughts](./01-Organizational-Context.md)
 
 ---
 

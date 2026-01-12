@@ -361,10 +361,9 @@ You're building the **intelligence layer** that sits between developers and comp
 
 ## Related
 
-- [[Index|AI Internship Overview]]
-- [[Validation-Projects|Projects We'll Validate On]]
-- [[OKR|Your Objectives & Key Results]]
-- [[../Handbook/Welcome|General Intern Handbook]]
+- [AI Internship Overview](../README.md)
+- [Projects We'll Validate On](../04-Target-Projects/05-Validation-Projects.md)
+- [Your Objectives & Key Results](../08-Exercises/03-OKR.md)
 
 ---
 

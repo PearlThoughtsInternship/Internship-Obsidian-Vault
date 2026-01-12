@@ -389,7 +389,7 @@ Result: Best of both worlds
 
 - [Existing Tools Research](./03-Existing-Tools-Research.md)
 - [Technical Architecture - Multi-Mode Knowledge Extraction](./06-Technical-Architecture.md)
-- [AI Internship Overview](./00-Index.md)
+- [AI Internship Overview](./README.md)
 - [Market Analysis](./04-Market-Analysis.md)
 - [Quality Metrics](./07-Quality-Metrics.md)
 

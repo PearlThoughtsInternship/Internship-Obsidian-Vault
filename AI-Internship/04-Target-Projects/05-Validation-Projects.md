@@ -269,9 +269,7 @@ Progress through the validation tasks for your chosen project. Document findings
 
 ## Related
 
-- [[Index|AI Internship Overview]]
-- [[../Programme-Structure/Weekly-Plans|Weekly Plans]]
-- [[../Support/Mentors|Mentors]]
+- [AI Internship Overview](../README.md)
 
 ---
 

@@ -653,7 +653,7 @@ Query: "How does discount calculation work?"
 
 ## Related
 
-- [AI Internship Overview](./00-Index.md)
+- [AI Internship Overview](./README.md)
 - [Goals & Expectations](./02-Goals-and-Expectations.md)
 - [Technical Architecture](./06-Technical-Architecture.md)
 - [Quality Metrics](./07-Quality-Metrics.md)

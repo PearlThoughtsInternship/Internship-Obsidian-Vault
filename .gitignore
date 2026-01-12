@@ -70,5 +70,5 @@ out/
 *.bak
 backup/
 
-# Obsidian config (optional - remove if you want to track settings)
-# .obsidian/
+# Obsidian config - ignore workspace state (changes constantly)
+.obsidian/workspace.json

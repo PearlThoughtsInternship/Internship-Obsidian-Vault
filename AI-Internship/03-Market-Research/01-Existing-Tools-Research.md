@@ -340,9 +340,9 @@ By end of Week 1, produce a report containing:
 
 ## Related
 
-- [[Goals-and-Expectations|Internship Goals]]
-- [[Index|AI Internship Overview]]
-- [[Validation-Projects|Target Projects to Test Against]]
+- [Internship Goals](../01-Getting-Started/02-Goals-and-Expectations.md)
+- [AI Internship Overview](../README.md)
+- [Target Projects to Test Against](../04-Target-Projects/05-Validation-Projects.md)
 
 ---
 
