@@ -433,6 +433,82 @@ erDiagram
 
 ---
 
+## Real Code Insights (Extracted via CodeCompass)
+
+### Discount Calculation Flow
+
+The discount logic in ERPNext lives in `public/js/controllers/taxes_and_totals.js`:
+
+```javascript
+// Key methods in TaxesAndTotals class:
+
+calculate_discount_amount() {
+    // Triggered during tax calculation
+    this.set_discount_amount();
+    this.apply_discount_amount();
+}
+
+apply_pricing_rule_on_item(item) {
+    // Margin calculation (percentage or fixed)
+    if (item.margin_type == "Percentage") {
+        item.rate_with_margin = effective_rate + (effective_rate * margin / 100);
+    } else {
+        item.rate_with_margin = effective_rate + margin;
+    }
+
+    // Discount can be percentage OR amount
+    if (item.discount_percentage && !item.discount_amount) {
+        item.discount_amount = (rate_with_margin * discount_percentage) / 100;
+    }
+
+    // Final rate = margin rate - discount
+    item_rate = rate_with_margin - discount_amount;
+}
+```
+
+**Business Rules Found:**
+- Margins can be percentage-based or fixed amount
+- Discounts can be percentage or absolute
+- Cash discounts handled separately from trade discounts
+- Grand total adjustment for "apply discount on grand total" option
+
+### Accounting Entry Flow
+
+When a Sales Invoice is submitted, GL entries are created:
+
+```
+Sales Invoice Submit
+    ↓
+make_gl_entries()
+    ↓
+┌────────────────────────────────────────┐
+│ Debit: Accounts Receivable (Customer)  │
+│ Credit: Revenue Account                │
+│ Credit: Tax Account (if applicable)    │
+└────────────────────────────────────────┘
+```
+
+### Key Controllers Inheritance
+
+```
+BaseDocument (Frappe)
+    ↓
+TransactionBase (ERPNext)
+    ↓
+AccountsController
+    ↓
+SellingController / BuyingController
+    ↓
+SalesInvoice / PurchaseInvoice
+```
+
+Each level adds business logic:
+- **AccountsController**: Tax, currency, GL entries
+- **SellingController**: Customer validation, pricing rules
+- **SalesInvoice**: Invoice-specific rules
+
+---
+
 ## Resources
 
 - [ERPNext Documentation](https://docs.erpnext.com/)
