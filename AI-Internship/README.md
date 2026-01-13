@@ -45,6 +45,7 @@
 | 1.2 | [Goals & Expectations](./01-Getting-Started/02-Goals-and-Expectations.md) | 4-week plan, deliverables |
 | 1.3 | [What You Build](./01-Getting-Started/03-What-You-Build.md) | Form factors, AI setup, workflow |
 | 1.4 | [Community & Collaboration](./01-Getting-Started/04-Community-and-Collaboration.md) | Channels, buddies, teams |
+| 1.5 | [Inspiration: What Interns Can Build](./01-Getting-Started/05-Inspiration-What-Interns-Can-Build.md) | Real examples from Juspay, SpaceX, etc. |
 
 ### 🏛️ 02 - Understanding Legacy Systems
 | # | Document | Description |
