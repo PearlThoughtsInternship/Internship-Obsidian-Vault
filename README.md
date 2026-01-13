@@ -4,7 +4,20 @@
 
 This handbook serves as a living document for all interns and mentors at PearlThoughts. It's designed to be actively maintained and improved by everyone involved in the internship program.
 
+## 🚀 Start Here
+
+> **New to the program?** Read these first:
+
+1. [[How-We-Communicate/00-Index|How We Communicate]] — Teams setup, channels, live sessions, tools
+2. [[Handbook/Welcome|Welcome Guide]] — Program overview and expectations
+3. [[Handbook/Policies-and-Guidelines|Policies]] — Attendance, submissions, evaluations
+
+---
+
 ## 📚 Structure
+
+### [How We Communicate](./How-We-Communicate/00-Index.md)
+Remote collaboration essentials: Microsoft Teams setup, communication protocols, live session format, and required tools (Git, Loom, hosting). **Read this first.**
 
 ### [Handbook](./Handbook/Index.md)
 Core documentation including welcome guides, policies, and guidelines
@@ -48,5 +61,5 @@ Technical guides, learning materials, and useful links
 
 ---
 
-*Last Updated: [[2025-09-10]]*
+*Last Updated: 2026-01-13*
 *Maintained by: Internship Management Team*

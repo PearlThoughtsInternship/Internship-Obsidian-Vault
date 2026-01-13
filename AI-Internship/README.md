@@ -17,6 +17,9 @@ A code intelligence platform that helps AI assistants understand enterprise lega
 │                     YOUR FIRST 30 MINUTES                                │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
+│  0. SETUP    →  Set up Teams & Tools (see Communication section below)  │
+│                 Get your webinar link: 00-Session-Links.md              │
+│                                                                          │
 │  1. READ     →  04-Internship/01-Before-You-Begin.md                    │
 │                 (Understand expectations & mindset)                      │
 │                                                                          │
@@ -154,6 +157,21 @@ All links work on GitHub web UI.
 - **Mentors**: Available for questions (after you've tried first)
 
 **Remember**: Research first, ask second. We're evaluating your ability to figure things out independently.
+
+---
+
+## Communication & Remote Working
+
+> **New here?** Start with our communication guides.
+
+| Guide | What You'll Learn |
+|-------|-------------------|
+| [[../How-We-Communicate/01-Teams-Getting-Started\|Teams Setup]] | Microsoft Teams setup, troubleshooting, getting full Guest access |
+| [[../How-We-Communicate/02-Communication-Protocol\|Communication Protocol]] | Which channel to use, threads vs posts, HR queries |
+| [[../How-We-Communicate/03-Live-Sessions\|Live Sessions]] | 10 AM webinar format, demo showcase, participation |
+| [[../How-We-Communicate/04-Tools-and-Workflows\|Tools & Workflows]] | Git repos, Loom screencasts, cloud hosting |
+
+These guides apply to all internship programs at PearlThoughts.
 
 ---
 

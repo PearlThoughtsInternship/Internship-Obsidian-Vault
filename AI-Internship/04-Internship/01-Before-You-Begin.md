@@ -4,6 +4,21 @@
 
 ---
 
+## First: Set Up Your Communication Tools
+
+Before diving into the technical content, ensure you can participate in the program:
+
+| Step | Guide |
+|------|-------|
+| 1. Set up Microsoft Teams | [[../../How-We-Communicate/01-Teams-Getting-Started|Teams Setup]] |
+| 2. Understand communication channels | [[../../How-We-Communicate/02-Communication-Protocol|Communication Protocol]] |
+| 3. Know the live session format | [[../../How-We-Communicate/03-Live-Sessions|Live Sessions]] |
+| 4. Get your tools ready (Git, Loom) | [[../../How-We-Communicate/04-Tools-and-Workflows|Tools & Workflows]] |
+
+**Your webinar link**: [[../00-Session-Links|AI Internship Session Links]]
+
+---
+
 ## The Reality of This Internship
 
 We're a **small organization** with limited time and resources. We offered this internship **without any fee** because we believe in sharing knowledge and growing the next generation of engineers. But we need you to understand something important:
