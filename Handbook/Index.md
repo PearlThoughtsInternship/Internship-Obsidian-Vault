@@ -2,20 +2,14 @@
 
 ## Core Documents
 
-### 🎆 Getting Started
-- [[Welcome|Welcome Guide]]
-- [[Policies-and-Guidelines|Policies and Guidelines]]
-- [[Intern-Responsibilities|Intern Responsibilities]]
+### Getting Started
+- [Welcome Guide](./Welcome.md)
+- [Policies and Guidelines](./Policies-and-Guidelines.md)
+- [How We Communicate](../How-We-Communicate/00-Index.md)
 
-### 📄 Program Information
-- [[Program-Overview|Program Overview]]
-- [[Tech-Stack|Technology Stack]]
-- [[Evaluation-Criteria|Evaluation Criteria]]
-
-### 📚 Learning Resources
-- [[Best-Practices|Development Best Practices]]
-- [[Code-Standards|Code Standards]]
-- [[Git-Workflow|Git Workflow Guide]]
+### Technical Guides
+- [PR Guidelines](./PR-Guidlines.md)
+- [Backend Deployment Guide](./Backend-Deployment-Guide.md)
 
 ## Quick Reference
 
@@ -38,4 +32,4 @@
 
 ---
 
-*Navigate: [[../README|Home]] | [[../Programme-Structure/Index|Programme]] | [[../Support/Index|Support]] | [[../Teams/Index|Teams]]*
+*Navigate: [Home](../README.md) | [Programme](../Programme-Structure/Index.md) | [Support](../Support/Index.md) | [Teams](../Teams/Index.md)*

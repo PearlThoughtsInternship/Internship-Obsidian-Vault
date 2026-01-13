@@ -166,10 +166,10 @@ All links work on GitHub web UI.
 
 | Guide | What You'll Learn |
 |-------|-------------------|
-| [[../How-We-Communicate/01-Teams-Getting-Started\|Teams Setup]] | Microsoft Teams setup, troubleshooting, getting full Guest access |
-| [[../How-We-Communicate/02-Communication-Protocol\|Communication Protocol]] | Which channel to use, threads vs posts, HR queries |
-| [[../How-We-Communicate/03-Live-Sessions\|Live Sessions]] | 10 AM webinar format, demo showcase, participation |
-| [[../How-We-Communicate/04-Tools-and-Workflows\|Tools & Workflows]] | Git repos, Loom screencasts, cloud hosting |
+| [Teams Setup](../How-We-Communicate/01-Teams-Getting-Started.md) | Microsoft Teams setup, troubleshooting, getting full Guest access |
+| [Communication Protocol](../How-We-Communicate/02-Communication-Protocol.md) | Which channel to use, threads vs posts, HR queries |
+| [Live Sessions](../How-We-Communicate/03-Live-Sessions.md) | 10 AM webinar format, demo showcase, participation |
+| [Tools & Workflows](../How-We-Communicate/04-Tools-and-Workflows.md) | Git repos, Loom screencasts, cloud hosting |
 
 These guides apply to all internship programs at PearlThoughts.
 

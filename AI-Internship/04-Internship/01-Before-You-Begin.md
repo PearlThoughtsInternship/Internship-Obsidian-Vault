@@ -10,12 +10,12 @@ Before diving into the technical content, ensure you can participate in the prog
 
 | Step | Guide |
 |------|-------|
-| 1. Set up Microsoft Teams | [[../../How-We-Communicate/01-Teams-Getting-Started|Teams Setup]] |
-| 2. Understand communication channels | [[../../How-We-Communicate/02-Communication-Protocol|Communication Protocol]] |
-| 3. Know the live session format | [[../../How-We-Communicate/03-Live-Sessions|Live Sessions]] |
-| 4. Get your tools ready (Git, Loom) | [[../../How-We-Communicate/04-Tools-and-Workflows|Tools & Workflows]] |
+| 1. Set up Microsoft Teams | [Teams Setup](../../How-We-Communicate/01-Teams-Getting-Started.md) |
+| 2. Understand communication channels | [Communication Protocol](../../How-We-Communicate/02-Communication-Protocol.md) |
+| 3. Know the live session format | [Live Sessions](../../How-We-Communicate/03-Live-Sessions.md) |
+| 4. Get your tools ready (Git, Loom) | [Tools & Workflows](../../How-We-Communicate/04-Tools-and-Workflows.md) |
 
-**Your webinar link**: [[../00-Session-Links|AI Internship Session Links]]
+**Your webinar link**: [AI Internship Session Links](../00-Session-Links.md)
 
 ---
 

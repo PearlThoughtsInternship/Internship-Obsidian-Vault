@@ -193,8 +193,8 @@ Once properly set up as a Guest, you should have access to:
 ## Next Steps
 
 Once you have full Guest access:
-- [[02-Communication-Protocol]] — Learn which channel to use for what
-- [[03-Live-Sessions]] — Understand the 10 AM meeting format
+- [Communication Protocol](./02-Communication-Protocol.md) — Learn which channel to use for what
+- [Live Sessions](./03-Live-Sessions.md) — Understand the 10 AM meeting format
 
 ---
 

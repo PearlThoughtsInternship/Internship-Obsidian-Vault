@@ -49,11 +49,12 @@ We are excited to have you on board and look forward to seeing you grow and succ
 
 ## Next Steps
 
-1. Review the [[Policies-and-Guidelines|Policies and Guidelines]]
-2. Check your [[../Programme-Structure/Weekly-Plans|Weekly Schedule]]
-3. Meet your [[../Support/Mentors|Mentors]]
-4. Join your [[../Teams/Index|Team Channel]]
+1. Review the [Policies and Guidelines](./Policies-and-Guidelines.md)
+2. Set up [Communication Tools](../How-We-Communicate/00-Index.md)
+3. Check your [Weekly Schedule](../Programme-Structure/Weekly-Plans.md)
+4. Meet your [Mentors](../Support/Mentors.md)
+5. Join your [Team Channel](../Teams/Index.md)
 
 ---
 
-*Last Updated: [[2025-09-10]]*
+*Last Updated: 2026-01-13*

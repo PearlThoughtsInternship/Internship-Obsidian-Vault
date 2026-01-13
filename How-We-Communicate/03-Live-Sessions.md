@@ -70,7 +70,7 @@ If selected for demo or need to speak:
 2. You can then share your screen
 3. **Requirement**: You must be signed into Microsoft Teams (not just the webinar link)
 
-→ If you're webinar-only without a Microsoft account, you cannot be promoted to presenter. See [[01-Teams-Getting-Started]].
+→ If you're webinar-only without a Microsoft account, you cannot be promoted to presenter. See [Teams Getting Started](./01-Teams-Getting-Started.md).
 
 ---
 
@@ -141,7 +141,7 @@ If selected for demo or need to speak:
 
 ## Attendance
 
-- Sessions are **mandatory** (see [[../Handbook/Policies-and-Guidelines|Policies]])
+- Sessions are **mandatory** (see [Policies](../Handbook/Policies-and-Guidelines.md))
 - Missing 3 consecutive sessions triggers review
 - If you cannot attend, inform in advance via the appropriate channel
 
@@ -160,7 +160,7 @@ Recordings (when available) are shared in the relevant Teams channel.
 
 ## Preparing for Your First Session
 
-1. **Before**: Complete [[01-Teams-Getting-Started]] setup
+1. **Before**: Complete [Teams Getting Started](./01-Teams-Getting-Started.md) setup
 2. **Join**: Click the webinar link 5 minutes early
 3. **Listen**: First few sessions, observe how things work
 4. **Participate**: Use chat to ask questions

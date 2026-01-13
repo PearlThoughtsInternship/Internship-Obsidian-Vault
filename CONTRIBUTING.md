@@ -96,7 +96,7 @@ Code blocks with language specified
 |--------|-----|--------|
 | Data | Here | Clear |
 
-[[Internal-Link|Display Text]]
+[Internal Link](./path-to-file.md)
 [External Link](https://example.com)
 ```
 
@@ -105,7 +105,7 @@ Code blocks with language specified
 At the bottom of each document, add:
 ```markdown
 ---
-*Last Updated: [[YYYY-MM-DD]]*
+*Last Updated: YYYY-MM-DD*
 *Contributors: [Your Name]*
 *Category: [Handbook/Programme/Support/Teams/Resources]*
 ```
@@ -175,10 +175,10 @@ Common questions about this topic
 ## 🌐 Linking Strategy
 
 ### Internal Links
-- Use `[[Page-Name]]` for Obsidian links
+- Use markdown format: `[Display Text](./path-to-file.md)`
+- This ensures links work in both Obsidian AND GitHub
 - Create bidirectional links where relevant
 - Link to related content
-- Maintain link consistency
 
 ### External Links
 - Verify links work before adding
@@ -304,5 +304,5 @@ git push origin update-handbook
 
 ---
 
-*Last Updated: [[2025-09-10]]*
+*Last Updated: 2025-09-10*
 *Version: 1.0*

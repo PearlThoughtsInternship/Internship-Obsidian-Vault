@@ -198,5 +198,5 @@ Our experienced mentors are here to guide you through your internship journey. E
 
 ---
 
-*Last Updated: [[2025-09-10]]*
-*Navigate: [[Index|Support Home]] | [[../Handbook/Index|Handbook]] | [[FAQ|Frequently Asked Questions]]*
+*Last Updated: 2025-09-10*
+*Navigate: [Support Home](./Index.md) | [Handbook](../Handbook/Index.md) | [Programme](../Programme-Structure/Index.md)*

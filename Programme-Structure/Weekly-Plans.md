@@ -239,5 +239,5 @@ API for fetching patient’s appointment
 
 ---
 
-*Last Updated: [[2025-09-10]]*
-*Navigate: [[Index|Programme Home]] | [[../Handbook/Index|Handbook]] | [[../Support/Index|Support]]*
+*Last Updated: 2025-09-10*
+*Navigate: [Programme Home](./Index.md) | [Handbook](../Handbook/Index.md) | [Support](../Support/Index.md)*

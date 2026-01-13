@@ -7,10 +7,7 @@ Interns are organized into small teams to facilitate collaboration, peer learnin
 ## 👥 Active Teams
 
 ### Team Spaces
-- [[Team-Alpha|Team Alpha]] - Backend Focus
-- [[Team-Beta|Team Beta]] - Full Stack Development
-- [[Team-Gamma|Team Gamma]] - AI & Data Science
-- [[Team-Delta|Team Delta]] - Mixed Technologies
+Teams are organized by program track. Check your Teams channel for your assigned team.
 
 ## 📋 Daily Activities
 
@@ -49,10 +46,8 @@ Interns are organized into small teams to facilitate collaboration, peer learnin
 ## 📝 Team Resources
 
 ### Templates
-- [[Daily-Standup-Template|Daily Standup Template]]
-- [[PR-Review-Checklist|PR Review Checklist]]
-- [[Team-Retrospective|Weekly Retrospective Template]]
-- [[Knowledge-Sharing|Knowledge Sharing Format]]
+- [Daily Standup Template](./Daily-Standup-Template.md)
+- [Communication Protocol](../How-We-Communicate/02-Communication-Protocol.md)
 
 ### Collaboration Tools
 - **Code Sharing**: GitHub repositories
@@ -157,5 +152,5 @@ Teams compete in friendly challenges to enhance learning:
 
 ---
 
-*Last Updated: [[2025-09-10]]*
-*Navigate: [[../README|Home]] | [[../Handbook/Index|Handbook]] | [[../Programme-Structure/Index|Programme]] | [[../Support/Index|Support]]*
+*Last Updated: 2026-01-13*
+*Navigate: [Home](../README.md) | [Handbook](../Handbook/Index.md) | [Programme](../Programme-Structure/Index.md) | [Support](../Support/Index.md)*

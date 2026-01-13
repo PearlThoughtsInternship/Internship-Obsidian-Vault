@@ -294,9 +294,9 @@ Yes, but:
 - **Mentors**: Available for questions (don't expect hand-holding)
 
 **Communication guides** (if you haven't set up Teams yet):
-- [[../../../How-We-Communicate/01-Teams-Getting-Started|Teams Setup]]
-- [[../../../How-We-Communicate/02-Communication-Protocol|Where to Post Questions]]
-- [[../../00-Session-Links|Your Webinar Link]]
+- [Teams Setup](../../../How-We-Communicate/01-Teams-Getting-Started.md)
+- [Where to Post Questions](../../../How-We-Communicate/02-Communication-Protocol.md)
+- [Your Webinar Link](../../00-Session-Links.md)
 
 **Remember**: The ability to figure things out independently is what we're evaluating.
 

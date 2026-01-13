@@ -233,10 +233,10 @@ Track these to improve context quality:
 
 ## Related
 
-- [[02-LLM-Integration|LLM Integration Patterns]]
-- [[03-Observability|Observability & Experiments]]
-- [[04-Quality-Metrics|Quality Metrics]]
-- [[../02-Engineering/01-Architecture|4-Mode Architecture]]
+- [LLM Integration Patterns](./02-LLM-Integration.md)
+- [Observability & Experiments](./03-Observability.md)
+- [Quality Metrics](./04-Quality-Metrics.md)
+- [4-Mode Architecture](../02-Engineering/01-Architecture.md)
 
 ---
 

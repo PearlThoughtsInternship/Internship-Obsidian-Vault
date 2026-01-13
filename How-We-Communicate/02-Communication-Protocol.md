@@ -8,7 +8,7 @@
 
 Before diving into protocols, familiarize yourself with the Microsoft Teams interface:
 
-![[assets/teams-interface-annotated.png]]
+![Teams Interface](./assets/teams-interface-annotated.png)
 
 **Key areas:**
 1. **Teams sidebar** (left) — Your teams and channels

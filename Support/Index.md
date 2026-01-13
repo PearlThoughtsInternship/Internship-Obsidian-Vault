@@ -13,17 +13,11 @@ Find the help you need quickly with our comprehensive support system.
 
 ## 📦 Support Categories
 
-### [[Mentors|Mentorship Support]]
+### [Mentorship Support](./Mentors.md)
 Connect with your assigned mentors for guidance
 
-### [[FAQ|Frequently Asked Questions]]
-Quick answers to common queries
-
-### [[Technical-Resources|Technical Resources]]
-Development tools, documentation, and guides
-
-### [[Troubleshooting|Troubleshooting Guide]]
-Solutions to common technical problems
+### [How We Communicate](../How-We-Communicate/00-Index.md)
+Teams setup, channels, communication protocols
 
 ## 📨 Communication Channels
 
@@ -57,6 +51,11 @@ Solutions to common technical problems
 - **Certificates**: Request after program completion
 - **Evaluation Results**: Email HR after Friday review
 
+### Leaving the Program
+- **Voluntary Exit**: Email hr@pearlthoughts.com to request removal
+- We'll remove you from Teams, channels, and email lists
+- See [Leaving the Program](../How-We-Communicate/05-Leaving-The-Program.md)
+
 ### Technical Issues
 - **Development Environment**: #Support channel
 - **Deployment Problems**: #DevOps channel
@@ -66,10 +65,8 @@ Solutions to common technical problems
 ## 📚 Self-Help Resources
 
 ### Knowledge Base
-- [[../Resources/Setup-Guides|Environment Setup Guides]]
-- [[../Resources/Common-Errors|Common Error Solutions]]
-- [[../Resources/Best-Practices|Development Best Practices]]
-- [[../Resources/Tool-Tutorials|Tool Tutorials]]
+- [Quick Start Guide](../Resources/Quick-Start.md)
+- [Communication Protocol](../How-We-Communicate/02-Communication-Protocol.md)
 
 ### Learning Platforms
 - Company GitHub repositories
@@ -157,5 +154,5 @@ Solutions to common technical problems
 
 ---
 
-*Last Updated: [[2025-09-10]]*
-*Navigate: [[../README|Home]] | [[../Handbook/Index|Handbook]] | [[../Programme-Structure/Index|Programme]] | [[../Teams/Index|Teams]]*
+*Last Updated: 2026-01-13*
+*Navigate: [Home](../README.md) | [Handbook](../Handbook/Index.md) | [Programme](../Programme-Structure/Index.md) | [Teams](../Teams/Index.md)*

@@ -150,9 +150,9 @@ Significant contributions will be:
 
 ## Related
 
-- [[Reviews/|Cohort Reviews]]
-- [[Experiments/|Experiment Log]]
-- [[../04-Internship/02-Week-by-Week|Weekly Schedule]]
+- [Cohort Reviews](./Reviews/)
+- [Experiment Log](./Experiments/)
+- [Weekly Schedule](../04-Internship/02-Week-by-Week.md)
 
 ---
 

@@ -247,9 +247,9 @@ async function safeGenerate(prompt: string): Promise<string> {
 
 ## Related
 
-- [[01-Context-Generation|Context Generation]]
-- [[03-Observability|Observability & Experiments]]
-- [[../02-Engineering/01-Architecture|4-Mode Architecture]]
+- [Context Generation](./01-Context-Generation.md)
+- [Observability & Experiments](./03-Observability.md)
+- [4-Mode Architecture](../02-Engineering/01-Architecture.md)
 
 ---
 

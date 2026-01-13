@@ -18,16 +18,16 @@
 
 ## Before You Join
 
-1. **Set up Microsoft Teams properly** → [[../How-We-Communicate/01-Teams-Getting-Started|Teams Setup Guide]]
-2. **Understand the session format** → [[../How-We-Communicate/03-Live-Sessions|Live Sessions Guide]]
-3. **Know where to ask questions** → [[../How-We-Communicate/02-Communication-Protocol|Communication Protocol]]
+1. **Set up Microsoft Teams properly** → [Teams Setup Guide](../How-We-Communicate/01-Teams-Getting-Started.md)
+2. **Understand the session format** → [Live Sessions Guide](../How-We-Communicate/03-Live-Sessions.md)
+3. **Know where to ask questions** → [Communication Protocol](../How-We-Communicate/02-Communication-Protocol.md)
 
 ---
 
 ## Can't Join or Present?
 
-- If you **can't see channels** after joining → You're webinar-only, not a Guest. See [[../How-We-Communicate/01-Teams-Getting-Started#Troubleshooting Common Issues|troubleshooting]].
-- If you **can't share screen** when asked → You need full Microsoft Teams setup. See [[../How-We-Communicate/01-Teams-Getting-Started|setup guide]].
+- If you **can't see channels** after joining → You're webinar-only, not a Guest. See [troubleshooting](../How-We-Communicate/01-Teams-Getting-Started.md#troubleshooting-common-issues).
+- If you **can't share screen** when asked → You need full Microsoft Teams setup. See [setup guide](../How-We-Communicate/01-Teams-Getting-Started.md).
 
 ---
 
@@ -38,4 +38,4 @@ Recordings (when available) are shared in the AI Internship Teams channel.
 ---
 
 *This link is specific to the AI Internship January 2026 batch.*
-*For session format and participation guidelines, see [[../How-We-Communicate/03-Live-Sessions|Live Sessions]].*
+*For session format and participation guidelines, see [Live Sessions](../How-We-Communicate/03-Live-Sessions.md).*

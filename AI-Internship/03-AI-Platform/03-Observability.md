@@ -263,9 +263,9 @@ Accuracy Trend
 
 ## Related
 
-- [[01-Context-Generation|Context Generation]]
-- [[02-LLM-Integration|LLM Integration]]
-- [[04-Quality-Metrics|Quality Metrics (RAGAs)]]
+- [Context Generation](./01-Context-Generation.md)
+- [LLM Integration](./02-LLM-Integration.md)
+- [Quality Metrics (RAGAs)](./04-Quality-Metrics.md)
 
 ---
 

@@ -4,7 +4,7 @@
 
 ### 🌟 PR Information
 
-**Date**: [[YYYY-MM-DD]]  
+**Date**: YYYY-MM-DD  
 **Author**: [Your Name]  
 **Team**: [Team Name]  
 **Ticket/Task**: [Reference Number]
@@ -206,4 +206,4 @@ curl -X POST http://localhost:3000/api/v1/endpoint \
 ---
 
 *Template Version: 1.0*
-*Last Updated: [[2025-09-10]]*
+*Last Updated: 2025-09-10*

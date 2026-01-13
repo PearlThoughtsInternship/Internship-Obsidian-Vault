@@ -10,33 +10,25 @@ Our internship programs are structured to provide progressive learning experienc
 - **Duration**: 4 weeks
 - **Focus**: NestJS, TypeScript, PostgreSQL
 - **Project**: Healthcare Management System APIs
-- [[Backend-Track|View Full Curriculum]]
 
 ### Full Stack Developer Internship
 - **Duration**: 6 weeks
 - **Focus**: Next.js, Nest.js, TypeScript
 - **Project**: Schedula - Complete Application
-- [[Fullstack-Track|View Full Curriculum]]
 
 ### AI Internship Program
 - **Duration**: 4 weeks
-- **Focus**: Machine Learning, Data Processing
-- **Project**: AI-Driven Business Solutions
-- [[AI-Track|View Full Curriculum]]
+- **Focus**: AI Engineering, Code Intelligence
+- **Project**: Legacy Modernization Tools
+- [View AI Internship Details](../AI-Internship/README.md)
 
 ## 📦 Key Components
 
-### [[Weekly-Plans|Weekly Development Plans]]
+### [Weekly Development Plans](./Weekly-Plans.md)
 Detailed breakdown of each week's objectives and deliverables
 
-### [[Daily-Structure|Daily Structure]]
-How each day is organized for maximum learning
-
-### [[Project-Guidelines|Project Guidelines]]
-Best practices for project development
-
-### [[Milestone-Tracking|Milestone Tracking]]
-Track your progress through key checkpoints
+### [How We Communicate](../How-We-Communicate/00-Index.md)
+Remote collaboration, Teams setup, live sessions
 
 ## 🏆 Learning Outcomes
 
@@ -104,10 +96,7 @@ Track your progress through key checkpoints
 ## 📚 Resources
 
 ### Learning Materials
-- [[../Resources/Tech-Docs|Technical Documentation]]
-- [[../Resources/Video-Tutorials|Video Tutorials]]
-- [[../Resources/Code-Examples|Code Examples]]
-- [[../Resources/Best-Practices|Best Practices]]
+- [Quick Start Guide](../Resources/Quick-Start.md)
 
 ### Tools and Platforms
 - GitHub for version control
@@ -117,5 +106,5 @@ Track your progress through key checkpoints
 
 ---
 
-*Last Updated: [[2025-09-10]]*
-*Navigate: [[../README|Home]] | [[../Handbook/Index|Handbook]] | [[../Support/Index|Support]] | [[../Teams/Index|Teams]]*
+*Last Updated: 2026-01-13*
+*Navigate: [Home](../README.md) | [Handbook](../Handbook/Index.md) | [Support](../Support/Index.md) | [Teams](../Teams/Index.md)*

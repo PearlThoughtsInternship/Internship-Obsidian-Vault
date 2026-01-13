@@ -15,7 +15,7 @@ The code intelligence platform provides four core capability areas, each address
 | Feature | Description | Implementation |
 |---------|-------------|----------------|
 | Multi-language parsing | Python, Java, PHP, TypeScript | tree-sitter grammars |
-| 4-mode extraction | Text, Symbol, Runtime, Workflow | See [[../02-Engineering/01-Architecture|Architecture]] |
+| 4-mode extraction | Text, Symbol, Runtime, Workflow | See [Architecture](../02-Engineering/01-Architecture.md) |
 | Incremental updates | Re-index only changed files | File hash tracking |
 | Framework awareness | Django, Spring, Laravel patterns | Custom extractors |
 
@@ -188,10 +188,10 @@ experiment:
 
 ## Related
 
-- [[01-Vision|Product Vision]]
-- [[../02-Engineering/01-Architecture|Technical Architecture]]
-- [[../03-AI-Platform/01-Context-Generation|Context Generation Details]]
-- [[../03-AI-Platform/04-Quality-Metrics|Quality Metrics]]
+- [Product Vision](./01-Vision.md)
+- [Technical Architecture](../02-Engineering/01-Architecture.md)
+- [Context Generation Details](../03-AI-Platform/01-Context-Generation.md)
+- [Quality Metrics](../03-AI-Platform/04-Quality-Metrics.md)
 
 ---
 

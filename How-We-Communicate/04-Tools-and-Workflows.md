@@ -11,7 +11,7 @@
 | **Git + GitHub** | Version control, code sharing | Public repos enable review without access management |
 | **Loom** (or similar) | Screencasts | Async demos, explaining your work |
 | **Cloud Hosting** | Live demos | Show working apps, not just code |
-| **Microsoft Teams** | Communication | See [[01-Teams-Getting-Started]] |
+| **Microsoft Teams** | Communication | See [Teams Getting Started](./01-Teams-Getting-Started.md) |
 
 ---
 
@@ -221,7 +221,7 @@ Before your first week:
 - [ ] Loom (or alternative) account created
 - [ ] Test recording done
 - [ ] Cloud hosting account created (choose based on your project type)
-- [ ] Microsoft Teams fully set up (see [[01-Teams-Getting-Started]])
+- [ ] Microsoft Teams fully set up (see [Teams Getting Started](./01-Teams-Getting-Started.md))
 
 ---
 

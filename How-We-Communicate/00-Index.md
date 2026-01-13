@@ -8,10 +8,11 @@
 
 | I need to... | Go here |
 |--------------|---------|
-| Set up Microsoft Teams properly | [[01-Teams-Getting-Started]] |
-| Know which channel to post in | [[02-Communication-Protocol]] |
-| Understand the 10 AM live sessions | [[03-Live-Sessions]] |
-| Set up Git, Loom, and demo hosting | [[04-Tools-and-Workflows]] |
+| Set up Microsoft Teams properly | [Teams Getting Started](./01-Teams-Getting-Started.md) |
+| Know which channel to post in | [Communication Protocol](./02-Communication-Protocol.md) |
+| Understand the 10 AM live sessions | [Live Sessions](./03-Live-Sessions.md) |
+| Set up Git, Loom, and demo hosting | [Tools and Workflows](./04-Tools-and-Workflows.md) |
+| Leave the program gracefully | [Leaving the Program](./05-Leaving-The-Program.md) |
 
 ---
 
@@ -54,7 +55,7 @@ Join the webinar for:
 
 **Critical**: Many interns miss out on resources because they only join the webinar without proper Microsoft Teams setup.
 
-→ Start with [[01-Teams-Getting-Started]] to ensure you have full access.
+→ Start with [Teams Getting Started](./01-Teams-Getting-Started.md) to ensure you have full access.
 
 ---
 

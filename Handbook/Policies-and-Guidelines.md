@@ -20,7 +20,7 @@
 
 ### 📋 Status Updates
 - Post daily progress in your team channel
-- Use the [[../Templates/Daily-Status-Template|Daily Status Template]]
+- Use the [Daily Standup Template](../Teams/Daily-Standup-Template.md)
 - Be specific about completed tasks and blockers
 
 ## Task Management
@@ -74,6 +74,20 @@
 - Failing to submit PR for 3 consecutive days
 - No prior notice will be given
 
+## Voluntary Exit
+
+### Leaving the Program
+
+You may leave the internship at any time. We understand circumstances change.
+
+**To request removal:**
+1. Email **hr@pearlthoughts.com** with subject: "Internship Withdrawal - [Your Name]"
+2. We'll remove you from Teams, channels, and email lists within 24-48 hours
+
+Note: Microsoft Teams doesn't allow guests to remove themselves — HR must process your request.
+
+See [Leaving the Program](../How-We-Communicate/05-Leaving-The-Program.md) for full details.
+
 ## Professional Conduct
 
 ### Expected Behavior
@@ -117,4 +131,4 @@
 
 ---
 
-*Last Updated: [[2025-09-10]]*
+*Last Updated: 2026-01-13*

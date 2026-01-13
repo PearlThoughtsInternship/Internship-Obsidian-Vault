@@ -1,6 +1,6 @@
 # Daily Standup Template
 
-## Date: [[YYYY-MM-DD]]
+## Date: YYYY-MM-DD
 
 ### Intern Name: [Your Name]
 ### Team: [Team Name]
@@ -156,4 +156,4 @@
 ---
 
 *Template Version: 1.0*
-*Last Updated: [[2025-09-10]]*
+*Last Updated: 2025-09-10*

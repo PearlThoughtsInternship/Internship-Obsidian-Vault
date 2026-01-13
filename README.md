@@ -8,9 +8,9 @@ This handbook serves as a living document for all interns and mentors at PearlTh
 
 > **New to the program?** Read these first:
 
-1. [[How-We-Communicate/00-Index|How We Communicate]] — Teams setup, channels, live sessions, tools
-2. [[Handbook/Welcome|Welcome Guide]] — Program overview and expectations
-3. [[Handbook/Policies-and-Guidelines|Policies]] — Attendance, submissions, evaluations
+1. [How We Communicate](./How-We-Communicate/00-Index.md) — Teams setup, channels, live sessions, tools
+2. [Welcome Guide](./Handbook/Welcome.md) — Program overview and expectations
+3. [Policies](./Handbook/Policies-and-Guidelines.md) — Attendance, submissions, evaluations
 
 ---
 
@@ -22,9 +22,6 @@ Remote collaboration essentials: Microsoft Teams setup, communication protocols,
 ### [Handbook](./Handbook/Index.md)
 Core documentation including welcome guides, policies, and guidelines
 
-### [Handbook](./Handbook/WeeklyPlan.md)
-Weekly Plans – Patient & Doctor Experience
-
 ### [Programme Structure](./Programme-Structure/Index.md)
 Detailed breakdown of weekly objectives, tasks, and learning outcomes
 
@@ -34,7 +31,7 @@ Mentor information, FAQs, and support resources
 ### [Teams](./Teams/Index.md)
 Team-specific workspaces for collaboration and progress tracking
 
-### [Resources](./Resources/Index.md)
+### [Resources](./Resources/Quick-Start.md)
 Technical guides, learning materials, and useful links
 
 ## 🤝 How to Contribute
@@ -46,18 +43,18 @@ Technical guides, learning materials, and useful links
 
 ## 🚀 Quick Links
 
-- [[Handbook/Welcome|Welcome Guide]]
-- [[Programme-Structure/Weekly-Plans|Weekly Plans]]
-- [[Support/Mentors|Meet Your Mentors]]
-- [[Teams/Daily-Standup-Template|Daily Standup Template]]
-- [[Resources/Tech-Stack|Technology Stack]]
+- [Welcome Guide](./Handbook/Welcome.md)
+- [Weekly Plans](./Programme-Structure/Weekly-Plans.md)
+- [Meet Your Mentors](./Support/Mentors.md)
+- [Daily Standup Template](./Teams/Daily-Standup-Template.md)
+- [Quick Start Resources](./Resources/Quick-Start.md)
 
 ## 📋 Active Programs
 
 - **Backend Developer Internship**
 - **Full Stack Developer Internship**
-- **DevOps Engineer Internship** - [[DevOps/OKR|DevOps OKR]]
-- **AI Engineering Internship** - [[AI-Internship/Index|AI-Driven Legacy Modernization]]
+- **DevOps Engineer Internship** - [DevOps OKR](./DevOps/OKR.md)
+- **AI Engineering Internship** - [AI-Driven Legacy Modernization](./AI-Internship/README.md)
 
 ---
 

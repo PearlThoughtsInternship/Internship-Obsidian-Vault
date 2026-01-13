@@ -91,9 +91,9 @@ The platform succeeds when:
 
 ## Related
 
-- [[02-Capabilities|Platform Capabilities]]
-- [[03-Market-Context|Market Analysis]]
-- [[Target-Codebases/|Validation Targets]]
+- [Platform Capabilities](./02-Capabilities.md)
+- [Market Analysis](./03-Market-Context.md)
+- [Validation Targets](./Target-Codebases/)
 
 ---
 

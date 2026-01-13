@@ -140,4 +140,4 @@ intern/your-name-main
 
 ---
 
-*Last Updated: [[2025-09-10]]*
+*Last Updated: 2025-09-10*

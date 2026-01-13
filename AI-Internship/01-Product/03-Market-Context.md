@@ -133,9 +133,9 @@ From developer surveys:
 
 ## Related
 
-- [[01-Vision|Product Vision]]
-- [[02-Capabilities|Platform Capabilities]]
-- [[Target-Codebases/|Validation Targets]]
+- [Product Vision](./01-Vision.md)
+- [Platform Capabilities](./02-Capabilities.md)
+- [Validation Targets](./Target-Codebases/)
 
 ---
 
