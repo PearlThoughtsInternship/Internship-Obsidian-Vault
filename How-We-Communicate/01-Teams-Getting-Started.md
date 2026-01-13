@@ -105,6 +105,65 @@ Once you've contacted HR and received an invite:
 
 ---
 
+## Setting Up Your Profile
+
+### Updating Your Display Name
+
+Your display name in Teams comes from your Microsoft account. If it's incorrect:
+
+1. Go to [account.microsoft.com](https://account.microsoft.com)
+2. Sign in with your Microsoft account
+3. Click on **Your info** or **Profile**
+4. Edit your **Name** fields (First name, Last name)
+5. Save changes
+6. **Restart Teams** — changes may take a few minutes to reflect
+
+**Important**: Use your real, professional name — the same name on your LinkedIn and job application. This helps mentors identify you and ensures proper attribution for your work.
+
+### Adding a Profile Picture
+
+A profile picture helps mentors and peers recognize you:
+
+1. In Teams, click your profile icon (top right)
+2. Click **Change picture**
+3. Upload a professional photo (face clearly visible)
+
+**Guidelines:**
+- Use a recent photo where your face is clearly visible
+- Professional appearance (no filters, memes, or avatars)
+- Same photo as your LinkedIn (helps with identity verification)
+
+### Verification Checklist
+
+Complete these steps to confirm you're fully set up:
+
+- [ ] Display name matches your real name (same as LinkedIn/application)
+- [ ] Profile picture uploaded (professional, face visible)
+- [ ] Can see the Internship team and channels
+- [ ] Can post in program-specific channels (not just General)
+- [ ] Completed the **Introduction Post** (see below)
+
+### Introduction Post (Required)
+
+To verify your access and introduce yourself, post in your **program-specific channel** (e.g., AI Internship):
+
+```
+👋 Introduction
+
+Name: [Your full name as on LinkedIn]
+LinkedIn: [Your LinkedIn profile URL]
+Project: [What you're working on this week]
+Background: [1-2 sentences about your experience/interests]
+```
+
+This serves multiple purposes:
+- Confirms you have posting access (not just webinar/reply)
+- Creates a record linking your Teams identity to your application
+- Helps peers find buddies with similar interests
+- Lets mentors know you're properly onboarded
+
+---
+
 ## After Setup: What You Should See
 
 Once properly set up as a Guest, you should have access to:

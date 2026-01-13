@@ -107,6 +107,27 @@ We're a remote-only program. Screencasts let you:
 4. **Pace**: Speak clearly, pause at key points
 5. **Length**: Aim for 5 minutes, max 10 minutes
 
+### Video-On Requirement
+
+**Keep your camera ON during screencasts.**
+
+| Requirement | Why |
+|-------------|-----|
+| Face visible in recording | Confirms you're the person presenting your work |
+| Same face as profile picture | Identity verification |
+| Natural lighting, clear view | Professionalism, recognizability |
+
+This is required for:
+- Weekly progress screencasts
+- Pre-internship submission videos
+- Demo recordings shared with mentors
+
+**Why we ask for this:**
+- Ensures the work is genuinely yours
+- Builds trust and accountability
+- Prepares you for professional presentations
+- Creates a verifiable record of your contributions
+
 ### When to Create Screencasts
 
 - Weekly progress updates
