@@ -10,6 +10,8 @@ Core AI components and integration patterns.
 | [LLM Integration](./02-LLM-Integration.md) | Patterns for Claude/GPT integration |
 | [Observability](./03-Observability.md) | Experiments and monitoring |
 | [Quality Metrics](./04-Quality-Metrics.md) | RAGAs and evaluation frameworks |
+| [Enterprise Tooling](./05-Enterprise-Tooling.md) | MLflow, RAGAs, Langfuse, DVC integration |
+| [Advanced RAG Patterns](./06-Advanced-RAG-Patterns.md) | Query expansion, reranking, chunking strategies |
 
 ---
 
