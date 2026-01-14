@@ -322,7 +322,7 @@ You can always explore the others after completing your Week-1 exercise.
 
 ## Related
 
-- [Pre-Internship Requirements](../08-Exercises/01-Pre-Internship-Requirements.md)
+- [Pre-Internship Requirements](../../04-Internship/Exercises/01-Pre-Internship-Requirements.md)
 - [ERPNext Deep Dive](./02-ERPNext-Domain-Analysis.md)
 - [OpenElis Deep Dive](./03-OpenElis-Domain-Analysis.md)
 - [Bahmni Deep Dive](./04-Bahmni-Core-Domain-Analysis.md)

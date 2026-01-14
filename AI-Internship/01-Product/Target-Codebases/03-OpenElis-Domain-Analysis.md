@@ -429,4 +429,4 @@ cat openelis/src/org/openelis/domain/Sample.java
 - [Choosing Your Project](./01-Choosing-Your-Project.md)
 - [ERPNext Analysis](./02-ERPNext-Domain-Analysis.md)
 - [Bahmni Analysis](./04-Bahmni-Core-Domain-Analysis.md)
-- [Week 1 Requirements](../08-Exercises/01-Pre-Internship-Requirements.md)
+- [Week 1 Requirements](../../04-Internship/Exercises/01-Pre-Internship-Requirements.md)

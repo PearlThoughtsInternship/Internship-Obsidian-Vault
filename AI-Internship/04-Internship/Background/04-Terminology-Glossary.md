@@ -381,4 +381,4 @@ Splitting large documents/code into smaller pieces for processing and embedding.
 
 - [What Is Legacy Code?](./01-What-Is-Legacy.md)
 - [Why Modernize?](./02-Why-Modernize.md)
-- [Why DDD Matters](../05-DDD-Concepts/01-Why-DDD-Matters.md)
+- [Why DDD Matters](../../02-Engineering/Domain-Knowledge/01-Why-DDD-Matters.md)

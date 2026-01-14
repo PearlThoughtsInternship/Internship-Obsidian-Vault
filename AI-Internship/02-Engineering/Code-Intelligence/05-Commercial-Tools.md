@@ -320,4 +320,4 @@ Start simple, iterate.
 - [What Is Code Intelligence?](./01-What-Is-Code-Intelligence.md)
 - [CodeCompass Learnings](./06-CodeCompass-Learnings.md)
 - [AST vs Text Chunking](./02-AST-vs-Text-Chunking.md)
-- [Week 1 Requirements](../08-Exercises/01-Pre-Internship-Requirements.md)
+- [Week 1 Requirements](../../04-Internship/Exercises/01-Pre-Internship-Requirements.md)

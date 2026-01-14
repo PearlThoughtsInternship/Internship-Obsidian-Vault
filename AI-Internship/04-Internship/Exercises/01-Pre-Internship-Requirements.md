@@ -3,7 +3,7 @@
 > **Timeline**: This week (7 days)
 > **Goal**: Demonstrate you can follow instructions, learn independently, and produce tangible results
 
-**Important**: If you haven't read [Before You Begin](../01-Getting-Started/00-Before-You-Begin.md), read it first. It sets critical context.
+**Important**: If you haven't read [Before You Begin](../01-Before-You-Begin.md), read it first. It sets critical context.
 
 ---
 
@@ -73,7 +73,7 @@ In your README or a separate `REFLECTION.md`:
 
 **Recommended for beginners**: Option A (ERPNext) - richest documentation, clearest patterns.
 
-See [Choosing Your Project](../04-Target-Projects/01-Choosing-Your-Project.md) for detailed comparison.
+See [Choosing Your Project](../../01-Product/Target-Codebases/01-Choosing-Your-Project.md) for detailed comparison.
 
 ---
 
@@ -169,9 +169,9 @@ Use **whatever language you're comfortable with**:
 
 ### Required Reading (Do This First)
 
-1. [What Is Legacy Code?](../02-Understanding-Legacy/01-What-Is-Legacy.md)
-2. [Terminology Glossary](../02-Understanding-Legacy/04-Terminology-Glossary.md)
-3. [Choosing Your Project](../04-Target-Projects/01-Choosing-Your-Project.md)
+1. [What Is Legacy Code?](../Background/01-What-Is-Legacy.md)
+2. [Terminology Glossary](../Background/04-Terminology-Glossary.md)
+3. [Choosing Your Project](../../01-Product/Target-Codebases/01-Choosing-Your-Project.md)
 
 ### Target Codebases
 
@@ -304,8 +304,8 @@ Yes, but:
 
 ## Next Steps
 
-1. Read [What Is Legacy Code?](../02-Understanding-Legacy/01-What-Is-Legacy.md)
-2. Read [Choosing Your Project](../04-Target-Projects/01-Choosing-Your-Project.md)
+1. Read [What Is Legacy Code?](../Background/01-What-Is-Legacy.md)
+2. Read [Choosing Your Project](../../01-Product/Target-Codebases/01-Choosing-Your-Project.md)
 3. Clone your chosen codebase
 4. Start building!
 

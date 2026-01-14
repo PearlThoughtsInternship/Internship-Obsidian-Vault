@@ -654,10 +654,8 @@ Query: "How does discount calculation work?"
 ## Related
 
 - [AI Internship Overview](./README.md)
-- [Goals & Expectations](./02-Goals-and-Expectations.md)
-- [Technical Architecture](./06-Technical-Architecture.md)
-- [Quality Metrics](./07-Quality-Metrics.md)
-- [Validation Projects](./08-Validation-Projects.md)
+- [Week by Week Guide](./02-Week-by-Week.md)
+- [Validation Projects](../01-Product/Target-Codebases/05-Validation-Projects.md)
 
 ---
 

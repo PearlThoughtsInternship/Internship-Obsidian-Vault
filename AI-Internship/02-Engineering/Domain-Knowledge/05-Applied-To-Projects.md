@@ -704,6 +704,6 @@ erDiagram
 
 - [Strategic Design](./03-Strategic-Design.md)
 - [Tactical Patterns](./04-Tactical-Patterns.md)
-- [ERPNext Analysis](../04-Target-Projects/02-ERPNext-Domain-Analysis.md)
-- [OpenElis Analysis](../04-Target-Projects/03-OpenElis-Domain-Analysis.md)
-- [Bahmni Analysis](../04-Target-Projects/04-Bahmni-Core-Domain-Analysis.md)
+- [ERPNext Analysis](../../01-Product/Target-Codebases/02-ERPNext-Domain-Analysis.md)
+- [OpenElis Analysis](../../01-Product/Target-Codebases/03-OpenElis-Domain-Analysis.md)
+- [Bahmni Analysis](../../01-Product/Target-Codebases/04-Bahmni-Core-Domain-Analysis.md)

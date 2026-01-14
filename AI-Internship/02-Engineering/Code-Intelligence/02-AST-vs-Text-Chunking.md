@@ -387,4 +387,4 @@ def extract_functions(code: str, language: str):
 - [What Is Code Intelligence?](./01-What-Is-Code-Intelligence.md)
 - [Indexing Strategies](./03-Indexing-Strategies.md)
 - [Graph Extraction](./04-Graph-Extraction.md)
-- [Week 1 Requirements](../08-Exercises/01-Pre-Internship-Requirements.md)
+- [Week 1 Requirements](../../04-Internship/Exercises/01-Pre-Internship-Requirements.md)

@@ -235,4 +235,4 @@ Every enterprise has legacy systems. The $300B+ legacy modernization market exis
 - [Why Modernize Legacy Systems?](./02-Why-Modernize.md)
 - [Terminology Glossary](./04-Terminology-Glossary.md)
 - [Real-World Legacy Examples](./03-Real-World-Examples.md)
-- [Why DDD Matters for Modernization](../05-DDD-Concepts/01-Why-DDD-Matters.md)
+- [Why DDD Matters for Modernization](../../02-Engineering/Domain-Knowledge/01-Why-DDD-Matters.md)

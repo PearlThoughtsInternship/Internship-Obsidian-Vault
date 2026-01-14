@@ -219,9 +219,8 @@ Once you've validated context quality:
 
 ## Related
 
-- [Assessment Framework](./01-Assessment-Framework.md)
-- [Quality Metrics](../07-Technical-Architecture/02-Quality-Metrics.md)
-- [Indexing Strategies](../06-Code-Intelligence/03-Indexing-Strategies.md)
+- [Quality Metrics](../02-Engineering/02-Quality-Metrics.md)
+- [Indexing Strategies](../02-Engineering/Code-Intelligence/03-Indexing-Strategies.md)
 
 ---
 

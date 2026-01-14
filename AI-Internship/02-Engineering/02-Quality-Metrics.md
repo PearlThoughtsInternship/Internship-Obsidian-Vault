@@ -446,10 +446,8 @@ bun run cli test:retrieval test-suite.yaml
 
 ## Related
 
-- [Technical Architecture - Multi-Mode Knowledge Extraction](./06-Technical-Architecture.md)
-- [Existing Tools Research](./03-Existing-Tools-Research.md)
-- [Goals & Expectations](./02-Goals-and-Expectations.md)
-- [Validation Projects](./08-Validation-Projects.md)
+- [Architecture Overview](./01-Architecture.md)
+- [Validation Projects](../01-Product/Target-Codebases/05-Validation-Projects.md)
 - [Back to Index](./README.md)
 
 ---

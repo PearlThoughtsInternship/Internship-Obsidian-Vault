@@ -282,4 +282,4 @@ Code: Completely different from docs
 - [What Is Legacy Code?](./01-What-Is-Legacy.md)
 - [Why Modernize?](./02-Why-Modernize.md)
 - [Terminology Glossary](./04-Terminology-Glossary.md)
-- [What Is Code Intelligence?](../06-Code-Intelligence/01-What-Is-Code-Intelligence.md)
+- [What Is Code Intelligence?](../../02-Engineering/Code-Intelligence/01-What-Is-Code-Intelligence.md)

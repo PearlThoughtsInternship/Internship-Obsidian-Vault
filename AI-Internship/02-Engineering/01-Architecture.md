@@ -410,10 +410,8 @@ Query: "How does the checkout process work?"
 ## Related
 
 - [AI Internship Overview](./README.md)
-- [Existing Tools Research](./03-Existing-Tools-Research.md)
-- [Quality Metrics - Measuring Tool Quality](./07-Quality-Metrics.md)
-- [Validation Projects](./08-Validation-Projects.md)
-- [AI Coding Tools Comparison](./05-AI-Coding-Tools-Comparison.md)
+- [Quality Metrics](./02-Quality-Metrics.md)
+- [Validation Projects](../01-Product/Target-Codebases/05-Validation-Projects.md)
 
 ---
 

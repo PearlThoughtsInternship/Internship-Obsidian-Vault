@@ -294,4 +294,4 @@ Building a working tool is secondary to learning.
 - [AST vs Text Chunking](./02-AST-vs-Text-Chunking.md)
 - [Indexing Strategies](./03-Indexing-Strategies.md)
 - [Commercial Tools](./05-Commercial-Tools.md)
-- [Week 1 Requirements](../08-Exercises/01-Pre-Internship-Requirements.md)
+- [Week 1 Requirements](../../04-Internship/Exercises/01-Pre-Internship-Requirements.md)

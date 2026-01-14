@@ -522,4 +522,4 @@ Each level adds business logic:
 - [Choosing Your Project](./01-Choosing-Your-Project.md)
 - [OpenElis Analysis](./03-OpenElis-Domain-Analysis.md)
 - [Bahmni Analysis](./04-Bahmni-Core-Domain-Analysis.md)
-- [Week 1 Requirements](../08-Exercises/01-Pre-Internship-Requirements.md)
+- [Week 1 Requirements](../../04-Internship/Exercises/01-Pre-Internship-Requirements.md)

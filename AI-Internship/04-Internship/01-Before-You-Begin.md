@@ -109,11 +109,11 @@ If you demonstrate exceptional initiative:
 ## Ready?
 
 Now proceed to:
-1. [Organizational Context](./01-Organizational-Context.md) — understand where you fit
-2. [Goals & Expectations](./02-Goals-and-Expectations.md) — the 4-week plan
-3. [What You Build](./03-What-You-Build.md) — technical overview
+1. [Week by Week Guide](./02-Week-by-Week.md) — the 4-week plan
+2. [What You Build](./03-What-You-Build.md) — technical overview
+3. [Your Role](./04-Your-Role.md) — understand where you fit
 
-Then jump to [Pre-Internship Requirements](../08-Exercises/01-Pre-Internship-Requirements.md) for your Week 1 tasks.
+Then jump to [Pre-Internship Requirements](./Exercises/01-Pre-Internship-Requirements.md) for your Week 1 tasks.
 
 ---
 
