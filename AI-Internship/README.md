@@ -1,5 +1,20 @@
 # Code Intelligence Platform for Enterprise Modernization
 
+---
+
+## 📍 Week 3 of 4: Migrate Phase
+
+> **Current Focus**: Real contributions — PRs, code reviews, measuring tool effectiveness
+>
+> **Key Deliverables**:
+> - Working features in the [erpnext-go](https://github.com/PearlThoughtsInternship/erpnext-go) repository
+> - Evidence of your tool's effectiveness vs vanilla AI editors
+> - Progress documented in weekly updates
+>
+> **Extension Possible**: Based on active participation, quality work, communication, initiative. See [INTERN_GUIDE](https://github.com/PearlThoughtsInternship/erpnext-go/blob/main/docs/INTERN_GUIDE.md) for details.
+
+---
+
 ## Vision
 
 A code intelligence platform that helps AI assistants understand enterprise legacy codebases for modernization.
@@ -175,4 +190,4 @@ These guides apply to all internship programs at PearlThoughts.
 
 ---
 
-*Last Updated: 2026-01-13*
+*Last Updated: 2026-01-28*
