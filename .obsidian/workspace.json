@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AI-Internship/00-Index.md",
-                "mode": "preview",
+                "file": "AI-Internship/01-Product/02-Capabilities.md",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "00-Index"
+              "title": "02-Capabilities"
             }
           }
         ]
@@ -171,6 +171,18 @@
   },
   "active": "39bf76e3f0d9683f",
   "lastOpenFiles": [
+    "AI-Internship/01-Product/01-Vision.md",
+    "AI-Internship/01-Product/Target-Codebases/05-Validation-Projects.md",
+    "AI-Internship/mini-code-analyzer/day12.md",
+    "AI-Internship/mini-code-analyzer/examples/multi_file_project/tax.py",
+    "AI-Internship/mini-code-analyzer/examples/multi_file_project/invoice.py",
+    "AI-Internship/mini-code-analyzer/examples/multi_file_project",
+    "AI-Internship/mini-code-analyzer/examples/New folder",
+    "AI-Internship/mini-code-analyzer/examples/tax.py",
+    "AI-Internship/mini-code-analyzer/examples/sample.py",
+    "AI-Internship/mini-code-analyzer/examples/invoice.py",
+    "AI-Internship/mini-code-analyzer/examples",
+    "AI-Internship/mini-code-analyzer/project/sample.py",
     "AI-Internship/11-Understanding-Legacy-Systems/Real-World-Examples.md",
     "AI-Internship/08-Exercises/03-OKR.md",
     "AI-Internship/08-Exercises/02-Submission-Checklist.md",
@@ -194,18 +206,6 @@
     "AI-Internship/04-Target-Projects/02-ERPNext-Domain-Analysis.md",
     "AI-Internship/04-Target-Projects/01-Choosing-Your-Project.md",
     "AI-Internship/03-Market-Research/03-AI-Coding-Tools-Comparison.md",
-    "AI-Internship/03-Market-Research/02-Market-Analysis.md",
-    "AI-Internship/03-Market-Research/01-Existing-Tools-Research.md",
-    "AI-Internship/02-Understanding-Legacy/04-Terminology-Glossary.md",
-    "AI-Internship/08-Exercises",
-    "AI-Internship/07-Technical-Architecture",
-    "AI-Internship/06-Code-Intelligence",
-    "AI-Internship/05-DDD-Concepts",
-    "AI-Internship/04-Target-Projects",
-    "AI-Internship/03-Market-Research",
-    "AI-Internship/02-Understanding-Legacy",
-    "AI-Internship/01-Getting-Started",
-    "DevOps",
-    "Requirements"
+    "AI-Internship/08-Exercises"
   ]
 }

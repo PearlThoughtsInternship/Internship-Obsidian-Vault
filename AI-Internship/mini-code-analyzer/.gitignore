@@ -1,0 +1,13 @@
+# Local tooling
+.obsidian/
+
+# Python
+__pycache__/
+*.pyc
+
+# Generated outputs
+*.json
+diagrams/
+
+# Experiments
+examples/
