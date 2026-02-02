@@ -7,11 +7,11 @@
 
 This isn't a DevOps internship. **You're founding a startup.**
 
-You'll build **ContentAI** — an AI-powered content platform that helps creators and businesses generate, manage, and distribute content at scale. Think Strapi meets GPT, with enterprise-grade infrastructure that can scale from your first user to your millionth.
+You'll build **Autograph** — an AI-powered content platform that helps creators and businesses generate, manage, and distribute content at scale. Think Strapi meets GPT, with enterprise-grade infrastructure that can scale from your first user to your millionth.
 
 ```mermaid
 flowchart TB
-    subgraph Product["🚀 THE PRODUCT (ContentAI)"]
+    subgraph Product["🚀 THE PRODUCT (Autograph)"]
         CMS["Strapi CMS<br/>Headless content management"]
         AI["AI Services<br/>Content generation, summarization, translation"]
         API["GraphQL/REST API<br/>Multi-platform delivery"]
@@ -40,11 +40,11 @@ flowchart TB
 
 ---
 
-## The Product: ContentAI
+## The Product: Autograph
 
 ### What We're Building
 
-**ContentAI** is a Y Combinator-style startup product:
+**Autograph** is a Y Combinator-style startup product:
 
 | Feature | Description |
 |---------|-------------|
@@ -59,7 +59,7 @@ flowchart TB
 
 ```mermaid
 mindmap
-  root((ContentAI<br/>Market))
+  root((Autograph<br/>Market))
     Problem
       Content creation is slow
       Scaling content is expensive
@@ -133,7 +133,7 @@ flowchart TB
 ```mermaid
 sequenceDiagram
     participant Creator as Content Creator
-    participant UI as ContentAI Dashboard
+    participant UI as Autograph Dashboard
     participant API as Strapi API
     participant AI as AI Service
     participant CDN as Global CDN

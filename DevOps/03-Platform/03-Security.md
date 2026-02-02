@@ -1,41 +1,84 @@
-# Platform Security
+# Platform Security: Protecting Autograph's Kingdom
 
 > *"Security is always excessive until it's not enough."*
 > — **Robbie Sinclair**
 
-## Security-First Mindset
+## The Purpose: Why Security for Autograph?
 
-> *Security isn't a feature you add later. It's a design constraint that shapes every decision. A breach can end a startup overnight.*
+**Why are we doing this?** To protect Autograph and its users from attackers.
+
+A breach doesn't just expose data — it destroys trust. Users share their content, their ideas, their business through Autograph. **One breach, and they never come back.**
+
+```mermaid
+flowchart TB
+    subgraph Threats["🔓 THREATS TO AUTOGRAPH"]
+        T1["Data theft\n(user content)"]
+        T2["Service disruption\n(DDoS)"]
+        T3["Unauthorized access\n(API abuse)"]
+        T4["Supply chain\n(compromised images)"]
+    end
+
+    subgraph Protections["🛡️ YOUR DEFENSES"]
+        P1["Network policies\n(isolation)"]
+        P2["WAF + DDoS\n(Cloudflare)"]
+        P3["RBAC\n(least privilege)"]
+        P4["Image scanning\n(Trivy)"]
+    end
+
+    subgraph Result["✅ AUTOGRAPH SECURE"]
+        R["Users trust their content is safe\nStrapi serves requests safely\nAI Service protected"]
+    end
+
+    Threats -.->|"Blocked by"| Protections
+    Protections --> Result
+
+    style Result fill:#4CAF50
+```
 
 ---
 
-## Zero-Trust Architecture
+## Who Needs to Understand Security?
+
+| Stakeholder | Why Security Matters |
+|-------------|---------------------|
+| **DevOps** | "Is the platform protected from attacks?" |
+| **Developers** | "How do I securely store API keys?" |
+| **AI Service** | "How do I protect Claude API credentials?" |
+| **Business** | "Can we promise customers their content is safe?" |
+| **Customers** | "Is my unpublished content protected?" |
+
+---
+
+## Zero-Trust for Autograph
+
+> *"Never trust, always verify."*
 
 ```mermaid
 flowchart TB
     subgraph External["External"]
-        User["User"]
+        User["Autograph User"]
         Attacker["Attacker"]
     end
 
     subgraph Edge["Edge Layer"]
-        CF["Cloudflare<br/>WAF + DDoS"]
+        CF["Cloudflare\nWAF + DDoS Protection"]
     end
 
-    subgraph Cluster["Kubernetes Cluster"]
+    subgraph Cluster["autograph namespace"]
         subgraph Network["Network Policies"]
             direction TB
             NP["Default: Deny All"]
         end
 
         subgraph Services["Services (mTLS)"]
-            API["API Gateway"]
-            Auth["Auth Service"]
-            User2["User Service"]
-            DB["Database"]
+            Strapi["Strapi CMS"]
+            AI["AI Service"]
+            PG["PostgreSQL"]
+            Redis["Redis"]
+            Meili["Meilisearch"]
         end
 
-        subgraph Identity["Identity Layer"]
+        subgraph Identity["Identity"]
             OIDC["OIDC Provider"]
             RBAC["RBAC"]
         end
@@ -43,11 +86,11 @@ flowchart TB
 
     User --> CF
     Attacker -.->|"Blocked"| CF
-    CF --> API
-    API <-->|"mTLS"| Auth
-    API <-->|"mTLS"| User2
-    User2 <-->|"mTLS"| DB
-    Auth --> OIDC
+    CF --> Strapi
+    Strapi <-->|"mTLS"| AI
+    Strapi <-->|"mTLS"| PG
+    Strapi <-->|"mTLS"| Redis
+    Strapi <-->|"mTLS"| Meili
     OIDC --> RBAC
 
     style Attacker fill:#FF5252
@@ -55,32 +98,9 @@ flowchart TB
     style CF fill:#F48120
 ```
 
-### Zero-Trust Principles
-
-```mermaid
-mindmap
-  root((Zero Trust))
-    Never Trust
-      No implicit trust
-      Verify every request
-      Assume breach
-    Always Verify
-      Identity verification
-      Device posture
-      Context analysis
-    Least Privilege
-      Minimal permissions
-      Time-bound access
-      Just-in-time access
-    Micro-segmentation
-      Network policies
-      Service mesh
-      Pod-to-pod isolation
-```
-
 ---
 
-## Defense in Depth
+## Defense in Depth for Autograph
 
 ```mermaid
 flowchart TB
@@ -91,26 +111,26 @@ flowchart TB
     end
 
     subgraph L2["Layer 2: Network Security"]
-        FW["Firewall"]
+        FW["Hetzner Firewall"]
         NP["Network Policies"]
         mTLS["Service Mesh mTLS"]
     end
 
     subgraph L3["Layer 3: Application Security"]
-        AuthN["Authentication"]
-        AuthZ["Authorization"]
+        Auth["Strapi Authentication"]
+        JWT["JWT Validation"]
         Input["Input Validation"]
     end
 
     subgraph L4["Layer 4: Data Security"]
-        Encrypt["Encryption at Rest"]
-        TLS["Encryption in Transit"]
-        Secrets["Secret Management"]
+        Encrypt["PostgreSQL Encryption"]
+        TLS["TLS Everywhere"]
+        Secrets["Sealed Secrets"]
     end
 
     subgraph L5["Layer 5: Runtime Security"]
-        Scan["Image Scanning"]
-        Runtime["Runtime Protection"]
+        Scan["Trivy Image Scanning"]
+        PSS["Pod Security Standards"]
         Audit["Audit Logging"]
     end
 
@@ -125,9 +145,9 @@ flowchart TB
 
 ---
 
-## Network Policies
+## Network Policies for Autograph
 
-### Default Deny Policy
+### Default Deny All
 
 ```yaml
 # network-policies/default-deny.yaml
@@ -136,86 +156,37 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: default-deny-all
-  namespace: production
+  namespace: autograph
 spec:
-  podSelector: {}  # Applies to all pods
+  podSelector: {}  # Applies to ALL pods in autograph namespace
   policyTypes:
     - Ingress
     - Egress
-  # No ingress/egress rules = deny all
+  # No rules = deny all traffic by default
 ```
 
-### Allow Specific Traffic
+### Strapi Network Policy
+
+Strapi needs to talk to PostgreSQL, Redis, Meilisearch, and AI Service:
 
 ```yaml
-# network-policies/allow-api-to-db.yaml
+# network-policies/strapi.yaml
 
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-api-to-database
-  namespace: production
+  name: strapi-policy
+  namespace: autograph
 spec:
   podSelector:
     matchLabels:
-      app: database
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - podSelector:
-            matchLabels:
-              app: api-gateway
-      ports:
-        - protocol: TCP
-          port: 5432
-```
-
-### Network Policy Flow
-
-```mermaid
-flowchart LR
-    subgraph Namespace["production namespace"]
-        subgraph Allowed["Allowed Traffic"]
-            API["api-gateway"] -->|"5432"| DB["database"]
-            API -->|"80"| User["user-service"]
-            User -->|"5432"| DB
-        end
-
-        subgraph Blocked["Blocked Traffic"]
-            External["external-service"] -.->|"❌"| DB
-            Other["other-pod"] -.->|"❌"| DB
-        end
-    end
-
-    Internet["Internet"] -->|"443"| Ingress["Ingress"]
-    Ingress -->|"80"| API
-
-    style DB fill:#4CAF50
-    style External fill:#FF5252
-    style Other fill:#FF5252
-```
-
-### Complete Network Policy Example
-
-```yaml
-# network-policies/api-gateway.yaml
-
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: api-gateway-policy
-  namespace: production
-spec:
-  podSelector:
-    matchLabels:
-      app: api-gateway
+      app: strapi
   policyTypes:
     - Ingress
     - Egress
 
   ingress:
-    # Allow from ingress controller
+    # Allow from ingress controller (public traffic)
     - from:
         - namespaceSelector:
             matchLabels:
@@ -225,23 +196,41 @@ spec:
               app.kubernetes.io/name: ingress-nginx
       ports:
         - protocol: TCP
-          port: 8080
+          port: 1337  # Strapi port
 
   egress:
-    # Allow to auth service
+    # Allow to PostgreSQL
     - to:
         - podSelector:
             matchLabels:
-              app: auth-service
+              app: postgres
       ports:
         - protocol: TCP
-          port: 8080
+          port: 5432
 
-    # Allow to user service
+    # Allow to Redis
     - to:
         - podSelector:
             matchLabels:
-              app: user-service
+              app: redis
+      ports:
+        - protocol: TCP
+          port: 6379
+
+    # Allow to Meilisearch
+    - to:
+        - podSelector:
+            matchLabels:
+              app: meilisearch
+      ports:
+        - protocol: TCP
+          port: 7700
+
+    # Allow to AI Service
+    - to:
+        - podSelector:
+            matchLabels:
+              app: ai-service
       ports:
         - protocol: TCP
           port: 8080
@@ -257,85 +246,97 @@ spec:
           port: 53
 ```
 
----
+### AI Service Network Policy
 
-## Secrets Management
-
-### Secret Hierarchy
-
-```mermaid
-flowchart TB
-    subgraph External["External Secrets Store"]
-        Vault["HashiCorp Vault"]
-        AWS_SM["AWS Secrets Manager"]
-        Azure_KV["Azure Key Vault"]
-    end
-
-    subgraph Kubernetes["Kubernetes Cluster"]
-        ESO["External Secrets<br/>Operator"]
-        Secret["Kubernetes<br/>Secret"]
-        Pod["Application Pod"]
-    end
-
-    Vault --> ESO
-    AWS_SM --> ESO
-    Azure_KV --> ESO
-    ESO -->|"Sync"| Secret
-    Secret -->|"Mount"| Pod
-
-    style Vault fill:#000000,color:#FFFFFF
-    style ESO fill:#326CE5
-```
-
-### External Secrets Operator
+AI Service needs to call external APIs (Claude, OpenAI):
 
 ```yaml
-# external-secrets/secret-store.yaml
+# network-policies/ai-service.yaml
 
-apiVersion: external-secrets.io/v1beta1
-kind: SecretStore
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
 metadata:
-  name: vault-backend
-  namespace: production
+  name: ai-service-policy
+  namespace: autograph
 spec:
-  provider:
-    vault:
-      server: "https://vault.example.com"
-      path: "secret"
-      version: "v2"
-      auth:
-        kubernetes:
-          mountPath: "kubernetes"
-          role: "production-role"
-          serviceAccountRef:
-            name: "vault-auth"
+  podSelector:
+    matchLabels:
+      app: ai-service
+  policyTypes:
+    - Ingress
+    - Egress
+
+  ingress:
+    # Only Strapi can call AI Service
+    - from:
+        - podSelector:
+            matchLabels:
+              app: strapi
+      ports:
+        - protocol: TCP
+          port: 8080
+
+  egress:
+    # Allow external HTTPS (Claude/OpenAI APIs)
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+      ports:
+        - protocol: TCP
+          port: 443
+
+    # Allow DNS
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+```
+
+### Network Policy Visualization
+
+```mermaid
+flowchart LR
+    subgraph Namespace["autograph namespace"]
+        subgraph Allowed["✅ Allowed Traffic"]
+            Internet["Internet"] -->|"443"| Ingress["Ingress"]
+            Ingress -->|"1337"| Strapi["Strapi"]
+            Strapi -->|"5432"| PG["PostgreSQL"]
+            Strapi -->|"6379"| Redis["Redis"]
+            Strapi -->|"7700"| Meili["Meilisearch"]
+            Strapi -->|"8080"| AI["AI Service"]
+            AI -->|"443"| Claude["Claude API"]
+        end
+
+        subgraph Blocked["❌ Blocked Traffic"]
+            Direct["Direct"] -.->|"❌"| PG
+            External["External"] -.->|"❌"| AI
+        end
+    end
+
+    style PG fill:#4CAF50
+    style Direct fill:#FF5252
+    style External fill:#FF5252
+```
 
 ---
-# external-secrets/database-credentials.yaml
 
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: database-credentials
-  namespace: production
-spec:
-  refreshInterval: 1h
-  secretStoreRef:
-    name: vault-backend
-    kind: SecretStore
-  target:
-    name: database-credentials
-    creationPolicy: Owner
-  data:
-    - secretKey: username
-      remoteRef:
-        key: production/database
-        property: username
-    - secretKey: password
-      remoteRef:
-        key: production/database
-        property: password
-```
+## Secrets Management for Autograph
+
+### What Secrets Autograph Needs
+
+| Secret | Where Used | Sensitivity |
+|--------|-----------|-------------|
+| `DATABASE_URL` | Strapi → PostgreSQL | High |
+| `CLAUDE_API_KEY` | AI Service → Claude | Critical |
+| `OPENAI_API_KEY` | AI Service → OpenAI | Critical |
+| `REDIS_PASSWORD` | Strapi → Redis | Medium |
+| `MEILISEARCH_KEY` | Strapi → Meilisearch | Medium |
+| `JWT_SECRET` | Strapi auth | High |
+| `ADMIN_JWT_SECRET` | Strapi admin | Critical |
 
 ### Sealed Secrets for GitOps
 
@@ -345,7 +346,7 @@ sequenceDiagram
     participant CLI as kubeseal CLI
     participant Git as Git Repository
     participant Ctrl as Sealed Secrets Controller
-    participant K8s as Kubernetes
+    participant K8s as autograph namespace
 
     Dev->>Dev: Create plain Secret YAML
     Dev->>CLI: kubeseal < secret.yaml
@@ -362,64 +363,78 @@ sequenceDiagram
     Note over K8s: Only controller can decrypt
 ```
 
-```bash
-# Create sealed secret
-kubectl create secret generic my-secret \
-  --from-literal=api-key=supersecret \
-  --dry-run=client -o yaml | \
-  kubeseal --format yaml > sealed-secret.yaml
+### Creating Sealed Secrets for Autograph
 
-# Apply sealed secret
-kubectl apply -f sealed-secret.yaml
+```bash
+# Create Strapi secrets
+kubectl create secret generic strapi-secrets \
+  --namespace autograph \
+  --from-literal=DATABASE_URL="postgresql://strapi:password@postgres:5432/autograph" \
+  --from-literal=JWT_SECRET="your-jwt-secret" \
+  --from-literal=ADMIN_JWT_SECRET="your-admin-jwt-secret" \
+  --dry-run=client -o yaml | \
+  kubeseal --format yaml > sealed-strapi-secrets.yaml
+
+# Create AI Service secrets
+kubectl create secret generic ai-service-secrets \
+  --namespace autograph \
+  --from-literal=CLAUDE_API_KEY="sk-ant-..." \
+  --from-literal=OPENAI_API_KEY="sk-..." \
+  --dry-run=client -o yaml | \
+  kubeseal --format yaml > sealed-ai-secrets.yaml
 ```
 
+### Sealed Secret Example
+
 ```yaml
-# sealed-secrets/database.yaml
+# sealed-secrets/ai-service.yaml
 
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
-  name: database-credentials
-  namespace: production
+  name: ai-service-secrets
+  namespace: autograph
 spec:
   encryptedData:
-    username: AgBy3i4O...encrypted...
-    password: AgBy3i4O...encrypted...
+    CLAUDE_API_KEY: AgBy3i4O...encrypted...
+    OPENAI_API_KEY: AgBy3i4O...encrypted...
   template:
     type: Opaque
     metadata:
-      name: database-credentials
-      namespace: production
+      name: ai-service-secrets
+      namespace: autograph
+      labels:
+        app: ai-service
 ```
 
 ---
 
-## RBAC Configuration
+## RBAC for Autograph
 
-### Role-Based Access Control
+### Who Can Do What
 
 ```mermaid
 flowchart TB
     subgraph Users["Users & Service Accounts"]
-        Dev["Developer"]
-        Deploy["CI/CD Pipeline"]
-        Admin["Cluster Admin"]
+        Intern["Intern"]
+        CI["GitHub Actions"]
+        Admin["Platform Admin"]
     end
 
     subgraph Roles["Roles"]
-        ViewRole["view-only"]
-        DeployRole["deployer"]
-        AdminRole["admin"]
+        ViewRole["autograph-viewer"]
+        DeployRole["autograph-deployer"]
+        AdminRole["autograph-admin"]
     end
 
     subgraph Permissions["Permissions"]
-        Read["Read pods, services,<br/>configmaps"]
-        Deploy2["Create/update<br/>deployments"]
-        Full["Full cluster<br/>access"]
+        Read["Read pods, services,\nlogs in autograph"]
+        Deploy["Create/update\ndeployments, configmaps"]
+        Full["Full access to\nautograph namespace"]
     end
 
-    Dev --> ViewRole --> Read
-    Deploy --> DeployRole --> Deploy2
+    Intern --> ViewRole --> Read
+    CI --> DeployRole --> Deploy
     Admin --> AdminRole --> Full
 
     style ViewRole fill:#4CAF50
@@ -427,27 +442,27 @@ flowchart TB
     style AdminRole fill:#F44336
 ```
 
-### Developer Role
+### Intern Role (View Only)
 
 ```yaml
-# rbac/developer-role.yaml
+# rbac/intern-role.yaml
 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: developer
-  namespace: development
+  name: autograph-viewer
+  namespace: autograph
 rules:
-  # Read-only for most resources
+  # Can view all resources
   - apiGroups: [""]
-    resources: ["pods", "services", "configmaps", "secrets"]
+    resources: ["pods", "services", "configmaps", "endpoints"]
     verbs: ["get", "list", "watch"]
 
   - apiGroups: ["apps"]
-    resources: ["deployments", "replicasets"]
+    resources: ["deployments", "replicasets", "statefulsets"]
     verbs: ["get", "list", "watch"]
 
-  # Can view logs
+  # Can view logs (for debugging)
   - apiGroups: [""]
     resources: ["pods/log"]
     verbs: ["get"]
@@ -457,23 +472,26 @@ rules:
     resources: ["pods/exec"]
     verbs: ["create"]
 
+  # CANNOT view secrets (no access to API keys)
+  # CANNOT modify anything
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: developer-binding
-  namespace: development
+  name: intern-viewer-binding
+  namespace: autograph
 subjects:
-  - kind: Group
-    name: developers
+  - kind: User
+    name: intern@example.com
     apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: Role
-  name: developer
+  name: autograph-viewer
   apiGroup: rbac.authorization.k8s.io
 ```
 
-### CI/CD Service Account
+### CI/CD Deployer Role
 
 ```yaml
 # rbac/cicd-role.yaml
@@ -481,15 +499,15 @@ roleRef:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: cicd-deployer
-  namespace: production
+  name: github-actions
+  namespace: autograph
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: deployer
-  namespace: production
+  name: autograph-deployer
+  namespace: autograph
 rules:
   - apiGroups: ["apps"]
     resources: ["deployments"]
@@ -499,22 +517,27 @@ rules:
     resources: ["services", "configmaps"]
     verbs: ["get", "list", "watch", "create", "update", "patch"]
 
-  # Cannot access secrets directly
-  # Cannot delete resources
+  # Can create Jobs (for migrations)
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["get", "list", "create"]
+
+  # CANNOT delete anything
+  # CANNOT access secrets directly
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: deployer-binding
-  namespace: production
+  name: cicd-deployer-binding
+  namespace: autograph
 subjects:
   - kind: ServiceAccount
-    name: cicd-deployer
-    namespace: production
+    name: github-actions
+    namespace: autograph
 roleRef:
   kind: Role
-  name: deployer
+  name: autograph-deployer
   apiGroup: rbac.authorization.k8s.io
 ```
 
@@ -522,14 +545,14 @@ roleRef:
 
 ## Image Security
 
-### Supply Chain Security
+### Supply Chain for Autograph
 
 ```mermaid
 flowchart LR
     subgraph Build["Build Phase"]
         Code["Source Code"]
         Build2["Build Image"]
-        Sign["Sign Image<br/>(Cosign)"]
+        Sign["Sign (Cosign)"]
     end
 
     subgraph Scan["Scan Phase"]
@@ -538,13 +561,13 @@ flowchart LR
     end
 
     subgraph Registry["Registry"]
-        GHCR["ghcr.io"]
+        GHCR["ghcr.io/autograph"]
     end
 
     subgraph Deploy["Deploy Phase"]
         Verify["Verify Signature"]
-        Policy["Admission Policy"]
-        K8s["Kubernetes"]
+        Policy["Kyverno Policy"]
+        K8s["autograph namespace"]
     end
 
     Code --> Build2 --> Sign --> GHCR
@@ -555,12 +578,13 @@ flowchart LR
     style Trivy fill:#00BCD4
 ```
 
-### Trivy Scanning
+### Trivy Scanning in CI
 
 ```yaml
 # .github/workflows/security-scan.yaml
 
 name: Security Scan
+
 on:
   push:
     branches: [main]
@@ -572,81 +596,38 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build image
-        run: docker build -t myapp:${{ github.sha }} .
+      - name: Build Strapi image
+        run: docker build -t ghcr.io/autograph/strapi:${{ github.sha }} ./strapi
 
       - name: Trivy vulnerability scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: myapp:${{ github.sha }}
+          image-ref: ghcr.io/autograph/strapi:${{ github.sha }}
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
           exit-code: '1'  # Fail on critical/high
 
-      - name: Upload Trivy scan results
+      - name: Upload scan results
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: 'trivy-results.sarif'
 ```
 
-### Image Signing with Cosign
-
-```bash
-# Generate key pair
-cosign generate-key-pair
-
-# Sign image
-cosign sign --key cosign.key ghcr.io/org/app:v1.0.0
-
-# Verify image
-cosign verify --key cosign.pub ghcr.io/org/app:v1.0.0
-```
-
-### Admission Controller Policy
-
-```yaml
-# policies/require-signed-images.yaml
-
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
-metadata:
-  name: require-signed-images
-spec:
-  validationFailureAction: Enforce
-  background: true
-  rules:
-    - name: verify-signature
-      match:
-        any:
-          - resources:
-              kinds:
-                - Pod
-      verifyImages:
-        - imageReferences:
-            - "ghcr.io/org/*"
-          attestors:
-            - entries:
-                - keys:
-                    publicKeys: |-
-                      -----BEGIN PUBLIC KEY-----
-                      MFkwEwYHKoZI...
-                      -----END PUBLIC KEY-----
-```
-
 ---
 
-## Pod Security Standards
+## Pod Security for Autograph
 
-### Restricted Security Context
+### Secure Strapi Deployment
 
 ```yaml
-# deployments/secure-app.yaml
+# deployments/strapi.yaml
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: secure-app
+  name: strapi
+  namespace: autograph
 spec:
   template:
     spec:
@@ -659,8 +640,8 @@ spec:
           type: RuntimeDefault
 
       containers:
-        - name: app
-          image: ghcr.io/org/app:v1.0.0
+        - name: strapi
+          image: ghcr.io/autograph/strapi:v1.0.0
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -669,100 +650,104 @@ spec:
                 - ALL
           resources:
             limits:
-              memory: "256Mi"
+              memory: "512Mi"
               cpu: "500m"
             requests:
-              memory: "128Mi"
+              memory: "256Mi"
               cpu: "100m"
           volumeMounts:
             - name: tmp
               mountPath: /tmp
+            - name: uploads
+              mountPath: /app/public/uploads
 
       volumes:
         - name: tmp
           emptyDir: {}
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: strapi-uploads
 ```
 
-### Pod Security Admission
+### Namespace Security Label
 
 ```yaml
-# namespaces/production.yaml
+# namespaces/autograph.yaml
 
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: production
+  name: autograph
   labels:
     pod-security.kubernetes.io/enforce: restricted
     pod-security.kubernetes.io/enforce-version: latest
     pod-security.kubernetes.io/warn: restricted
-    pod-security.kubernetes.io/warn-version: latest
     pod-security.kubernetes.io/audit: restricted
-    pod-security.kubernetes.io/audit-version: latest
 ```
 
 ---
 
-## Security Checklist
+## Security Checklist for Autograph
 
 ```mermaid
 flowchart TB
-    subgraph Checklist["Security Checklist"]
+    subgraph Checklist["Autograph Security Checklist"]
         subgraph Network["Network"]
-            N1["✓ Network policies default deny"]
-            N2["✓ mTLS between services"]
-            N3["✓ WAF enabled"]
+            N1["✓ Default deny in autograph namespace"]
+            N2["✓ Strapi → DB only via policy"]
+            N3["✓ AI Service → external HTTPS only"]
+            N4["✓ Cloudflare WAF enabled"]
         end
 
         subgraph Access["Access Control"]
-            A1["✓ RBAC configured"]
-            A2["✓ Service accounts limited"]
-            A3["✓ No cluster-admin users"]
+            A1["✓ Intern: view-only RBAC"]
+            A2["✓ CI/CD: deploy-only RBAC"]
+            A3["✓ No direct secret access"]
         end
 
         subgraph Secrets["Secrets"]
-            S1["✓ No secrets in Git"]
-            S2["✓ External secrets synced"]
-            S3["✓ Rotation policy active"]
+            S1["✓ API keys in Sealed Secrets"]
+            S2["✓ No secrets in Git history"]
+            S3["✓ Rotation policy defined"]
         end
 
         subgraph Images["Images"]
-            I1["✓ Signed images only"]
+            I1["✓ Trivy scan in CI"]
             I2["✓ No critical CVEs"]
-            I3["✓ SBOM generated"]
+            I3["✓ Images signed"]
         end
 
         subgraph Runtime["Runtime"]
-            R1["✓ Read-only filesystem"]
-            R2["✓ Non-root user"]
+            R1["✓ Non-root containers"]
+            R2["✓ Read-only filesystem"]
             R3["✓ Resource limits set"]
         end
     end
 
     style N1 fill:#4CAF50
-    style N2 fill:#4CAF50
-    style N3 fill:#4CAF50
     style A1 fill:#4CAF50
-    style A2 fill:#4CAF50
-    style A3 fill:#4CAF50
     style S1 fill:#4CAF50
-    style S2 fill:#4CAF50
-    style S3 fill:#4CAF50
     style I1 fill:#4CAF50
-    style I2 fill:#4CAF50
-    style I3 fill:#4CAF50
     style R1 fill:#4CAF50
-    style R2 fill:#4CAF50
-    style R3 fill:#4CAF50
 ```
+
+---
+
+## What's Next
+
+Once you've secured Autograph:
+
+1. **[Networking](./04-Networking.md)** — Ingress, DNS, service mesh
+2. **[Exercise: Security Hardening](../04-Internship/Exercises/09-Security-Hardening.md)** — Hands-on practice
+3. **[Observability](./02-Observability.md)** — Monitor security events
 
 ---
 
 ## Related
 
-- [Architecture](../02-Engineering/01-Architecture.md)
-- [Networking](./04-Networking.md)
-- [GitOps](../02-Engineering/05-GitOps.md)
+- [Architecture](../02-Engineering/01-Architecture.md) — System design overview
+- [GitOps](../02-Engineering/05-GitOps.md) — How Sealed Secrets flow through ArgoCD
+- [Observability](./02-Observability.md) — Security monitoring and alerts
 
 ---
 
