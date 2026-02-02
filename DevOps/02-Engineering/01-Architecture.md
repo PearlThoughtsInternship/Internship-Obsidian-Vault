@@ -8,42 +8,59 @@
 
 ## The Architecture Layers
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                      PLATFORM ENGINEERING STACK                              │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                              │
-│  LAYER 5: DEVELOPER EXPERIENCE                                              │
-│  ┌───────────────────────────────────────────────────────────────────────┐ │
-│  │  Developer Portal │ Documentation │ Golden Paths │ Self-Service       │ │
-│  └───────────────────────────────────────────────────────────────────────┘ │
-│                                    ↓                                         │
-│  LAYER 4: DELIVERY PIPELINE                                                 │
-│  ┌───────────────────────────────────────────────────────────────────────┐ │
-│  │  CI/CD (GitHub Actions) │ GitOps (ArgoCD) │ Registry │ Scanning       │ │
-│  └───────────────────────────────────────────────────────────────────────┘ │
-│                                    ↓                                         │
-│  LAYER 3: APPLICATION PLATFORM                                              │
-│  ┌───────────────────────────────────────────────────────────────────────┐ │
-│  │  Service Mesh │ Ingress │ Secrets │ Certificates │ DNS                │ │
-│  └───────────────────────────────────────────────────────────────────────┘ │
-│                                    ↓                                         │
-│  LAYER 2: CONTAINER ORCHESTRATION                                           │
-│  ┌───────────────────────────────────────────────────────────────────────┐ │
-│  │  k3s Cluster │ Namespaces │ RBAC │ Storage (Longhorn) │ CNI (Cilium)  │ │
-│  └───────────────────────────────────────────────────────────────────────┘ │
-│                                    ↓                                         │
-│  LAYER 1: INFRASTRUCTURE                                                    │
-│  ┌───────────────────────────────────────────────────────────────────────┐ │
-│  │  Compute (Hetzner/AWS) │ Network (VPC) │ Storage │ DNS │ CDN          │ │
-│  └───────────────────────────────────────────────────────────────────────┘ │
-│                                    ↓                                         │
-│  LAYER 0: OBSERVABILITY (Cross-Cutting)                                     │
-│  ┌───────────────────────────────────────────────────────────────────────┐ │
-│  │  Metrics (Prometheus) │ Logs (Loki) │ Traces (Tempo) │ Alerts         │ │
-│  └───────────────────────────────────────────────────────────────────────┘ │
-│                                                                              │
-└─────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph L5["LAYER 5: DEVELOPER EXPERIENCE"]
+        DX1["Developer Portal"]
+        DX2["Documentation"]
+        DX3["Golden Paths"]
+        DX4["Self-Service"]
+    end
+
+    subgraph L4["LAYER 4: DELIVERY PIPELINE"]
+        DP1["CI/CD<br/>(GitHub Actions)"]
+        DP2["GitOps<br/>(ArgoCD)"]
+        DP3["Registry"]
+        DP4["Scanning"]
+    end
+
+    subgraph L3["LAYER 3: APPLICATION PLATFORM"]
+        AP1["Service Mesh"]
+        AP2["Ingress"]
+        AP3["Secrets"]
+        AP4["Certificates"]
+        AP5["DNS"]
+    end
+
+    subgraph L2["LAYER 2: CONTAINER ORCHESTRATION"]
+        CO1["k3s Cluster"]
+        CO2["Namespaces"]
+        CO3["RBAC"]
+        CO4["Storage<br/>(Longhorn)"]
+        CO5["CNI<br/>(Cilium)"]
+    end
+
+    subgraph L1["LAYER 1: INFRASTRUCTURE"]
+        IN1["Compute<br/>(Hetzner/AWS)"]
+        IN2["Network<br/>(VPC)"]
+        IN3["Storage"]
+        IN4["DNS"]
+        IN5["CDN"]
+    end
+
+    subgraph L0["LAYER 0: OBSERVABILITY (Cross-Cutting)"]
+        OB1["Metrics<br/>(Prometheus)"]
+        OB2["Logs<br/>(Loki)"]
+        OB3["Traces<br/>(Tempo)"]
+        OB4["Alerts"]
+    end
+
+    L5 --> L4 --> L3 --> L2 --> L1
+    L0 -.-> L1
+    L0 -.-> L2
+    L0 -.-> L3
+    L0 -.-> L4
+    L0 -.-> L5
 ```
 
 ---
@@ -52,32 +69,25 @@
 
 ### Infrastructure-as-Code Philosophy
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                    INFRASTRUCTURE-AS-CODE PRINCIPLES                     │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  1. DECLARATIVE                                                          │
-│     ├── Describe WHAT you want, not HOW to get there                    │
-│     ├── State file tracks current reality                               │
-│     └── Plan shows what will change                                     │
-│                                                                          │
-│  2. VERSIONED                                                            │
-│     ├── All infrastructure in Git                                       │
-│     ├── Review changes via PR                                           │
-│     └── Audit trail of who changed what                                 │
-│                                                                          │
-│  3. MODULAR                                                              │
-│     ├── Reusable components (modules)                                   │
-│     ├── Composition over inheritance                                    │
-│     └── DRY (Don't Repeat Yourself)                                     │
-│                                                                          │
-│  4. TESTED                                                               │
-│     ├── Validate before apply                                           │
-│     ├── Policy as code (OPA/Sentinel)                                   │
-│     └── Integration tests for modules                                   │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
+```mermaid
+mindmap
+  root((IaC<br/>Principles))
+    Declarative
+      Describe WHAT you want
+      State file tracks reality
+      Plan shows changes
+    Versioned
+      All infrastructure in Git
+      Review changes via PR
+      Audit trail
+    Modular
+      Reusable components
+      Composition over inheritance
+      DRY principle
+    Tested
+      Validate before apply
+      Policy as code
+      Integration tests
 ```
 
 ### Module Structure
@@ -154,46 +164,43 @@ output "server_ips" {
 
 ### Cluster Topology
 
+```mermaid
+flowchart TB
+    subgraph External["External Traffic"]
+        LB["Load Balancer<br/>(Hetzner LB)"]
+    end
+
+    subgraph ControlPlane["Control Plane (HA)"]
+        S1["Server 1<br/>(Primary)<br/>k3s server<br/>etcd member"]
+        S2["Server 2<br/>(Secondary)<br/>k3s server<br/>etcd member"]
+        S3["Server 3<br/>(Secondary)<br/>k3s server<br/>etcd member"]
+
+        S1 <--> S2
+        S2 <--> S3
+        S3 <--> S1
+    end
+
+    subgraph Workers["Worker Nodes"]
+        A1["Agent 1<br/>(Worker)<br/>Workloads"]
+        A2["Agent 2<br/>(Worker)<br/>Workloads"]
+        A3["Agent 3<br/>(GPU Node)<br/>ML/AI Jobs"]
+    end
+
+    LB --> S1
+    LB --> S2
+    LB --> S3
+
+    S1 --> A1
+    S2 --> A2
+    S3 --> A3
+
+    style S1 fill:#4CAF50
+    style S2 fill:#2196F3
+    style S3 fill:#2196F3
 ```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                     k3s HIGH AVAILABILITY CLUSTER                        │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│                          EXTERNAL TRAFFIC                                │
-│                               │                                          │
-│                               ▼                                          │
-│                    ┌──────────────────┐                                  │
-│                    │   Load Balancer  │                                  │
-│                    │   (Hetzner LB)   │                                  │
-│                    └──────────────────┘                                  │
-│                               │                                          │
-│          ┌────────────────────┼────────────────────┐                    │
-│          │                    │                    │                    │
-│          ▼                    ▼                    ▼                    │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐              │
-│  │   Server 1   │    │   Server 2   │    │   Server 3   │              │
-│  │  (Primary)   │◄──▶│ (Secondary)  │◄──▶│ (Secondary)  │              │
-│  │              │    │              │    │              │              │
-│  │  k3s server  │    │  k3s server  │    │  k3s server  │              │
-│  │  etcd member │    │  etcd member │    │  etcd member │              │
-│  └──────────────┘    └──────────────┘    └──────────────┘              │
-│          │                    │                    │                    │
-│          │         CLUSTER NETWORK                 │                    │
-│          │            (Cilium)                     │                    │
-│          │                    │                    │                    │
-│          ▼                    ▼                    ▼                    │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐              │
-│  │   Agent 1    │    │   Agent 2    │    │   Agent 3    │              │
-│  │  (Worker)    │    │  (Worker)    │    │  (GPU Node)  │              │
-│  │              │    │              │    │              │              │
-│  │  Workloads   │    │  Workloads   │    │  ML/AI Jobs  │              │
-│  └──────────────┘    └──────────────┘    └──────────────┘              │
-│                                                                          │
-│  Fault Tolerance: Survives 1 server failure (n/2 + 1 quorum)            │
-│  Scaling: Add agents with single command                                 │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
-```
+
+**Fault Tolerance**: Survives 1 server failure (n/2 + 1 quorum)
+**Scaling**: Add agents with single command
 
 ### Installation Flow (Ansible)
 
@@ -243,46 +250,39 @@ output "server_ips" {
 
 ### Core Platform Services
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                     PLATFORM SERVICES ARCHITECTURE                       │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  INGRESS LAYER                                                           │
-│  ┌───────────────────────────────────────────────────────────────────┐ │
-│  │  Traefik / NGINX Ingress Controller                                │ │
-│  │  ├── TLS termination (Let's Encrypt via cert-manager)             │ │
-│  │  ├── Rate limiting                                                 │ │
-│  │  ├── Path-based routing                                            │ │
-│  │  └── Canary deployments                                            │ │
-│  └───────────────────────────────────────────────────────────────────┘ │
-│                                    ↓                                     │
-│  SERVICE MESH (Optional)                                                 │
-│  ┌───────────────────────────────────────────────────────────────────┐ │
-│  │  Linkerd / Istio                                                   │ │
-│  │  ├── mTLS between services                                         │ │
-│  │  ├── Traffic management                                            │ │
-│  │  ├── Observability (automatic)                                     │ │
-│  │  └── Fault injection for testing                                   │ │
-│  └───────────────────────────────────────────────────────────────────┘ │
-│                                    ↓                                     │
-│  SECRETS & CONFIG                                                        │
-│  ┌───────────────────────────────────────────────────────────────────┐ │
-│  │  External Secrets Operator                                         │ │
-│  │  ├── Sync from AWS Secrets Manager / Vault                         │ │
-│  │  ├── Auto-rotation                                                 │ │
-│  │  └── Sealed Secrets for GitOps                                     │ │
-│  └───────────────────────────────────────────────────────────────────┘ │
-│                                    ↓                                     │
-│  STORAGE                                                                 │
-│  ┌───────────────────────────────────────────────────────────────────┐ │
-│  │  Longhorn (Block) / MinIO (Object)                                 │ │
-│  │  ├── Replicated block storage                                      │ │
-│  │  ├── Snapshots and backups                                         │ │
-│  │  └── S3-compatible object storage                                  │ │
-│  └───────────────────────────────────────────────────────────────────┘ │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Ingress["INGRESS LAYER"]
+        ING["Traefik / NGINX Ingress"]
+        I1["TLS termination<br/>(Let's Encrypt)"]
+        I2["Rate limiting"]
+        I3["Path-based routing"]
+        I4["Canary deployments"]
+    end
+
+    subgraph Mesh["SERVICE MESH (Optional)"]
+        SM["Linkerd / Istio"]
+        M1["mTLS between services"]
+        M2["Traffic management"]
+        M3["Automatic observability"]
+        M4["Fault injection"]
+    end
+
+    subgraph Secrets["SECRETS & CONFIG"]
+        SEC["External Secrets Operator"]
+        S1["Sync from Vault/AWS SM"]
+        S2["Auto-rotation"]
+        S3["Sealed Secrets for GitOps"]
+    end
+
+    subgraph Storage["STORAGE"]
+        STR["Longhorn / MinIO"]
+        ST1["Replicated block storage"]
+        ST2["Snapshots and backups"]
+        ST3["S3-compatible objects"]
+    end
+
+    Ingress --> Mesh --> Secrets --> Storage
 ```
 
 ### Helm Charts vs Kustomize
@@ -299,53 +299,32 @@ output "server_ips" {
 
 ### GitOps Flow
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                         GITOPS ARCHITECTURE                              │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  APPLICATION REPO                     INFRASTRUCTURE REPO                │
-│  (app-service/)                       (infra/)                           │
-│  ┌──────────────────┐                ┌──────────────────┐               │
-│  │ src/             │                │ terraform/       │               │
-│  │ Dockerfile       │                │ ansible/         │               │
-│  │ .github/         │                │ k8s/             │               │
-│  │   workflows/     │                │   base/          │               │
-│  │     ci.yml       │                │   overlays/      │               │
-│  └──────────────────┘                │     dev/         │               │
-│          │                           │     staging/     │               │
-│          │ CI: Build & Push          │     prod/        │               │
-│          ▼                           └──────────────────┘               │
-│  ┌──────────────────┐                        ▲                          │
-│  │ Container        │                        │                          │
-│  │ Registry         │────────────────────────┘                          │
-│  │ (ghcr.io)        │     Update image tag                              │
-│  └──────────────────┘                                                   │
-│                                              │                          │
-│                                              ▼                          │
-│                               ┌──────────────────────┐                  │
-│                               │       ArgoCD         │                  │
-│                               │  ┌──────────────┐   │                  │
-│                               │  │ Git Poll     │   │                  │
-│                               │  │ (3 min)      │   │                  │
-│                               │  └──────────────┘   │                  │
-│                               │         │           │                  │
-│                               │         ▼           │                  │
-│                               │  ┌──────────────┐   │                  │
-│                               │  │ Sync         │   │                  │
-│                               │  │ to Cluster   │   │                  │
-│                               │  └──────────────┘   │                  │
-│                               └──────────────────────┘                  │
-│                                              │                          │
-│                                              ▼                          │
-│                               ┌──────────────────────┐                  │
-│                               │   k3s Cluster        │                  │
-│                               │   (Desired State)    │                  │
-│                               └──────────────────────┘                  │
-│                                                                          │
-│  Key Principle: Git is the source of truth. Cluster converges to Git.    │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
+```mermaid
+sequenceDiagram
+    participant Dev as Developer
+    participant AppRepo as Application Repo
+    participant CI as CI Pipeline
+    participant Registry as Container Registry
+    participant InfraRepo as Infrastructure Repo
+    participant Argo as ArgoCD
+    participant K8s as k3s Cluster
+
+    Dev->>AppRepo: Push code
+    AppRepo->>CI: Trigger workflow
+    CI->>CI: Build & Test
+    CI->>Registry: Push image (ghcr.io)
+    CI->>InfraRepo: Update image tag
+
+    loop Every 3 minutes
+        Argo->>InfraRepo: Poll for changes
+    end
+
+    Argo->>InfraRepo: Detect new tag
+    Argo->>K8s: Sync to cluster
+    K8s-->>Argo: Deployment complete
+
+    Note over Dev,K8s: Git is the source of truth
+    Note over Dev,K8s: Cluster converges to Git state
 ```
 
 ### ArgoCD Application Definition
@@ -391,39 +370,33 @@ spec:
 
 ### Metrics Pipeline
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                       METRICS ARCHITECTURE                               │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  COLLECTION                          STORAGE                             │
-│  ┌──────────────────┐               ┌──────────────────┐                │
-│  │  Applications    │               │                  │                │
-│  │  (metrics port)  │──────────────▶│   Prometheus     │                │
-│  └──────────────────┘               │                  │                │
-│  ┌──────────────────┐               │  • TSDB          │                │
-│  │  Node Exporter   │──────────────▶│  • 15d retention │                │
-│  └──────────────────┘               │  • PromQL        │                │
-│  ┌──────────────────┐               └──────────────────┘                │
-│  │  kube-state-     │──────────────▶        │                           │
-│  │  metrics         │                       │                           │
-│  └──────────────────┘                       ▼                           │
-│                                     ┌──────────────────┐                │
-│  ALERTING                           │     Grafana      │                │
-│  ┌──────────────────┐               │                  │                │
-│  │  AlertManager    │◀──────────────│  • Dashboards    │                │
-│  │                  │               │  • Explore       │                │
-│  │  • Deduplication │               │  • Alerting UI   │                │
-│  │  • Grouping      │               └──────────────────┘                │
-│  │  • Routing       │                                                   │
-│  └──────────────────┘                                                   │
-│          │                                                               │
-│          ▼                                                               │
-│  ┌──────────────────┐                                                   │
-│  │  Slack/PagerDuty │                                                   │
-│  └──────────────────┘                                                   │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph Collection["COLLECTION"]
+        App["Applications<br/>(metrics port)"]
+        Node["Node Exporter"]
+        KSM["kube-state-metrics"]
+    end
+
+    subgraph Storage["STORAGE"]
+        Prom["Prometheus<br/>• TSDB<br/>• 15d retention<br/>• PromQL"]
+    end
+
+    subgraph Viz["VISUALIZATION"]
+        Graf["Grafana<br/>• Dashboards<br/>• Explore<br/>• Alerting UI"]
+    end
+
+    subgraph Alerting["ALERTING"]
+        AM["AlertManager<br/>• Deduplication<br/>• Grouping<br/>• Routing"]
+        Slack["Slack/PagerDuty"]
+    end
+
+    App --> Prom
+    Node --> Prom
+    KSM --> Prom
+    Prom --> Graf
+    Prom --> AM
+    AM --> Slack
 ```
 
 ### Golden Signals
@@ -441,6 +414,15 @@ spec:
 
 ### Week 1: Foundation
 
+```mermaid
+flowchart LR
+    subgraph W1["Week 1: Foundation"]
+        T1["Hetzner Account"] --> T2["OpenTofu Provider"]
+        T2 --> T3["First VM Module"]
+        T3 --> T4["Basic Ansible"]
+    end
+```
+
 1. **Infrastructure Setup**
    - Create Hetzner account, configure OpenTofu provider
    - Write first module: single VM with SSH access
@@ -452,6 +434,15 @@ spec:
    - Learn: Idempotency, roles, variables
 
 ### Week 2: Cluster
+
+```mermaid
+flowchart LR
+    subgraph W2["Week 2: Cluster"]
+        T5["k3s HA Cluster"] --> T6["Ansible Automation"]
+        T6 --> T7["Ingress Controller"]
+        T7 --> T8["First App Deployed"]
+    end
+```
 
 3. **k3s Installation**
    - HA cluster (3 servers, 3 agents)
@@ -465,6 +456,15 @@ spec:
 
 ### Week 3: Platform
 
+```mermaid
+flowchart LR
+    subgraph W3["Week 3: Platform"]
+        T9["ArgoCD Setup"] --> T10["GitOps App"]
+        T10 --> T11["Prometheus Stack"]
+        T11 --> T12["First Dashboard"]
+    end
+```
+
 5. **GitOps Setup**
    - Install ArgoCD
    - First GitOps-managed application
@@ -476,6 +476,15 @@ spec:
    - Learn: PromQL, alerting
 
 ### Week 4: Production Readiness
+
+```mermaid
+flowchart LR
+    subgraph W4["Week 4: Production"]
+        T13["Network Policies"] --> T14["Secrets Management"]
+        T14 --> T15["Python CLI Tool"]
+        T15 --> T16["Runbooks & Docs"]
+    end
+```
 
 7. **Security Hardening**
    - Network policies
