@@ -1,15 +1,15 @@
-# Your Role: Platform Engineer
+# Your Role: Founding Engineer
 
-> *"A Platform team enables stream-aligned teams to deliver work with substantial autonomy."*
-> — **Team Topologies** (Skelton & Pais)
+> *"The best engineers I know treat every project as if it were their own startup."*
+> — Anonymous Startup CTO
 
-## What Platform Engineers Do
+## What You Are (and What You're Not)
 
-> *Platform engineers build the roads that let developers drive fast without crashing. We create leverage—one hour of platform work saves hundreds of developer hours.*
+You're not a "DevOps intern." **You're a founding engineer building ContentAI.**
 
 ---
 
-## Platform Engineer vs DevOps vs SRE
+## The Founding Engineer vs DevOps vs Platform Engineer
 
 ```mermaid
 flowchart TB
@@ -17,226 +17,245 @@ flowchart TB
         subgraph DevOps["DevOps Engineer"]
             D1["Focus: Pipeline automation"]
             D2["Build CI/CD workflows"]
-            D3["Bridge dev and ops teams"]
+            D3["Maintain infrastructure"]
             D4["Tool-centric"]
         end
 
-        subgraph SRE["Site Reliability Engineer"]
-            S1["Focus: System reliability"]
-            S2["Error budgets and SLOs"]
-            S3["Incident response"]
-            S4["Toil reduction"]
-        end
-
-        subgraph PE["Platform Engineer"]
+        subgraph Platform["Platform Engineer"]
             P1["Focus: Developer experience"]
             P2["Build internal platforms"]
             P3["Enable self-service"]
-            P4["Product mindset"]
+            P4["Platform as product"]
+        end
+
+        subgraph Founding["Founding Engineer (You)"]
+            F1["Focus: THE PRODUCT"]
+            F2["Build everything needed"]
+            F3["Infra serves the product"]
+            F4["User-centric"]
         end
     end
 
-    DevOps -->|"Evolved into"| PE
-    SRE -->|"Practices inform"| PE
+    DevOps -->|"Subset of"| Founding
+    Platform -->|"Subset of"| Founding
 
-    style PE fill:#4CAF50
+    style Founding fill:#4CAF50
 ```
 
-### Role Characteristics
+### What Makes a Founding Engineer Different
 
-| Aspect | DevOps | SRE | Platform Engineering |
-|--------|--------|-----|----------------------|
-| **Primary Focus** | Process automation | Reliability | Developer productivity |
-| **Customers** | Development teams | End users | Developers (internal) |
-| **Metrics** | Deployment frequency | SLOs, error budgets | DORA metrics, adoption |
-| **Output** | Pipelines, scripts | Runbooks, incident response | Self-service platforms |
-| **Mindset** | Tool-centric | Operations-centric | Product-centric |
+| Aspect | DevOps | Platform Engineer | Founding Engineer |
+|--------|--------|-------------------|-------------------|
+| **Primary Focus** | Infrastructure | Developer experience | **The product** |
+| **Customers** | Development teams | Developers (internal) | **End users** |
+| **Measures** | Uptime, deployments | DORA metrics | **User adoption, revenue** |
+| **Thinks About** | "Is it deployed?" | "Can devs use it?" | **"Do users love it?"** |
+| **Infrastructure Is** | The job | A product | **A means to an end** |
 
 ---
 
-## The Platform Engineer Mindset
+## Your Mindset: Product-First
 
-> *"The Three Ways: Flow (left to right), Feedback (right to left), and Continual Learning and Experimentation."*
-> — **The Phoenix Project** (Kim, Behr, Spafford)
+> *"The best startups seem to start from scratch. The founders just decided what they wanted to build, then built it."*
+> — **Paul Graham**, Y Combinator
 
 ```mermaid
 mindmap
-  root((Platform<br/>Engineer))
+  root((Founding<br/>Engineer))
     Product Thinking
-      Developers are customers
-      Platform is a product
-      Measure adoption, satisfaction
-      Iterate based on feedback
-    Systems Thinking
-      See connections
-      Anticipate failure modes
-      Design for resilience
-      Understand trade-offs
-    Automation First
-      If you do it twice, automate
-      Code over click
-      GitOps everything
-      Self-service > tickets
-    Security Mindset
-      Zero trust by default
-      Defense in depth
-      Shift left
-      Least privilege
+      Users are the priority
+      Infrastructure serves the product
+      Ship features, not just deploys
+      Measure what users care about
+    Full-Stack Ownership
+      Backend to infrastructure
+      Database to deployment
+      Monitoring to incident response
+      Security to scalability
+    Startup Mindset
+      Move fast
+      Learn from failures
+      Make decisions with incomplete info
+      Ship, measure, iterate
+    Technical Excellence
+      Clean architecture
+      Automation-first
+      Security by default
+      Observability everywhere
 ```
+
+---
+
+## What You Own During This Internship
+
+### The ContentAI Stack (All of It)
+
+```mermaid
+flowchart TB
+    subgraph Product["🚀 THE PRODUCT"]
+        Strapi["Strapi CMS"]
+        AI["AI Services"]
+        Search["Meilisearch"]
+    end
+
+    subgraph Data["💾 DATA"]
+        PG["PostgreSQL"]
+        Redis["Redis"]
+    end
+
+    subgraph Platform["⚙️ PLATFORM"]
+        K8s["Kubernetes"]
+        GitOps["ArgoCD"]
+        CI["GitHub Actions"]
+    end
+
+    subgraph Infra["🏗️ INFRASTRUCTURE"]
+        VMs["Hetzner VMs"]
+        Network["Private Network"]
+        Storage["Block Storage"]
+    end
+
+    subgraph Ops["📊 OPERATIONS"]
+        Monitoring["Prometheus/Grafana"]
+        Logs["Loki"]
+        Alerts["AlertManager"]
+    end
+
+    Product --> Data --> Platform --> Infra
+    Platform --> Ops
+
+    style Product fill:#4CAF50
+```
+
+**You own the entire stack.** Not just the infrastructure—the product.
 
 ---
 
 ## Daily Responsibilities
 
+### What a Day Looks Like
+
 ```mermaid
 flowchart LR
     subgraph Morning["Morning"]
-        M1["Check alerts, dashboards"]
-        M2["Review PRs"]
-        M3["Triage issues"]
+        M1["Check: Is ContentAI healthy?"]
+        M2["Review any alerts"]
+        M3["Plan today's build work"]
     end
 
     subgraph Build["Build Time"]
-        B1["Design infrastructure"]
-        B2["Write IaC code"]
-        B3["Build automation"]
-        B4["Create documentation"]
+        B1["Work on current week's goals"]
+        B2["Deploy, test, iterate"]
+        B3["Document as you go"]
     end
 
-    subgraph Support["Support"]
-        S1["Unblock developers"]
-        S2["Investigate issues"]
-        S3["Improve golden paths"]
+    subgraph Review["Review"]
+        R1["Test what you built"]
+        R2["Push code, create PRs"]
+        R3["Update documentation"]
     end
 
-    subgraph Learn["Continuous Learning"]
-        L1["Research new tools"]
-        L2["Evaluate trade-offs"]
-        L3["Share knowledge"]
+    subgraph Learn["Learn"]
+        L1["Research blockers"]
+        L2["Read docs for next task"]
+        L3["Prepare questions"]
     end
 
-    Morning --> Build --> Support --> Learn
+    Morning --> Build --> Review --> Learn
 ```
 
-### Typical Day Breakdown
+### Typical Time Breakdown
 
 | Activity | Time | Examples |
 |----------|------|----------|
-| **Observability Review** | 30 min | Check Grafana, review overnight alerts |
-| **Deep Work: Building** | 4 hours | OpenTofu modules, Ansible playbooks, CLI tools |
-| **Code Review** | 1 hour | Review infrastructure PRs, provide feedback |
-| **Developer Support** | 1 hour | Unblock teams, answer questions, debug issues |
-| **Documentation** | 1 hour | Update runbooks, write ADRs, improve guides |
-| **Learning** | 30 min | Read docs, try new tools, attend talks |
+| **Product check** | 15 min | Is Strapi up? AI services responding? |
+| **Deep work: Building** | 4 hours | Infrastructure, deployments, features |
+| **Testing & Verification** | 1.5 hours | Does it work? Is it secure? |
+| **Documentation** | 1 hour | Update runbooks, architecture docs |
+| **Learning & Research** | 1 hour | Read docs, debug blockers |
 
 ---
 
-## Core Skills
+## The Founder's Checklist
 
-> *"Toil is the kind of work that tends to be manual, repetitive, automatable, tactical, devoid of enduring value, and that scales linearly as a service grows."*
-> — **Site Reliability Engineering** (Google)
+### Before Building Anything
+
+```mermaid
+flowchart TD
+    A["Have an idea"] --> B{"Does it serve<br/>ContentAI users?"}
+    B -->|"No"| C["Reconsider priority"]
+    B -->|"Yes"| D{"Exists already?"}
+    D -->|"Yes"| E["Use/extend existing"]
+    D -->|"No"| F{"Documented need?"}
+    F -->|"No"| G["Document the problem first"]
+    F -->|"Yes"| H["Build it"]
+
+    style B fill:#4CAF50
+```
+
+### Building Checklist
+
+- [ ] **Problem documented** — What user problem does this solve?
+- [ ] **Alternatives evaluated** — Is there an existing solution?
+- [ ] **Design reviewed** — Does this fit ContentAI's architecture?
+- [ ] **Tests written** — How will I know it works?
+- [ ] **Documentation updated** — Can someone else understand this?
+- [ ] **Monitoring added** — How will I know if it breaks?
+
+---
+
+## Skills You'll Develop
 
 ### Technical Skills
 
 ```mermaid
 flowchart TB
-    subgraph Core["Core Skills"]
-        direction TB
-        IaC["Infrastructure as Code<br/>(OpenTofu, Terraform)"]
-        K8s["Container Orchestration<br/>(Kubernetes, k3s)"]
-        CM["Configuration Management<br/>(Ansible)"]
-        CI["CI/CD<br/>(GitHub Actions, ArgoCD)"]
+    subgraph Core["Week 1-2: Core Skills"]
+        IaC["Infrastructure as Code\n(OpenTofu)"]
+        CM["Configuration Management\n(Ansible)"]
+        K8s["Kubernetes\n(k3s)"]
+        DB["Databases\n(PostgreSQL)"]
     end
 
-    subgraph Advanced["Advanced Skills"]
-        direction TB
-        Obs["Observability<br/>(Prometheus, Grafana)"]
-        Sec["Security<br/>(Network Policies, RBAC)"]
-        Net["Networking<br/>(Service Mesh, DNS)"]
-        Auto["Automation<br/>(Python, Go)"]
+    subgraph Product["Week 2: Product Skills"]
+        CMS["Headless CMS\n(Strapi)"]
+        AI["AI Integration\n(Claude/OpenAI APIs)"]
+        API["API Design\n(REST/GraphQL)"]
     end
 
-    subgraph Soft["Soft Skills"]
-        direction TB
-        Comm["Communication"]
-        Doc["Documentation"]
-        Debug["Debugging"]
-        Teach["Teaching"]
+    subgraph Advanced["Week 3-4: Advanced Skills"]
+        GitOps["GitOps\n(ArgoCD)"]
+        Obs["Observability\n(Prometheus, Grafana)"]
+        Sec["Security\n(Network Policies, RBAC)"]
+        Auto["Automation\n(CI/CD, Python)"]
     end
 
-    Core --> Advanced --> Soft
+    Core --> Product --> Advanced
 
-    style IaC fill:#326CE5
-    style K8s fill:#326CE5
+    style CMS fill:#4CAF50
+    style AI fill:#4CAF50
 ```
 
-### Skill Progression
+### Soft Skills
 
-| Level | Skills | Outcomes |
-|-------|--------|----------|
-| **Junior** | Linux, Git, Docker, basic Ansible | Deploy single apps, follow runbooks |
-| **Mid** | OpenTofu, Kubernetes, CI/CD, monitoring | Design modules, build pipelines |
-| **Senior** | Architecture, security, automation, strategy | Lead platform initiatives, mentor |
-| **Staff** | Org-wide impact, vendor evaluation, culture | Shape technical direction |
+| Skill | How You Develop It |
+|-------|-------------------|
+| **Decision Making** | Choosing between alternatives (Redis vs Memcached) |
+| **Documentation** | Writing architecture docs, runbooks |
+| **Communication** | Explaining what you built and why |
+| **Problem Solving** | Debugging production issues |
+| **Prioritization** | Deciding what to build first |
 
 ---
 
-## Your Internship Journey
-
-```mermaid
-gantt
-    title Platform Engineering Internship
-    dateFormat  YYYY-MM-DD
-    section Week 1
-    Foundation & IaC           :w1, 2026-02-03, 5d
-    section Week 2
-    Kubernetes & Orchestration :w2, after w1, 5d
-    section Week 3
-    GitOps & Automation        :w3, after w2, 5d
-    section Week 4
-    Production Readiness       :w4, after w3, 5d
-```
-
-### Week-by-Week Growth
+## Your Week-by-Week Growth
 
 | Week | You Start As | You End As |
 |------|--------------|------------|
-| **Week 1** | "I can SSH into a server" | "I provision infrastructure with code" |
-| **Week 2** | "I can run kubectl commands" | "I manage a HA Kubernetes cluster" |
-| **Week 3** | "I manually deploy apps" | "I have GitOps automating everything" |
-| **Week 4** | "I hope it doesn't break" | "I have monitoring, alerting, and runbooks" |
-
----
-
-## The Builder's Checklist
-
-### Before You Build
-
-```mermaid
-flowchart TD
-    A["Have an idea"] --> B{"Exists already?"}
-    B -->|"Yes"| C["Use/extend existing"]
-    B -->|"No"| D{"Documented need?"}
-    D -->|"No"| E["Document the problem first"]
-    D -->|"Yes"| F{"Multiple solutions?"}
-    F -->|"Yes"| G["Evaluate trade-offs"]
-    F -->|"No"| H["Build it"]
-    G --> H
-    C --> I["Done"]
-    H --> I
-
-    style E fill:#FFC107
-    style G fill:#FFC107
-```
-
-### Building Checklist
-
-- [ ] **Problem documented** — What am I solving? Why does it matter?
-- [ ] **Alternatives evaluated** — Is there an existing solution?
-- [ ] **Design reviewed** — Did I get feedback before building?
-- [ ] **Tests written** — How will I know it works?
-- [ ] **Documentation updated** — Can someone else use this?
-- [ ] **Monitoring added** — How will I know if it breaks?
+| **Week 1** | "I can run Terraform" | "I provision infrastructure for ContentAI" |
+| **Week 2** | "I can use Kubernetes" | "I run a production CMS with AI" |
+| **Week 3** | "I deploy manually" | "ContentAI deploys itself via GitOps" |
+| **Week 4** | "I hope it works" | "ContentAI is monitored, secure, and documented" |
 
 ---
 
@@ -246,27 +265,27 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    Stuck["Stuck on problem"] --> Research["1. Research first<br/>(30 min minimum)"]
+    Stuck["Stuck on problem"] --> Research["1. Research first\n(30 min minimum)"]
     Research --> Document["2. Document what you tried"]
     Document --> Question["3. Form specific question"]
     Question --> Ask["4. Ask with context"]
 
-    subgraph Good["Good Question Anatomy"]
-        G1["What I'm trying to do"]
-        G2["What I tried"]
-        G3["What happened"]
-        G4["What I expected"]
-        G5["Relevant code/config"]
+    subgraph Context["Good Question Includes"]
+        C1["What you're building"]
+        C2["What you tried"]
+        C3["What happened"]
+        C4["What you expected"]
+        C5["Relevant code/config"]
     end
 
-    Ask --> Good
+    Ask --> Context
 ```
 
 ### Question Template
 
 ```markdown
 ## Context
-I'm working on [task] in [project].
+I'm working on [ContentAI feature] in [week/exercise].
 
 ## Goal
 I'm trying to [specific goal].
@@ -289,76 +308,40 @@ I expected [specific expected behavior].
 
 ---
 
-## Career Path
+## Career Trajectory
+
+This internship demonstrates skills for multiple paths:
 
 ```mermaid
 flowchart LR
-    subgraph Entry["Entry Level"]
-        J1["Junior Platform<br/>Engineer"]
+    subgraph Start["After This Internship"]
+        You["Founding Engineer\nSkills"]
     end
 
-    subgraph Mid["Mid Level"]
-        M1["Platform<br/>Engineer"]
-        M2["DevOps<br/>Engineer"]
+    subgraph Paths["Career Paths"]
+        P1["Startup Founder"]
+        P2["Platform Engineer"]
+        P3["DevOps Engineer"]
+        P4["Backend Engineer"]
+        P5["SRE"]
     end
 
-    subgraph Senior["Senior Level"]
-        S1["Senior Platform<br/>Engineer"]
-        S2["Platform<br/>Architect"]
-    end
+    You --> P1 & P2 & P3 & P4 & P5
 
-    subgraph Staff["Staff+ Level"]
-        ST1["Staff Platform<br/>Engineer"]
-        ST2["Principal<br/>Engineer"]
-        ST3["Engineering<br/>Manager"]
-    end
-
-    J1 --> M1 & M2
-    M1 --> S1 --> ST1 --> ST2
-    M1 --> S2 --> ST2
-    S1 --> ST3
-
-    style J1 fill:#81C784
-    style ST1 fill:#4CAF50
-    style ST2 fill:#2E7D32
+    style P1 fill:#4CAF50
+    style P2 fill:#4CAF50
 ```
 
-### What Gets You Promoted
+### What Gets You Noticed
 
-| From → To | What Demonstrates Readiness |
-|-----------|----------------------------|
-| **Junior → Mid** | Owns features end-to-end, unblocks self |
-| **Mid → Senior** | Designs systems, mentors juniors, handles ambiguity |
-| **Senior → Staff** | Org-wide impact, technical strategy, grows others |
-
----
-
-## Resources for Growth
-
-### Books
-
-| Book | Focus |
-|------|-------|
-| *Site Reliability Engineering* (Google) | SRE principles |
-| *The Phoenix Project* | DevOps culture |
-| *Infrastructure as Code* (Kief Morris) | IaC patterns |
-| *Kubernetes Up & Running* | Container orchestration |
-| *Team Topologies* | Platform team design |
-
-### Certifications (Optional)
-
-| Certification | Value |
-|---------------|-------|
-| CKA (Certified Kubernetes Administrator) | Validates K8s skills |
-| AWS Solutions Architect | Cloud architecture |
-| HashiCorp Terraform Associate | IaC fundamentals |
-
-### Communities
-
-- **CNCF Slack** — Cloud-native discussions
-- **r/devops, r/kubernetes** — Peer learning
-- **Platform Engineering Slack** — Platform-specific
-- **Local meetups** — Networking
+| Achievement | What It Demonstrates |
+|-------------|---------------------|
+| **Built ContentAI end-to-end** | Full-stack ownership |
+| **Integrated AI services** | Modern tech adoption |
+| **GitOps automation** | Infrastructure maturity |
+| **Production-ready security** | Security mindset |
+| **Clear documentation** | Communication skills |
+| **Handled production issues** | Incident response |
 
 ---
 
@@ -368,27 +351,53 @@ flowchart LR
 
 | Metric | Target | How |
 |--------|--------|-----|
-| **Infrastructure deployed** | Full cluster | Week 2 |
-| **Automation coverage** | 80%+ GitOps | Week 3 |
-| **Documentation** | Complete | Week 4 |
-| **Demo quality** | Production-grade | Week 4 |
+| **ContentAI running** | Week 2 | Product deployed |
+| **AI integration** | Week 2 | Content generation works |
+| **GitOps coverage** | Week 3 | 100% managed by ArgoCD |
+| **Documentation** | Week 4 | Complete and accurate |
+| **Demo quality** | Week 4 | Can show to investors |
 
 ### After Internship
 
 | Metric | Sign of Success |
 |--------|-----------------|
-| **Portfolio** | Can demonstrate what you built |
-| **Knowledge** | Can explain architectural decisions |
-| **Network** | Have references for future opportunities |
-| **Skills** | Can interview for platform roles |
+| **Portfolio** | Can demo ContentAI live |
+| **Knowledge** | Can explain any architectural decision |
+| **Network** | Have references from PearlThoughts |
+| **Skills** | Can interview for founding engineer roles |
+
+---
+
+## The Difference This Makes
+
+```mermaid
+flowchart LR
+    subgraph Other["Other Internships"]
+        O1["Learned Terraform"]
+        O2["Deployed nginx"]
+        O3["Set up CI/CD"]
+    end
+
+    subgraph You["ContentAI Internship"]
+        Y1["Built an AI content platform"]
+        Y2["Full-stack from infra to AI"]
+        Y3["Production-ready in 4 weeks"]
+    end
+
+    Other -.->|"Generic skills"| X["🤷"]
+    You -.->|"Startup-ready"| Y["🚀"]
+
+    style You fill:#4CAF50
+```
 
 ---
 
 ## Related
 
-- [Week by Week](./02-Week-by-Week.md)
-- [What You Build](./03-What-You-Build.md)
-- [Architecture](../02-Engineering/01-Architecture.md)
+- [Vision](../01-Product/01-Vision.md) — What ContentAI is
+- [Week by Week](./02-Week-by-Week.md) — Your timeline
+- [What You Build](./03-What-You-Build.md) — Technical deliverables
+- [Architecture](../02-Engineering/01-Architecture.md) — How it all fits together
 
 ---
 

@@ -1,284 +1,287 @@
-# Week-by-Week Guide
+# Week-by-Week: Building ContentAI
 
-> *"Small batches, short iterations, fast feedback. The shorter the cycle, the faster the learning."*
-> — **Lean Startup** (Eric Ries)
+> *"The best startups seem to start from scratch. The founders just decided what they wanted to build, then built it."*
+> — **Paul Graham**, Y Combinator
 
 ## Your Mission (4 Weeks)
 
-> *Design, build, deploy, and operate a production-grade infrastructure platform for an AI-native startup.*
+> *Build ContentAI—an AI-powered content platform—from infrastructure to production.*
 
 ---
 
-## End-to-End Ownership
+## The Startup Journey
 
-Unlike typical internships where you support an existing team, **you own everything end-to-end**:
+Unlike typical internships where you support an existing team, **you're founding a startup**:
 
 ```mermaid
 flowchart TB
     subgraph W1["WEEK 1: FOUNDATION"]
-        W1A["Design infrastructure architecture"]
-        W1B["Set up cloud accounts and access"]
-        W1C["Build first OpenTofu modules"]
-        W1D["Write first Ansible playbooks"]
+        W1A["Set up cloud infrastructure"]
+        W1B["Build server configuration"]
+        W1C["Prepare for Kubernetes"]
     end
 
-    subgraph W2["WEEK 2: ORCHESTRATION"]
-        W2A["Deploy k3s cluster (HA config)"]
-        W2B["Install core platform services"]
-        W2C["Configure networking and storage"]
-        W2D["Deploy first workload"]
+    subgraph W2["WEEK 2: PRODUCT"]
+        W2A["Deploy k3s cluster"]
+        W2B["Launch Strapi CMS"]
+        W2C["Integrate AI services"]
+        W2D["ContentAI goes live!"]
     end
 
-    subgraph W3["WEEK 3: AUTOMATION"]
-        W3A["Implement GitOps with ArgoCD"]
-        W3B["Set up CI/CD pipelines"]
-        W3C["Build observability stack"]
-        W3D["Create Python automation tools"]
+    subgraph W3["WEEK 3: SCALE"]
+        W3A["GitOps automation"]
+        W3B["CI/CD pipeline"]
+        W3C["Observability stack"]
+        W3D["50+ deploys/day capable"]
     end
 
-    subgraph W4["WEEK 4: PRODUCTION READINESS"]
+    subgraph W4["WEEK 4: LAUNCH READY"]
         W4A["Security hardening"]
-        W4B["Disaster recovery testing"]
-        W4C["Documentation and runbooks"]
-        W4D["Demo and presentation"]
+        W4B["Disaster recovery"]
+        W4C["Documentation"]
+        W4D["Demo to stakeholders"]
     end
 
     W1 --> W2 --> W3 --> W4
+
+    style W2D fill:#4CAF50
 ```
 
 ---
 
 ## Week 1: Foundation Phase
 
-### Goal: Cloud Infrastructure & Configuration Management
+### Goal: Cloud Infrastructure for ContentAI
 
-Before you can orchestrate containers, you need infrastructure. This week you build the foundation.
+Before you can build the product, you need infrastructure. This week you lay the foundation.
 
 ### Day 1-2: Environment Setup
 
 | Task | Deliverable | Time |
 |------|-------------|------|
 | Set up Hetzner account | API token generated | 1h |
-| Install local tools | OpenTofu, Ansible, kubectl working | 2h |
-| Create GitHub repo | `infra` repository with structure | 1h |
-| First VM via OpenTofu | Single VM accessible via SSH | 4h |
+| Install local tools | OpenTofu, Ansible, kubectl | 2h |
+| Create `contentai-infra` repo | Repository with structure | 1h |
+| First VM via OpenTofu | Single VM accessible | 4h |
 
-### Day 3-4: OpenTofu Mastery
-
-| Task | Deliverable | Time |
-|------|-------------|------|
-| Module for VMs | Reusable `hetzner-server` module | 4h |
-| Network configuration | Private network for cluster | 2h |
-| Load balancer setup | LB pointing to server group | 2h |
-| State management | Remote state in Hetzner S3 | 2h |
-
-### Day 5: Ansible Foundation
+### Day 3-4: Infrastructure-as-Code
 
 | Task | Deliverable | Time |
 |------|-------------|------|
-| Inventory from Terraform | Dynamic inventory plugin | 2h |
-| Base hardening playbook | SSH, firewall, updates | 4h |
-| Role structure | Reusable roles directory | 2h |
+| VM module | Reusable `hetzner-server` | 4h |
+| Network setup | Private network for cluster | 2h |
+| Load balancer | LB for ContentAI traffic | 2h |
+| State management | Remote state in S3 | 2h |
+
+### Day 5: Server Configuration
+
+| Task | Deliverable | Time |
+|------|-------------|------|
+| Dynamic inventory | Ansible reads from Terraform | 2h |
+| Base hardening | SSH, firewall, updates | 4h |
+| Role structure | Reusable Ansible roles | 2h |
 
 ### Week 1 Checkpoint
 
 ```mermaid
 flowchart LR
-    subgraph Success["Week 1 Success Criteria"]
-        C1["✓ OpenTofu provisions 6 VMs<br/>(3 servers + 3 agents)"]
-        C2["✓ Private network connects all VMs"]
-        C3["✓ Load balancer distributes to servers"]
-        C4["✓ Ansible can reach all nodes<br/>(SSH key auth)"]
-        C5["✓ Base hardening applied"]
-        C6["✓ Infrastructure can be destroyed<br/>and recreated in < 10 min"]
+    subgraph Success["Week 1: Infrastructure Ready"]
+        C1["✓ 6 VMs provisioned\n(3 servers + 3 agents)"]
+        C2["✓ Private network connecting all"]
+        C3["✓ Load balancer configured"]
+        C4["✓ Ansible can reach all nodes"]
+        C5["✓ Servers hardened"]
+        C6["✓ Can destroy & recreate in < 10 min"]
     end
 
-    Deliverable["📦 Deliverable:<br/>Infrastructure code in Git,<br/>working environment"]
+    Outcome["📦 Outcome:\nContentAI has infrastructure"]
 
-    Success --> Deliverable
+    Success --> Outcome
 ```
 
 ---
 
-## Week 2: Orchestration Phase
+## Week 2: Product Phase
 
-### Goal: Production k3s Cluster with Core Services
+### Goal: ContentAI Running on Kubernetes
 
-Now you have infrastructure. Time to run containers at scale.
+This is the heart of the internship—**launching the actual product**.
 
-### Day 1-2: k3s Installation
-
-| Task | Deliverable | Time |
-|------|-------------|------|
-| k3s server installation | 3-node HA control plane | 4h |
-| k3s agent joining | 3 worker nodes joined | 2h |
-| Kubeconfig setup | Local kubectl access | 1h |
-| Basic verification | Nodes healthy, pods running | 1h |
-
-### Day 3: Networking
+### Day 1-2: Kubernetes Cluster
 
 | Task | Deliverable | Time |
 |------|-------------|------|
-| CNI configuration | Cilium or Flannel working | 3h |
-| Ingress controller | Traefik or NGINX installed | 2h |
-| Cert-manager | Let's Encrypt certificates | 3h |
+| k3s server install | 3-node HA control plane | 4h |
+| k3s agents | 3 worker nodes joined | 2h |
+| Kubeconfig | Local kubectl access | 1h |
+| Verification | All nodes Ready | 1h |
 
-### Day 4: Storage
-
-| Task | Deliverable | Time |
-|------|-------------|------|
-| Longhorn installation | Distributed block storage | 3h |
-| Storage classes | Default SC configured | 1h |
-| Test PVC | StatefulSet with persistent data | 2h |
-| Backup configuration | Longhorn backup target | 2h |
-
-### Day 5: First Application
+### Day 3: Platform Services
 
 | Task | Deliverable | Time |
 |------|-------------|------|
-| Deploy sample app | Nginx or httpbin | 2h |
-| Expose via ingress | Public HTTPS endpoint | 2h |
-| Horizontal scaling | HPA configured | 2h |
-| Health checks | Liveness/readiness probes | 2h |
+| Ingress controller | NGINX or Traefik | 2h |
+| cert-manager | Let's Encrypt TLS | 3h |
+| Longhorn storage | Distributed block storage | 3h |
+
+### Day 4: ContentAI Deployment (The Product!)
+
+| Task | Deliverable | Time |
+|------|-------------|------|
+| **PostgreSQL** | Database for Strapi | 2h |
+| **Strapi CMS** | Headless content management | 3h |
+| **Redis** | Caching layer | 1h |
+| **Meilisearch** | Content search | 2h |
+
+### Day 5: AI Integration
+
+| Task | Deliverable | Time |
+|------|-------------|------|
+| **AI service deployment** | Content generation service | 3h |
+| **Claude/OpenAI integration** | API key configuration | 2h |
+| **Test AI generation** | End-to-end content creation | 2h |
+| **HTTPS endpoint** | ContentAI accessible | 1h |
 
 ### Week 2 Checkpoint
 
 ```mermaid
 flowchart LR
-    subgraph Success["Week 2 Success Criteria"]
-        C1["✓ k3s cluster operational<br/>(3 servers + 3 agents)"]
-        C2["✓ All nodes show Ready status"]
-        C3["✓ Ingress routes traffic with TLS"]
-        C4["✓ Let's Encrypt certs auto-renew"]
-        C5["✓ Longhorn provides persistent storage"]
-        C6["✓ Sample app accessible via HTTPS"]
-        C7["✓ Cluster survives single node failure"]
+    subgraph Success["Week 2: ContentAI Live!"]
+        C1["✓ k3s cluster operational"]
+        C2["✓ Strapi CMS running"]
+        C3["✓ PostgreSQL storing data"]
+        C4["✓ AI content generation works"]
+        C5["✓ Search returns results"]
+        C6["✓ HTTPS at contentai.domain.com"]
+        C7["✓ Survives node failure"]
     end
 
-    Deliverable["📦 Deliverable:<br/>Working Kubernetes cluster,<br/>application deployed"]
+    Outcome["🚀 Outcome:\nContentAI is LIVE"]
 
-    Success --> Deliverable
+    Success --> Outcome
+
+    style Outcome fill:#4CAF50
 ```
 
 ---
 
-## Week 3: Automation Phase
+## Week 3: Scale Phase
 
 ### Goal: GitOps, CI/CD, and Observability
 
-Manual deployments don't scale. This week you automate everything.
+Manual deployments don't scale. This week you automate everything so ContentAI can iterate fast.
 
 ### Day 1-2: GitOps
 
 | Task | Deliverable | Time |
 |------|-------------|------|
-| ArgoCD installation | ArgoCD running in cluster | 3h |
-| First application | GitOps-managed deployment | 2h |
-| App of Apps pattern | Multi-app management | 3h |
+| ArgoCD installation | GitOps operator running | 3h |
+| ContentAI app | GitOps-managed Strapi | 2h |
+| App of Apps | All components managed | 3h |
 | Sync policies | Auto-sync, self-heal | 2h |
 
 ### Day 3: CI/CD Pipeline
 
 | Task | Deliverable | Time |
 |------|-------------|------|
-| GitHub Actions workflow | Build → Test → Push image | 4h |
-| Image versioning | Semantic versioning or SHA | 2h |
-| Automated promotion | Dev → Staging → Prod | 2h |
+| GitHub Actions | Build → Test → Push | 4h |
+| Image versioning | Semantic or SHA-based | 2h |
+| Promotion flow | Dev → Staging → Prod | 2h |
 
 ### Day 4: Observability
 
 | Task | Deliverable | Time |
 |------|-------------|------|
-| Prometheus installation | Metrics collection working | 3h |
-| Grafana dashboards | Cluster overview dashboard | 3h |
-| Loki for logs | Log aggregation working | 2h |
+| Prometheus | Metrics collection | 3h |
+| Grafana dashboards | ContentAI-specific metrics | 3h |
+| Loki | Log aggregation | 2h |
 
-### Day 5: Alerting & Python Tools
+### Day 5: Alerting & ContentAI Metrics
 
 | Task | Deliverable | Time |
 |------|-------------|------|
 | AlertManager | Critical alerts to Slack | 2h |
-| Alert rules | CPU, memory, pod failures | 2h |
-| Python CLI tool | `platform-cli` for common tasks | 4h |
+| ContentAI dashboard | Product metrics (AI costs, content created) | 3h |
+| Alert rules | API errors, AI failures, DB issues | 3h |
 
 ### Week 3 Checkpoint
 
 ```mermaid
 flowchart LR
-    subgraph Success["Week 3 Success Criteria"]
-        C1["✓ ArgoCD manages all applications"]
-        C2["✓ Git push triggers auto deployment"]
-        C3["✓ Prometheus collects metrics"]
-        C4["✓ Grafana shows health dashboards"]
-        C5["✓ Logs searchable in Grafana/Loki"]
-        C6["✓ Critical alerts fire to Slack"]
-        C7["✓ Python CLI automates common tasks"]
+    subgraph Success["Week 3: Automated"]
+        C1["✓ ArgoCD manages ContentAI"]
+        C2["✓ Git push triggers deploy"]
+        C3["✓ Prometheus collecting metrics"]
+        C4["✓ Grafana shows AI generation costs"]
+        C5["✓ Logs searchable"]
+        C6["✓ Alerts fire to Slack"]
     end
 
-    Deliverable["📦 Deliverable:<br/>Fully automated platform,<br/>self-service deployments"]
+    Outcome["📦 Outcome:\nContentAI deploys itself"]
 
-    Success --> Deliverable
+    Success --> Outcome
 ```
 
 ---
 
-## Week 4: Production Readiness Phase
+## Week 4: Launch Ready Phase
 
 ### Goal: Security, DR, Documentation
 
-A platform isn't production-ready until it's secure, recoverable, and documented.
+A startup isn't ready to launch until it's secure, recoverable, and documented.
 
 ### Day 1-2: Security Hardening
 
 | Task | Deliverable | Time |
 |------|-------------|------|
 | Network policies | Default deny, explicit allow | 3h |
-| RBAC configuration | Least privilege access | 2h |
-| Secrets management | External Secrets or Sealed | 3h |
-| Security scanning | Trivy for images | 2h |
+| RBAC | Least privilege access | 2h |
+| Secrets management | No secrets in Git | 3h |
+| Image scanning | Trivy for vulnerabilities | 2h |
 
 ### Day 3: Disaster Recovery
 
 | Task | Deliverable | Time |
 |------|-------------|------|
-| Backup verification | Longhorn backups tested | 2h |
-| Cluster restore test | Full cluster recovery | 4h |
-| Runbook creation | Step-by-step recovery docs | 2h |
+| Backup verification | Longhorn + PostgreSQL backups | 2h |
+| Cluster restore test | Full ContentAI recovery | 4h |
+| Runbook creation | Step-by-step recovery | 2h |
 
 ### Day 4: Documentation
 
 | Task | Deliverable | Time |
 |------|-------------|------|
-| Architecture docs | Diagrams, decision records | 4h |
-| Operational runbooks | Incident response guides | 2h |
-| Onboarding guide | New developer setup | 2h |
+| Product documentation | ContentAI user guide, API docs | 3h |
+| Architecture docs | System design, data flow | 3h |
+| Operational runbooks | Incident response | 2h |
 
 ### Day 5: Demo & Presentation
 
 | Task | Deliverable | Time |
 |------|-------------|------|
 | Demo preparation | Walkthrough script | 2h |
-| Demo recording | Video demonstrating platform | 3h |
-| Retrospective | Lessons learned document | 2h |
-| Next steps | Recommendations for improvement | 1h |
+| Demo recording | 15-min video of ContentAI | 3h |
+| Retrospective | Lessons learned | 2h |
+| Next steps | What would you build next? | 1h |
 
 ### Week 4 Checkpoint
 
 ```mermaid
 flowchart LR
-    subgraph Success["Week 4 Success Criteria"]
-        C1["✓ Network policies enforce least privilege"]
-        C2["✓ Secrets never stored in Git"]
-        C3["✓ Image scanning prevents vulnerable deploys"]
-        C4["✓ Cluster can be fully restored from backup"]
-        C5["✓ Documentation complete and accurate"]
-        C6["✓ Demo video showcases capabilities"]
-        C7["✓ Retrospective complete"]
+    subgraph Success["Week 4: Launch Ready"]
+        C1["✓ Security hardened"]
+        C2["✓ Secrets encrypted"]
+        C3["✓ Vulnerabilities scanned"]
+        C4["✓ DR tested - recovery < 1 hour"]
+        C5["✓ Documentation complete"]
+        C6["✓ Demo video ready"]
     end
 
-    Deliverable["📦 Deliverable:<br/>Production-ready platform,<br/>comprehensive documentation"]
+    Outcome["🎉 Outcome:\nContentAI ready for users"]
 
-    Success --> Deliverable
+    Success --> Outcome
+
+    style Outcome fill:#4CAF50
 ```
 
 ---
@@ -292,7 +295,7 @@ gantt
     axisFormat %H:%M
 
     section Morning
-    Plan (review, set goals)     :09:00, 30m
+    Plan (review goals)          :09:00, 30m
     Build (deep work)            :09:30, 2h30m
 
     section Midday
@@ -300,9 +303,9 @@ gantt
     Build (continue)             :13:00, 2h
 
     section Afternoon
-    Document (write learnings)   :15:00, 30m
+    Document (learnings)         :15:00, 30m
     Research (docs, tutorials)   :15:30, 1h
-    Review (test, prepare Qs)    :16:30, 30m
+    Review (test, questions)     :16:30, 30m
 ```
 
 **Live Session (when scheduled)**: 10:00 AM
@@ -315,25 +318,42 @@ gantt
 
 - [ ] Infrastructure provisioned via OpenTofu
 - [ ] k3s cluster operational
-- [ ] At least one application deployed
+- [ ] **Strapi CMS deployed and accessible**
 - [ ] Basic monitoring in place
 - [ ] Documentation exists
 
 ### Exceeds Expectations
 
 - [ ] HA configuration for all components
+- [ ] **AI integration working (content generation)**
 - [ ] GitOps fully implemented
 - [ ] Comprehensive observability
 - [ ] Security hardening complete
-- [ ] Python automation tools
 
 ### Outstanding
 
+- [ ] **Full ContentAI product with all features**
 - [ ] Multi-environment (dev/staging/prod)
-- [ ] Disaster recovery tested and documented
-- [ ] Novel optimizations or improvements
-- [ ] Contribution to open source tools
+- [ ] **AI cost tracking dashboard**
+- [ ] Disaster recovery tested
 - [ ] Research-quality documentation
+- [ ] Novel optimizations
+
+---
+
+## The Startup Mindset
+
+> *"If you can't deploy on Friday at 5 PM without sweating, your infrastructure isn't good enough."*
+> — PearlThoughts Engineering
+
+Throughout these 4 weeks, think like a founder:
+
+| Week | Traditional Intern Thinks | Startup Founder Thinks |
+|------|---------------------------|------------------------|
+| **Week 1** | "I'm learning Terraform" | "I'm building the foundation for my product" |
+| **Week 2** | "I'm deploying Kubernetes" | "My product is going live!" |
+| **Week 3** | "I'm setting up CI/CD" | "I'm enabling my team to ship 50x/day" |
+| **Week 4** | "I'm documenting" | "I'm making ContentAI ready for real users" |
 
 ---
 

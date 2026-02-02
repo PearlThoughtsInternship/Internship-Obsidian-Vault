@@ -1,7 +1,7 @@
 # Before You Begin
 
-> *"The most dangerous phrase in the language is, 'We've always done it this way.'"*
-> — **Rear Admiral Grace Hopper**
+> *"The best startups seem to start from scratch. The founders just decided what they wanted to build, then built it."*
+> — **Paul Graham**, Y Combinator
 
 > **Read this first.** It sets the context for everything that follows.
 
@@ -9,7 +9,7 @@
 
 ## First: Set Up Your Communication Tools
 
-Before diving into the technical content, ensure you can participate in the program:
+Before diving into building ContentAI, ensure you can participate in the program:
 
 | Step | Guide |
 |------|-------|
@@ -22,32 +22,34 @@ Before diving into the technical content, ensure you can participate in the prog
 
 ## The Reality of This Internship
 
-We're a **small organization** with limited time and resources. We offered this internship **without any fee** because we believe in growing the next generation of platform engineers. But we need you to understand something important:
+We're a **small organization** with limited time and resources. We offered this internship **without any fee** because we believe in growing the next generation of builders. But we need you to understand something important:
 
-**You're not joining an Ops team. You're founding the infrastructure of a startup.**
+**You're not learning DevOps. You're building a startup.**
 
 ```mermaid
 flowchart TB
-    subgraph Traditional["Traditional Ops"]
-        T1["Wait for tickets"]
-        T2["Run the same scripts"]
-        T3["Watch dashboards"]
-        T4["React to incidents"]
+    subgraph Traditional["Traditional DevOps Internship"]
+        T1["Learn Terraform syntax"]
+        T2["Deploy a sample app"]
+        T3["Set up monitoring"]
+        T4["Write documentation"]
     end
 
-    subgraph Platform["Platform Engineering (This Program)"]
-        P1["Build systems that prevent tickets"]
-        P2["Automate everything"]
-        P3["Create dashboards that matter"]
-        P4["Design for resilience"]
+    subgraph Startup["This Program: Build ContentAI"]
+        P1["Build infrastructure FOR your product"]
+        P2["Deploy YOUR AI-powered CMS"]
+        P3["Monitor YOUR users' experience"]
+        P4["Document YOUR startup for the team"]
     end
 
     Traditional -.->|"NOT this"| X["❌"]
-    Platform -.->|"THIS"| Y["✅"]
+    Startup -.->|"THIS"| Y["✅"]
 
-    Result["You're BUILDING the platform<br/>that could run the next OpenClaw"]
+    Result["You're building ContentAI<br/>— a real AI content platform"]
 
-    Platform --> Result
+    Startup --> Result
+
+    style Result fill:#4CAF50
 ```
 
 ---
@@ -56,21 +58,23 @@ flowchart TB
 
 ### We Understand
 
+- **Building a product is hard** — you're not just learning tools, you're shipping something real
 - **Infrastructure is complex** — networking, Kubernetes, IaC have steep learning curves
-- **Remote work is hard** — no one sitting next to you to debug SSH issues
-- **Cloud providers are overwhelming** — AWS has 200+ services
-- **Security is non-obvious** — what feels secure often isn't
+- **AI integration is new territory** — API costs, prompt engineering, latency concerns
+- **Remote work is challenging** — no one sitting next to you to debug issues
 
 ### We Commit To
 
 - **Sharing real-world patterns** we use in production
 - **Reviewing your infrastructure code** and giving feedback
 - **Answering architecture questions** when you're truly stuck
+- **Treating you like a founding engineer**, not a student
 
 ### We Expect You To
 
+- **Think like a founder** — "How do I make ContentAI better for users?"
 - **Research first, ask second** — Google the error, read the docs, try things
-- **Show working systems** — not just "I read about Kubernetes"
+- **Show working systems** — not just "I read about Strapi"
 - **Document your decisions** — "I chose X because Y, trade-off is Z"
 - **Break things and learn** — this is a sandbox, experiment boldly
 
@@ -78,22 +82,22 @@ flowchart TB
 
 ## The Startup Test
 
-Your performance this week determines whether we continue together. We have limited mentorship capacity — we invest it in people who demonstrate they can:
+Your performance this week determines whether we continue together. We invest mentorship capacity in people who demonstrate they can:
 
 ```mermaid
 flowchart LR
-    subgraph Skills["Skills We're Looking For"]
-        S1["Debug independently"]
-        S2["Learn from documentation"]
-        S3["Ship working infrastructure"]
+    subgraph Skills["What Startup Founders Need"]
+        S1["Figure things out"]
+        S2["Ship working code"]
+        S3["Make decisions"]
         S4["Communicate clearly"]
     end
 
-    subgraph Questions["The Questions"]
-        Q1["When Terraform fails,<br/>what do you do?"]
-        Q2["Can you figure out a new tool<br/>from its docs?"]
-        Q3["Can you stand up a real VM,<br/>not just read about it?"]
-        Q4["Can you explain what you built<br/>and why?"]
+    subgraph Questions["How We Evaluate"]
+        Q1["When the API fails,<br/>do you debug or ask immediately?"]
+        Q2["Can you get Strapi running<br/>from the docs?"]
+        Q3["Can you choose between<br/>Redis and Memcached?"]
+        Q4["Can you explain your<br/>architecture choices?"]
     end
 
     S1 --> Q1
@@ -108,19 +112,19 @@ This is not about being harsh. It's about being honest: **startups need people w
 
 ## How to Ask Good Questions
 
-When you're stuck, don't just say "Terraform doesn't work."
+When you're stuck, don't just say "it doesn't work."
 
 ### Bad Question
 
-> "How do I deploy a Kubernetes cluster?"
+> "How do I deploy Strapi?"
 
 ### Good Question
 
-> "I'm trying to deploy k3s on Hetzner using Ansible. I followed the quickstart guide and modified the inventory for my VMs. When I run the playbook, I get 'SSH connection refused' for the second node. I've verified:
-> - SSH key is on the node (can connect manually)
-> - Firewall allows port 22
-> - Ansible inventory has correct IP
-> Here's my inventory file: [code]. What am I missing?"
+> "I'm trying to deploy Strapi on my k3s cluster. I followed the Helm chart documentation and created a values.yaml with PostgreSQL connection. When I run `helm install`, the pod starts but crashes with 'ECONNREFUSED' for the database. I've verified:
+> - PostgreSQL is running (`kubectl get pods` shows Running)
+> - Service exists (`kubectl get svc` shows postgres-headless)
+> - I can connect via `psql` from another pod
+> Here's my values.yaml: [code]. What am I missing?"
 
 ```mermaid
 flowchart LR
@@ -142,7 +146,7 @@ Before Week 1 starts, you need:
 ### Local Development
 
 | Tool | Purpose | Install |
-|------|---------|---------||
+|------|---------|---------|
 | **Git** | Version control | `brew install git` |
 | **OpenTofu** | Infrastructure-as-Code | `brew install opentofu` |
 | **Ansible** | Configuration management | `pip install ansible` |
@@ -160,22 +164,23 @@ Before Week 1 starts, you need:
 
 ### Knowledge Prerequisites
 
-| Topic | Minimum Level | Resources |
-|-------|---------------|-----------||
-| **Linux CLI** | Navigate, edit files, SSH | Linux Journey |
-| **Git** | Commit, branch, merge, PR | Git docs |
-| **YAML** | Read and write | Learn X in Y minutes |
-| **Networking** | IP, ports, DNS, HTTP | Computer Networking basics |
-| **Containers** | Build and run Docker | Docker Get Started |
+| Topic | Minimum Level | Why for ContentAI |
+|-------|---------------|-------------------|
+| **Linux CLI** | Navigate, edit files, SSH | Server management |
+| **Git** | Commit, branch, merge, PR | Code collaboration |
+| **YAML** | Read and write | All K8s configs |
+| **Networking** | IP, ports, DNS, HTTP | Strapi + AI service communication |
+| **Containers** | Build and run Docker | Everything runs in containers |
+| **Databases** | Basic SQL, connection strings | PostgreSQL for Strapi |
 
 ---
 
 ## Your Opportunity
 
 If you pass this week:
-- You get **3 more weeks** of building real infrastructure
+- You get **3 more weeks** building a real AI product
 - You work on **production-grade patterns**
-- You build **portfolio-worthy projects**
+- You build **portfolio-worthy projects** — not just infrastructure, a product
 - You get **references** for future opportunities
 
 If you demonstrate exceptional initiative:
@@ -185,42 +190,43 @@ If you demonstrate exceptional initiative:
 
 ---
 
-## The Builder's Manifesto
+## The Founder's Manifesto
 
 > *"If it hurts, do it more frequently, and bring the pain forward."*
 > — **Continuous Delivery** (Humble & Farley)
 
 ```mermaid
 mindmap
-  root((Platform<br/>Engineer's<br/>Creed))
+  root((ContentAI<br/>Founder's<br/>Creed))
+    Product First
+      Users come before infrastructure
+      Ship features, not just deployments
+      Measure what matters to users
     Build
       Enable others to ship faster
       Automate toil
     Design
       Design for failure
-      Measure everything
+      Plan for scale
     Secure
       Secure by default
-      Breaches are catastrophic
-    Test
-      Test in production
-      Feature flags + rollback
+      Breaches destroy startups
     Own
-      Own mistakes publicly
-      Fix them faster
+      Own your decisions
+      Fix mistakes fast
     Ship
       I SHIP
 ```
 
 ### The Principles
 
-1. **I build systems that enable others to ship faster.**
-2. **I automate toil so humans can focus on what matters.**
-3. **I design for failure because failures are inevitable.**
-4. **I document because future-me is a stranger who deserves context.**
-5. **I measure because hope is not a strategy.**
-6. **I secure by default because breaches are catastrophic.**
-7. **I test in production because staging is a lie.** (But I have feature flags and rollback strategies.)
+1. **I build products that solve real problems.**
+2. **I create infrastructure that enables the product to scale.**
+3. **I automate toil so humans can focus on what matters.**
+4. **I design for failure because failures are inevitable.**
+5. **I document because future-me is a stranger who deserves context.**
+6. **I measure because hope is not a strategy.**
+7. **I secure by default because breaches are catastrophic.**
 8. **I own my mistakes publicly and fix them faster.**
 9. **I ship.**
 
@@ -229,9 +235,10 @@ mindmap
 ## Ready?
 
 Now proceed to:
-1. [Week by Week Guide](./02-Week-by-Week.md) — the 4-week plan
-2. [What You Build](./03-What-You-Build.md) — technical deliverables
-3. [Your Role](./04-Your-Role.md) — understand platform engineering
+1. [Vision](../01-Product/01-Vision.md) — **Start here**: What is ContentAI?
+2. [Week by Week Guide](./02-Week-by-Week.md) — the 4-week plan
+3. [What You Build](./03-What-You-Build.md) — technical deliverables
+4. [Your Role](./04-Your-Role.md) — understand your responsibilities
 
 Then jump to [Environment Setup](./Exercises/01-Environment-Setup.md) for your Week 1 tasks.
 

@@ -1,403 +1,379 @@
-# What You Build
+# What You Build: ContentAI
 
-## Deliverables Overview
+## The Product You're Creating
 
-By the end of 4 weeks, you'll have built a **complete, production-grade infrastructure platform**.
+By the end of 4 weeks, you'll have built **ContentAI**—a real, working AI-powered content platform with production-grade infrastructure.
 
 ---
 
-## The Complete Platform
+## ContentAI: The Complete Product
 
 ```mermaid
 flowchart TB
     subgraph Week1["Week 1: Foundation"]
-        IaC["Infrastructure-as-Code\n(OpenTofu)"]
-        CM["Configuration Management\n(Ansible)"]
-        VMs["6 VMs Provisioned\n(Hetzner)"]
+        IaC["Cloud Infrastructure\n(OpenTofu)"]
+        CM["Server Configuration\n(Ansible)"]
+        VMs["6 Cloud Servers\n(Hetzner)"]
     end
 
-    subgraph Week2["Week 2: Orchestration"]
-        K3S["k3s Cluster\n(HA Configuration)"]
-        NET["Networking\n(CNI, Ingress, TLS)"]
-        STOR["Storage\n(Longhorn)"]
+    subgraph Week2["Week 2: The Product"]
+        K3S["Kubernetes Cluster\n(k3s HA)"]
+        STRAPI["Strapi CMS\n(Headless Content)"]
+        DB["PostgreSQL\n(Database)"]
+        AI["AI Services\n(Claude/OpenAI)"]
     end
 
-    subgraph Week3["Week 3: Automation"]
-        GITOPS["GitOps\n(ArgoCD)"]
+    subgraph Week3["Week 3: Scale"]
+        GITOPS["GitOps Pipeline\n(ArgoCD)"]
         CICD["CI/CD\n(GitHub Actions)"]
-        OBS["Observability\n(Prometheus Stack)"]
-        PY["Python Tools\n(CLI Automation)"]
+        OBS["Observability\n(Metrics & Logs)"]
     end
 
-    subgraph Week4["Week 4: Production"]
+    subgraph Week4["Week 4: Launch Ready"]
         SEC["Security\n(Network Policies, RBAC)"]
-        DR["Disaster Recovery\n(Backups, Runbooks)"]
-        DOC["Documentation\n(Architecture, Ops)"]
+        DR["Disaster Recovery"]
+        DOC["Documentation"]
     end
 
     Week1 --> Week2 --> Week3 --> Week4
+
+    style STRAPI fill:#4CAF50
+    style AI fill:#4CAF50
 ```
 
 ---
 
-## Week 1 Artifacts
+## Week 1: Foundation
 
-### Infrastructure Code Repository
+### What You Build
+
+The cloud infrastructure that will run ContentAI.
 
 ```
 infra/
 ├── terraform/
 │   ├── modules/
-│   │   ├── hetzner-server/
-│   │   │   ├── main.tf
-│   │   │   ├── variables.tf
-│   │   │   └── outputs.tf
-│   │   ├── network/
-│   │   │   ├── main.tf
-│   │   │   ├── variables.tf
-│   │   │   └── outputs.tf
-│   │   └── k3s-cluster/
-│   │       ├── main.tf
-│   │       ├── variables.tf
-│   │       └── outputs.tf
-│   ├── environments/
-│   │   ├── dev/
-│   │   │   ├── main.tf
-│   │   │   ├── variables.tf
-│   │   │   └── terraform.tfvars
-│   │   └── prod/
-│   │       ├── main.tf
-│   │       ├── variables.tf
-│   │       └── terraform.tfvars
-│   └── backend.tf
+│   │   ├── hetzner-server/     # VM provisioning
+│   │   ├── network/            # Private networking
+│   │   └── k3s-cluster/        # Cluster foundation
+│   └── environments/
+│       ├── dev/                # Development setup
+│       └── prod/               # Production setup
 ├── ansible/
-│   ├── inventory/
-│   │   └── hosts.yml
 │   ├── playbooks/
-│   │   ├── base-hardening.yml
-│   │   └── k3s-install.yml
-│   ├── roles/
-│   │   ├── common/
-│   │   ├── firewall/
-│   │   └── k3s/
-│   └── ansible.cfg
+│   │   ├── base-hardening.yml  # Security basics
+│   │   └── k3s-install.yml     # Kubernetes setup
+│   └── roles/
+│       ├── common/             # Base server config
+│       └── k3s/                # Kubernetes roles
 └── README.md
 ```
 
-### Key Deliverables
+### Success Criteria
 
-| Artifact | Description | Success Criteria |
-|----------|-------------|------------------|
-| **OpenTofu modules** | Reusable infrastructure components | `tofu apply` creates cluster from scratch |
-| **Ansible playbooks** | Server configuration automation | Playbook runs idempotently |
-| **Network config** | Private network, firewall rules | Nodes communicate privately |
-| **Documentation** | README with architecture diagram | New team member can understand |
-
----
-
-## Week 2 Artifacts
-
-### Kubernetes Manifests
-
-```
-k8s/
-├── base/
-│   ├── namespaces/
-│   │   ├── production.yaml
-│   │   ├── staging.yaml
-│   │   └── platform.yaml
-│   ├── ingress/
-│   │   ├── traefik-config.yaml
-│   │   └── middleware.yaml
-│   ├── cert-manager/
-│   │   ├── cluster-issuer.yaml
-│   │   └── certificates.yaml
-│   └── storage/
-│       ├── longhorn-config.yaml
-│       └── storage-classes.yaml
-├── apps/
-│   └── sample-app/
-│       ├── deployment.yaml
-│       ├── service.yaml
-│       ├── ingress.yaml
-│       └── hpa.yaml
-└── kustomization.yaml
-```
-
-### Key Deliverables
-
-| Artifact | Description | Success Criteria |
-|----------|-------------|------------------|
-| **HA k3s cluster** | 3 servers + 3 agents | Survives 1 node failure |
-| **Ingress controller** | Traefik with TLS | HTTPS endpoint works |
-| **Storage** | Longhorn distributed | PVC provisions successfully |
-| **Sample app** | Running workload | Accessible via domain |
+| Artifact | Description | Success Test |
+|----------|-------------|--------------|
+| **OpenTofu modules** | Infrastructure code | `tofu apply` creates cluster |
+| **Ansible playbooks** | Server configuration | Idempotent runs |
+| **Network config** | Private cluster network | Nodes communicate |
+| **Documentation** | Architecture diagram | Team can understand |
 
 ---
 
-## Week 3 Artifacts
+## Week 2: The Product (ContentAI Core)
 
-### GitOps Configuration
+### What You Build
 
-```
-argocd/
-├── projects/
-│   └── platform.yaml
-├── applications/
-│   ├── app-of-apps.yaml
-│   ├── ingress.yaml
-│   ├── cert-manager.yaml
-│   ├── monitoring.yaml
-│   └── sample-app.yaml
-└── applicationsets/
-    └── environments.yaml
-```
-
-### Observability Stack
+The actual ContentAI product—this is why infrastructure exists.
 
 ```
-monitoring/
-├── prometheus/
-│   ├── values.yaml
-│   └── rules/
-│       ├── cluster.yaml
-│       └── applications.yaml
-├── grafana/
-│   ├── values.yaml
-│   └── dashboards/
-│       ├── cluster-overview.json
-│       ├── node-exporter.json
-│       └── application-red.json
-├── loki/
-│   └── values.yaml
-└── alertmanager/
-    ├── values.yaml
-    └── config.yaml
+contentai/
+├── strapi/
+│   ├── deployment.yaml         # Strapi CMS
+│   ├── service.yaml
+│   ├── ingress.yaml            # HTTPS endpoint
+│   └── config/
+│       └── plugins.js          # AI plugin config
+├── database/
+│   ├── postgresql/
+│   │   ├── statefulset.yaml    # HA database
+│   │   └── service.yaml
+│   └── redis/
+│       └── deployment.yaml     # Caching layer
+├── ai-services/
+│   ├── content-generator/      # AI content generation
+│   │   ├── deployment.yaml
+│   │   └── configmap.yaml      # API keys, prompts
+│   └── summarizer/             # Document summarization
+│       └── deployment.yaml
+└── search/
+    └── meilisearch/
+        └── deployment.yaml     # Fast content search
 ```
 
-### Python CLI Tool
+### ContentAI Features You'll Deploy
 
-```python
-# platform_cli/main.py
+| Component | What It Does | User Value |
+|-----------|--------------|------------|
+| **Strapi CMS** | Headless content management | Creators manage content |
+| **PostgreSQL** | Persistent data storage | Reliable content storage |
+| **AI Content Generator** | Generate text from prompts | 10x content creation speed |
+| **AI Summarizer** | Summarize long documents | Save hours of reading |
+| **Meilisearch** | Fast full-text search | Find content instantly |
+| **Redis** | Caching layer | Sub-100ms responses |
 
-import click
-from rich.console import Console
-from kubernetes import client, config
+### Success Criteria
 
-console = Console()
-
-@click.group()
-def cli():
-    """Platform CLI - Automate common operations"""
-    pass
-
-@cli.command()
-@click.argument('namespace')
-def pods(namespace):
-    """List pods in a namespace"""
-    config.load_kube_config()
-    v1 = client.CoreV1Api()
-
-    pods = v1.list_namespaced_pod(namespace)
-    for pod in pods.items:
-        status = "✅" if pod.status.phase == "Running" else "❌"
-        console.print(f"{status} {pod.metadata.name}")
-
-@cli.command()
-@click.argument('deployment')
-@click.argument('replicas', type=int)
-def scale(deployment, replicas):
-    """Scale a deployment"""
-    config.load_kube_config()
-    apps = client.AppsV1Api()
-
-    body = {"spec": {"replicas": replicas}}
-    apps.patch_namespaced_deployment_scale(
-        deployment, "production", body
-    )
-    console.print(f"Scaled {deployment} to {replicas} replicas")
-
-@cli.command()
-def status():
-    """Show cluster health status"""
-    # Implementation
-    pass
-
-if __name__ == "__main__":
-    cli()
-```
-
-### Key Deliverables
-
-| Artifact | Description | Success Criteria |
-|----------|-------------|------------------|
-| **ArgoCD setup** | GitOps operator | Auto-sync on git push |
-| **CI/CD pipeline** | GitHub Actions | Build → Test → Deploy works |
-| **Prometheus stack** | Metrics collection | Dashboard shows data |
-| **Grafana dashboards** | Visualization | Cluster overview visible |
-| **Alert rules** | Critical alerts | Alerts fire to Slack |
-| **Python CLI** | Automation tool | Common tasks automated |
+| Artifact | Description | Success Test |
+|----------|-------------|--------------|
+| **Strapi running** | CMS accessible | Can create content types |
+| **AI integration** | Content generation works | Prompt → Generated text |
+| **Database** | PostgreSQL operational | Data persists across restarts |
+| **Search** | Meilisearch indexed | Search returns results |
+| **HTTPS endpoint** | TLS certificates | `https://contentai.yourdomain.com` works |
 
 ---
 
-## Week 4 Artifacts
+## Week 3: Scale (Automation & Observability)
 
-### Security Configuration
+### What You Build
+
+The automation that lets ContentAI scale.
+
+```
+platform/
+├── argocd/
+│   ├── projects/
+│   │   └── contentai.yaml      # ContentAI project
+│   ├── applications/
+│   │   ├── app-of-apps.yaml    # Manages all apps
+│   │   ├── strapi.yaml         # CMS deployment
+│   │   ├── ai-services.yaml    # AI services
+│   │   ├── database.yaml       # PostgreSQL
+│   │   └── monitoring.yaml     # Observability
+│   └── applicationsets/
+│       └── environments.yaml   # Multi-env support
+├── monitoring/
+│   ├── prometheus/
+│   │   ├── values.yaml
+│   │   └── rules/
+│   │       ├── contentai.yaml  # Product metrics
+│   │       └── cluster.yaml    # Platform metrics
+│   ├── grafana/
+│   │   ├── values.yaml
+│   │   └── dashboards/
+│   │       ├── contentai-overview.json
+│   │       ├── ai-generation-metrics.json
+│   │       └── api-latency.json
+│   └── loki/
+│       └── values.yaml
+└── ci/
+    └── .github/
+        └── workflows/
+            ├── build.yaml      # Build containers
+            ├── test.yaml       # Run tests
+            └── deploy.yaml     # Trigger ArgoCD
+```
+
+### ContentAI Dashboards
+
+```mermaid
+flowchart LR
+    subgraph Dashboards["Grafana Dashboards You'll Build"]
+        D1["ContentAI Overview\n- Active users\n- Content created\n- API requests"]
+        D2["AI Generation Metrics\n- Latency by model\n- Tokens used\n- Cost tracking"]
+        D3["API Performance\n- Request rate\n- Error rate\n- p95 latency"]
+    end
+```
+
+### Success Criteria
+
+| Artifact | Description | Success Test |
+|----------|-------------|--------------|
+| **GitOps** | ArgoCD manages everything | Git push → Auto deploy |
+| **CI/CD** | Automated pipeline | PR → Build → Test → Deploy |
+| **Metrics** | Prometheus collecting | Dashboard shows real data |
+| **Logs** | Loki aggregating | Can search logs |
+| **Alerts** | Critical alerts fire | Slack notification works |
+
+---
+
+## Week 4: Launch Ready (Security & Polish)
+
+### What You Build
+
+Production hardening to make ContentAI ready for real users.
 
 ```
 security/
 ├── network-policies/
-│   ├── default-deny.yaml
-│   ├── allow-dns.yaml
-│   ├── allow-ingress.yaml
-│   └── allow-monitoring.yaml
+│   ├── default-deny.yaml       # Block all by default
+│   ├── allow-strapi.yaml       # Strapi → PostgreSQL
+│   ├── allow-ai.yaml           # Strapi → AI services
+│   └── allow-monitoring.yaml   # Prometheus scraping
 ├── rbac/
-│   ├── cluster-roles.yaml
-│   ├── service-accounts.yaml
-│   └── role-bindings.yaml
+│   ├── contentai-admin.yaml    # Admin access
+│   ├── contentai-viewer.yaml   # Read-only access
+│   └── ci-deployer.yaml        # CI service account
 ├── secrets/
-│   ├── sealed-secrets-controller.yaml
-│   └── external-secrets-config.yaml
+│   ├── sealed-secrets/
+│   │   ├── database-creds.yaml
+│   │   ├── ai-api-keys.yaml
+│   │   └── strapi-keys.yaml
+│   └── external-secrets/
+│       └── config.yaml
 └── policies/
-    └── image-policy.yaml
-```
+    └── image-policy.yaml       # Only trusted images
 
-### Documentation
-
-```
 docs/
+├── product/
+│   ├── contentai-overview.md   # What the product does
+│   ├── api-documentation.md    # GraphQL/REST docs
+│   └── user-guide.md           # How to use it
 ├── architecture/
-│   ├── overview.md
-│   ├── network-topology.md
-│   ├── storage-architecture.md
+│   ├── system-overview.md
+│   ├── data-flow.md
 │   └── diagrams/
-│       ├── high-level.mmd
-│       └── network.mmd
 ├── operations/
 │   ├── runbooks/
-│   │   ├── node-failure.md
-│   │   ├── deployment-rollback.md
-│   │   └── disaster-recovery.md
-│   ├── troubleshooting.md
-│   └── common-tasks.md
-├── onboarding/
-│   ├── developer-setup.md
-│   ├── access-request.md
-│   └── first-deployment.md
+│   │   ├── strapi-restart.md
+│   │   ├── database-recovery.md
+│   │   └── ai-service-failure.md
+│   └── troubleshooting.md
 └── decisions/
-    ├── adr-001-k3s-over-k8s.md
+    ├── adr-001-strapi-over-alternatives.md
     ├── adr-002-hetzner-over-aws.md
-    └── adr-003-argocd-over-flux.md
+    └── adr-003-claude-api-integration.md
 ```
 
-### Key Deliverables
+### Success Criteria
 
-| Artifact | Description | Success Criteria |
-|----------|-------------|------------------|
-| **Network policies** | Default deny + explicit allow | Traffic blocked by default |
-| **RBAC** | Least privilege access | Users have minimal permissions |
-| **Secrets management** | External or sealed secrets | No secrets in Git |
-| **DR test** | Cluster restore | Recovery time < 1 hour |
-| **Architecture docs** | Complete documentation | Peer review passes |
-| **Runbooks** | Incident procedures | Step-by-step guides |
-| **Demo video** | Platform walkthrough | 10-15 minute demo |
+| Artifact | Description | Success Test |
+|----------|-------------|--------------|
+| **Network policies** | Default deny | Unauthorized traffic blocked |
+| **Secrets management** | No secrets in Git | Sealed secrets work |
+| **RBAC** | Least privilege | Limited access by role |
+| **DR test** | Full recovery | Restore ContentAI from backup |
+| **Documentation** | Complete | New person can understand |
+| **Demo** | 15 min walkthrough | Shows working product |
 
 ---
 
-## Demo Scenario
+## Demo Day: Showcasing ContentAI
 
-Your final demo should showcase:
+Your final demo tells the story of building a startup:
 
 ```mermaid
 sequenceDiagram
     participant You as Presenter
-    participant GH as GitHub
+    participant STRAPI as Strapi CMS
+    participant AI as AI Service
     participant ARGO as ArgoCD
-    participant K8S as k3s Cluster
     participant GRAF as Grafana
 
-    You->>You: 1. Show architecture diagram
+    You->>You: 1. "This is ContentAI"
 
-    You->>GH: 2. Push code change
-    GH->>ARGO: Webhook notification
-    ARGO->>K8S: Deploy new version
-    K8S-->>You: 3. Show rolling update
+    You->>STRAPI: 2. Create content request
+    STRAPI->>AI: Generate blog post
+    AI->>STRAPI: AI-generated content
+    STRAPI-->>You: 3. Show content created
 
-    You->>GRAF: 4. Show metrics dashboard
-    GRAF-->>You: Real-time metrics
+    You->>ARGO: 4. Push feature update
+    ARGO->>ARGO: Auto-sync
+    ARGO-->>You: 5. Show deployment
 
-    You->>K8S: 5. Kill a node
-    K8S->>K8S: Self-healing
-    K8S-->>You: 6. Show recovery
+    You->>GRAF: 6. Show metrics
+    GRAF-->>You: AI generation costs, latency
 
-    You->>You: 7. Run disaster recovery
-    You-->>You: 8. Show restored cluster
+    You->>You: 7. Kill a service
+    You-->>You: 8. Show auto-recovery
+
+    You->>You: 9. "This platform could run a YC startup"
 ```
 
 ### Demo Script
 
-1. **Architecture Overview** (2 min)
-   - Show high-level diagram
-   - Explain technology choices
+1. **The Product** (3 min)
+   - Show ContentAI in action
+   - Create content with AI generation
+   - Demonstrate search
 
-2. **Infrastructure-as-Code** (2 min)
-   - Show OpenTofu modules
-   - Demonstrate `tofu plan`
+2. **The Architecture** (2 min)
+   - High-level diagram
+   - How product and platform connect
 
-3. **GitOps Deployment** (3 min)
-   - Push a change to Git
+3. **GitOps in Action** (3 min)
+   - Push a code change
    - Watch ArgoCD sync
-   - Verify deployment
+   - See new feature deployed
 
 4. **Observability** (2 min)
-   - Show Grafana dashboards
-   - Query logs in Loki
-   - Show an alert rule
+   - Content creation metrics
+   - AI cost tracking
+   - API latency dashboard
 
-5. **Resilience** (3 min)
+5. **Resilience** (2 min)
    - Kill a pod, watch recovery
-   - (Optional) Kill a node
+   - Show self-healing
 
-6. **Automation** (2 min)
-   - Demo Python CLI tool
-   - Show common tasks automated
-
-7. **Q&A** (remaining time)
+6. **Q&A** (remaining time)
 
 ---
 
-## Portfolio Value
+## Your Portfolio After This
 
-After this internship, you'll have:
+### What You Can Show
 
-### GitHub Repository
+| Artifact | Description |
+|----------|-------------|
+| **GitHub Repository** | Production IaC, K8s manifests, CI/CD |
+| **Live Product** | Working ContentAI (if infra still up) |
+| **Documentation** | Architecture docs, runbooks, ADRs |
+| **Demo Video** | 15-min recorded walkthrough |
 
-- Production-grade IaC
-- Complete Kubernetes manifests
-- Observability configuration
-- Python automation tools
-- Comprehensive documentation
+### Interview Talking Points
 
-### Demonstrated Skills
+```
+✅ "I built an AI-powered content platform from scratch—Strapi CMS with Claude API integration"
+✅ "I deployed the entire product on Kubernetes with GitOps automation"
+✅ "I saved 90% on infrastructure costs by using Hetzner over AWS"
+✅ "I built observability that tracks AI generation costs in real-time"
+✅ "I designed the platform that could scale from 0 to millions of users"
+```
 
-| Skill | Evidence |
-|-------|----------|
-| **Infrastructure-as-Code** | OpenTofu modules |
-| **Configuration Management** | Ansible playbooks |
-| **Kubernetes** | HA cluster operation |
-| **GitOps** | ArgoCD implementation |
-| **Observability** | Prometheus/Grafana |
-| **Security** | Network policies, RBAC |
-| **Automation** | Python CLI tools |
-| **Documentation** | Architecture, runbooks |
+### Skills Demonstrated
 
-### Talking Points for Interviews
+| Category | What You Built |
+|----------|----------------|
+| **Product** | AI-powered content platform |
+| **Infrastructure** | OpenTofu modules, Ansible playbooks |
+| **Kubernetes** | HA cluster with production workloads |
+| **GitOps** | ArgoCD managing real applications |
+| **Observability** | Prometheus/Grafana with custom dashboards |
+| **Security** | Network policies, RBAC, secrets management |
+| **Documentation** | Architecture, operations, decisions |
 
-- "I designed and built a production-grade Kubernetes platform from scratch"
-- "I implemented GitOps with ArgoCD for automated deployments"
-- "I saved 90% on infrastructure costs by using Hetzner over AWS"
-- "I built Python automation tools to eliminate operational toil"
-- "I documented the architecture and created runbooks for incident response"
+---
+
+## The Difference
+
+```mermaid
+flowchart LR
+    subgraph Traditional["Other DevOps Internships"]
+        T1["Built a CI pipeline"]
+        T2["Deployed nginx"]
+        T3["Infrastructure project"]
+    end
+
+    subgraph ContentAI["This Internship"]
+        P1["Built a real product"]
+        P2["Deployed AI services"]
+        P3["Startup from scratch"]
+    end
+
+    Traditional -.->|"Generic portfolio"| X["🤷"]
+    ContentAI -.->|"Founder-level experience"| Y["🚀"]
+```
 
 ---
 
@@ -406,7 +382,7 @@ After this internship, you'll have:
 - [Before You Begin](./01-Before-You-Begin.md)
 - [Week-by-Week](./02-Week-by-Week.md)
 - [Your Role](./04-Your-Role.md)
-- [Architecture](../02-Engineering/01-Architecture.md)
+- [Vision](../01-Product/01-Vision.md)
 
 ---
 
