@@ -1,40 +1,52 @@
-# Infrastructure-as-Code with OpenTofu
+# Infrastructure-as-Code: Building ContentAI's Foundation
 
-## Beyond Click-Ops
+> *"Every castle stands on a foundation. OpenTofu is how we lay ContentAI's."*
 
-> *If it's not in Git, it doesn't exist. If it's not code, it doesn't scale.*
+## The Purpose: Infrastructure FOR ContentAI
 
----
+**Why are we doing this?** To give ContentAI a home.
 
-## Why Infrastructure-as-Code?
+Before we can deploy Strapi, AI services, and databases, we need servers. Not just any servers—**reliable, repeatable, documented infrastructure** that we can recreate at will.
 
 ```mermaid
-flowchart LR
-    subgraph Manual["Manual (Click-Ops)"]
-        direction TB
-        M1["Login to console"]
-        M2["Click through UI"]
-        M3["Hope you remember settings"]
-        M4["Pray nothing changed"]
-        M1 --> M2 --> M3 --> M4
+flowchart TB
+    subgraph Problem["🚫 WITHOUT IaC"]
+        P1["Click through Hetzner console"]
+        P2["Forget the exact settings"]
+        P3["Can't recreate when disaster strikes"]
+        P4["ContentAI dies, users suffer"]
     end
 
-    subgraph IaC["Infrastructure-as-Code"]
-        direction TB
-        I1["Write code"]
-        I2["Review in PR"]
-        I3["Apply automatically"]
-        I4["Guaranteed consistency"]
-        I1 --> I2 --> I3 --> I4
+    subgraph Solution["✅ WITH IaC"]
+        S1["Define infrastructure in code"]
+        S2["Version control everything"]
+        S3["Recreate in minutes"]
+        S4["ContentAI survives anything"]
     end
 
-    Manual -.->|"Unrepeatable\nUndocumented\nError-prone"| X["😱"]
-    IaC -.->|"Repeatable\nVersioned\nTestable"| Y["🚀"]
+    Problem -.->|"Manual chaos"| X["😱"]
+    Solution -.->|"Automated reliability"| Y["🚀 ContentAI runs forever"]
+
+    style Solution fill:#4CAF50
 ```
 
 ---
 
-## OpenTofu vs Terraform
+## What You'll Build for ContentAI
+
+| Infrastructure | Purpose for ContentAI |
+|---------------|----------------------|
+| **3 Server VMs** | k3s control plane (HA) |
+| **3 Agent VMs** | Run Strapi, AI service, databases |
+| **Private Network** | Secure communication between components |
+| **Load Balancer** | Public access to ContentAI |
+| **Firewall Rules** | Protect ContentAI from attacks |
+
+---
+
+## Why OpenTofu (Not Terraform)
+
+> *"We choose open source because vendor lock-in kills startups."*
 
 | Feature | Terraform | OpenTofu |
 |---------|-----------|----------|
@@ -44,20 +56,16 @@ flowchart LR
 | State | Same format | Same format |
 | Community | HashiCorp controlled | Linux Foundation |
 
-**Why OpenTofu?**
-- Truly open source (no license risk)
-- Drop-in Terraform replacement
-- Community-driven development
-- Same syntax and providers
+**For ContentAI:** OpenTofu is a drop-in Terraform replacement with no license risk.
 
 ---
 
-## Core Concepts
+## Core Concepts (The Building Blocks)
 
-### Providers
+### Providers: How We Talk to Hetzner
 
 ```hcl
-# Configure the Hetzner Cloud Provider
+# Tell OpenTofu we're using Hetzner Cloud
 terraform {
   required_providers {
     hcloud = {
@@ -68,102 +76,92 @@ terraform {
 }
 
 provider "hcloud" {
-  token = var.hcloud_token  # From environment or tfvars
+  token = var.hcloud_token  # Your Hetzner API token
 }
 ```
 
-### Resources
+### Resources: The Actual Infrastructure
 
 ```hcl
-# Create a server
-resource "hcloud_server" "web" {
-  name        = "web-1"
+# Create a server for ContentAI
+resource "hcloud_server" "contentai_server" {
+  name        = "contentai-server-1"
   image       = "ubuntu-22.04"
-  server_type = "cx31"
-  location    = "fsn1"
+  server_type = "cx31"  # 4 vCPU, 8GB RAM
+  location    = "fsn1"  # Frankfurt
 
   ssh_keys = [hcloud_ssh_key.admin.id]
 
   labels = {
+    product     = "contentai"
     environment = "production"
-    role        = "web"
+    role        = "server"
   }
-}
-
-# Create SSH key
-resource "hcloud_ssh_key" "admin" {
-  name       = "admin-key"
-  public_key = file("~/.ssh/id_ed25519.pub")
-}
-```
-
-### Data Sources
-
-```hcl
-# Reference existing resources
-data "hcloud_image" "ubuntu" {
-  name = "ubuntu-22.04"
-}
-
-data "hcloud_location" "frankfurt" {
-  name = "fsn1"
 }
 ```
 
 ---
 
-## Module Architecture
+## Module Architecture for ContentAI
 
 ```mermaid
 flowchart TB
-    subgraph Root["Root Module"]
-        Main["main.tf"]
-        Vars["variables.tf"]
-        Out["outputs.tf"]
+    subgraph Root["📁 Root Module (main.tf)"]
+        Main["ContentAI Infrastructure"]
     end
 
-    subgraph Modules["Reusable Modules"]
+    subgraph Modules["📦 Reusable Modules"]
         subgraph Network["modules/network"]
-            N1["VPC"]
+            N1["Private Network"]
             N2["Subnets"]
             N3["Firewall"]
         end
 
-        subgraph Compute["modules/k3s-cluster"]
-            C1["Servers"]
-            C2["Agents"]
+        subgraph Cluster["modules/k3s-cluster"]
+            C1["Server VMs"]
+            C2["Agent VMs"]
             C3["Load Balancer"]
         end
 
         subgraph Storage["modules/storage"]
             S1["Volumes"]
-            S2["Object Storage"]
         end
     end
 
+    subgraph Result["🚀 ContentAI Ready"]
+        R1["VMs running"]
+        R2["Network configured"]
+        R3["Ready for k3s + Strapi"]
+    end
+
     Main --> Network
-    Main --> Compute
+    Main --> Cluster
     Main --> Storage
-    Compute --> Network
-    Storage --> Compute
+    Cluster --> Network
+    Storage --> Cluster
+    Modules --> Result
+
+    style Result fill:#4CAF50
 ```
 
 ---
 
-## Module: Hetzner Server
+## Module: Hetzner Server (For ContentAI Workers)
+
+### Variables
 
 ```hcl
 # modules/hetzner-server/variables.tf
 
 variable "name" {
   type        = string
-  description = "Server name"
+  description = "Server name (e.g., contentai-agent-1)"
 }
 
 variable "server_type" {
   type        = string
   default     = "cx31"
-  description = "Hetzner server type (cx31 = 4 vCPU, 8GB RAM)"
+  description = "Hetzner server type (cx31 = 4 vCPU, 8GB RAM for Strapi)"
 }
 
 variable "image" {
@@ -175,25 +173,27 @@ variable "image" {
 variable "location" {
   type        = string
   default     = "fsn1"
-  description = "Hetzner datacenter"
+  description = "Hetzner datacenter (Frankfurt)"
 }
 
 variable "ssh_key_ids" {
   type        = list(string)
-  description = "SSH key IDs for access"
+  description = "SSH key IDs for admin access"
 }
 
 variable "network_id" {
   type        = string
-  description = "Private network to attach"
+  description = "Private network for ContentAI components"
 }
 
 variable "labels" {
   type        = map(string)
-  default     = {}
-  description = "Labels for the server"
+  default     = { product = "contentai" }
+  description = "Labels for organization"
 }
 ```
+
+### Main Resource
 
 ```hcl
 # modules/hetzner-server/main.tf
@@ -207,6 +207,7 @@ resource "hcloud_server" "this" {
 
   labels = merge(var.labels, {
     managed_by = "opentofu"
+    product    = "contentai"
   })
 
   network {
@@ -219,9 +220,7 @@ resource "hcloud_server" "this" {
   })
 
   lifecycle {
-    ignore_changes = [
-      user_data,  # Don't recreate for cloud-init changes
-    ]
+    ignore_changes = [user_data]
   }
 }
 
@@ -230,6 +229,8 @@ resource "hcloud_server_network" "this" {
   network_id = var.network_id
 }
 ```
+
+### Outputs
 
 ```hcl
 # modules/hetzner-server/outputs.tf
@@ -241,91 +242,88 @@ output "id" {
 
 output "ipv4_address" {
   value       = hcloud_server.this.ipv4_address
-  description = "Public IPv4 address"
+  description = "Public IPv4 (for SSH access)"
 }
 
 output "private_ip" {
   value       = hcloud_server_network.this.ip
-  description = "Private network IP"
-}
-
-output "status" {
-  value       = hcloud_server.this.status
-  description = "Server status"
+  description = "Private IP (for internal ContentAI traffic)"
 }
 ```
 
 ---
 
-## Module: k3s Cluster
+## Module: k3s Cluster for ContentAI
 
 ```hcl
 # modules/k3s-cluster/main.tf
 
-# Control plane servers
+# Control plane servers (run Kubernetes API, etcd)
 module "servers" {
   source   = "../hetzner-server"
-  count    = var.server_count
+  count    = var.server_count  # 3 for HA
 
-  name        = "${var.cluster_name}-server-${count.index}"
+  name        = "contentai-server-${count.index}"
   server_type = var.server_type
   location    = var.location
   ssh_key_ids = var.ssh_key_ids
   network_id  = var.network_id
 
   labels = {
-    cluster = var.cluster_name
+    cluster = "contentai"
     role    = "server"
     index   = count.index
   }
 }
 
-# Worker agents
+# Worker agents (run Strapi, AI service, databases)
 module "agents" {
   source   = "../hetzner-server"
-  count    = var.agent_count
+  count    = var.agent_count  # 3 for ContentAI workloads
 
-  name        = "${var.cluster_name}-agent-${count.index}"
-  server_type = var.agent_type
+  name        = "contentai-agent-${count.index}"
+  server_type = var.agent_type  # Bigger for Strapi
   location    = var.location
   ssh_key_ids = var.ssh_key_ids
   network_id  = var.network_id
 
   labels = {
-    cluster = var.cluster_name
+    cluster = "contentai"
     role    = "agent"
     index   = count.index
   }
 }
 
-# Load balancer for HA control plane
-resource "hcloud_load_balancer" "k3s" {
-  name               = "${var.cluster_name}-lb"
+# Load balancer for public access to ContentAI
+resource "hcloud_load_balancer" "contentai" {
+  name               = "contentai-lb"
   load_balancer_type = "lb11"
   location           = var.location
 
   labels = {
-    cluster = var.cluster_name
+    cluster = "contentai"
     role    = "loadbalancer"
   }
 }
 
-resource "hcloud_load_balancer_target" "servers" {
-  count            = var.server_count
-  load_balancer_id = hcloud_load_balancer.k3s.id
+# Point LB to agents (where Strapi runs)
+resource "hcloud_load_balancer_target" "agents" {
+  count            = var.agent_count
+  load_balancer_id = hcloud_load_balancer.contentai.id
   type             = "server"
-  server_id        = module.servers[count.index].id
+  server_id        = module.agents[count.index].id
 }
 
-resource "hcloud_load_balancer_service" "k3s_api" {
-  load_balancer_id = hcloud_load_balancer.k3s.id
+# HTTP/HTTPS for ContentAI
+resource "hcloud_load_balancer_service" "https" {
+  load_balancer_id = hcloud_load_balancer.contentai.id
   protocol         = "tcp"
-  listen_port      = 6443
-  destination_port = 6443
+  listen_port      = 443
+  destination_port = 443
 
   health_check {
     protocol = "tcp"
-    port     = 6443
+    port     = 443
     interval = 10
     timeout  = 5
     retries  = 3
@@ -337,14 +335,16 @@ resource "hcloud_load_balancer_service" "k3s_api" {
 
 ## State Management
 
-### Remote State with S3
+> *"The state file is your source of truth. Lose it, and you lose track of what exists."*
+
+### Remote State (Team Collaboration)
 
 ```hcl
 # backend.tf
 
 terraform {
   backend "s3" {
-    bucket = "terraform-state-bucket"
+    bucket = "contentai-terraform-state"
     key    = "clusters/production/terraform.tfstate"
     region = "eu-central-1"
 
@@ -355,7 +355,6 @@ terraform {
 
     skip_credentials_validation = true
     skip_metadata_api_check     = true
-    skip_region_validation      = true
     force_path_style            = true
   }
 }
@@ -365,55 +364,79 @@ terraform {
 
 ```mermaid
 sequenceDiagram
-    participant User1 as Developer 1
-    participant Lock as State Lock (DynamoDB/S3)
+    participant You as Developer 1
+    participant Lock as State Lock
     participant State as State File
 
-    User1->>Lock: Acquire lock
-    Lock-->>User1: Lock acquired
-    User1->>State: Read state
-    User1->>User1: Plan changes
-    User1->>State: Write state
-    User1->>Lock: Release lock
+    You->>Lock: Acquire lock
+    Lock-->>You: Lock acquired
+    You->>State: Read state
+    You->>You: Plan ContentAI infrastructure
+    You->>State: Write new state
+    You->>Lock: Release lock
+
+    Note over You,State: No one else can modify during your work
 ```
 
 ---
 
-## Workflow
-
-### Development Cycle
+## Workflow: Building ContentAI Infrastructure
 
 ```mermaid
 flowchart LR
-    subgraph Local["Local Development"]
-        Write["Write HCL"]
-        Format["tofu fmt"]
-        Validate["tofu validate"]
+    subgraph Write["✍️ Write"]
+        W1["Define ContentAI VMs"]
+        W2["tofu fmt (format)"]
+        W3["tofu validate"]
     end
 
-    subgraph Plan["Planning"]
-        Init["tofu init"]
-        Plan["tofu plan"]
-        Review["Review Plan"]
+    subgraph Plan["📋 Plan"]
+        P1["tofu init"]
+        P2["tofu plan"]
+        P3["Review: 6 VMs, 1 LB, 1 network"]
     end
 
-    subgraph Apply["Application"]
-        Apply1["tofu apply"]
-        Verify["Verify Resources"]
+    subgraph Apply["🚀 Apply"]
+        A1["tofu apply"]
+        A2["VMs created"]
+        A3["Ready for Ansible + k3s"]
     end
 
-    Write --> Format --> Validate
-    Validate --> Init --> Plan --> Review
-    Review -->|"Approved"| Apply1 --> Verify
-    Review -->|"Changes needed"| Write
+    Write --> Plan --> Apply
+
+    style Apply fill:#4CAF50
 ```
 
-### CI/CD Integration
+### Commands
+
+```bash
+# Initialize (download providers)
+tofu init
+
+# Format your code
+tofu fmt -recursive
+
+# Validate syntax
+tofu validate
+
+# Preview what will be created
+tofu plan
+
+# Create ContentAI infrastructure
+tofu apply
+
+# When done, tear it all down (careful!)
+tofu destroy
+```
+
+---
+
+## CI/CD Integration
 
 ```yaml
-# .github/workflows/terraform.yml
+# .github/workflows/contentai-infra.yml
 
-name: Terraform
+name: ContentAI Infrastructure
 
 on:
   pull_request:
@@ -441,18 +464,18 @@ jobs:
         run: tofu validate
         working-directory: terraform
 
-      - name: Plan
+      - name: Plan ContentAI Infrastructure
         run: tofu plan -out=plan.tfplan
         working-directory: terraform
         env:
           TF_VAR_hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
 
-      - name: Comment PR
+      - name: Comment PR with Plan
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
-            // Post plan output to PR
+            // Show what infrastructure will be created
 
   apply:
     needs: plan
@@ -460,37 +483,38 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Apply
+      - name: Create ContentAI Infrastructure
         run: tofu apply -auto-approve plan.tfplan
         working-directory: terraform
 ```
 
 ---
 
-## Best Practices
+## Best Practices for ContentAI
 
-### 1. Use Modules for Reusability
+### 1. Use Modules for Consistency
 
 ```hcl
-# Good: Reusable module
-module "production_cluster" {
+# Production cluster
+module "production" {
   source = "./modules/k3s-cluster"
 
-  cluster_name = "prod"
+  cluster_name = "contentai-prod"
   server_count = 3
   agent_count  = 3
 }
 
-module "staging_cluster" {
+# Staging cluster (smaller)
+module "staging" {
   source = "./modules/k3s-cluster"
 
-  cluster_name = "staging"
+  cluster_name = "contentai-staging"
   server_count = 1
   agent_count  = 2
 }
 ```
 
-### 2. Use Variables with Validation
+### 2. Validate Inputs
 
 ```hcl
 variable "server_count" {
@@ -499,88 +523,54 @@ variable "server_count" {
 
   validation {
     condition     = var.server_count % 2 == 1
-    error_message = "Server count must be odd for etcd quorum."
-  }
-}
-
-variable "environment" {
-  type        = string
-  description = "Environment name"
-
-  validation {
-    condition     = contains(["dev", "staging", "prod"], var.environment)
-    error_message = "Environment must be dev, staging, or prod."
+    error_message = "Server count must be odd for etcd quorum (1, 3, or 5)."
   }
 }
 ```
 
-### 3. Use Outputs for Integration
+### 3. Output for Ansible
 
 ```hcl
-# Root outputs.tf
-output "kubeconfig_command" {
-  value       = "scp root@${module.cluster.server_ips[0]}:/etc/rancher/k3s/k3s.yaml ~/.kube/config"
-  description = "Command to get kubeconfig"
-}
-
+# Outputs for the next step: Ansible configuration
 output "server_ips" {
   value       = module.cluster.server_ips
-  description = "Control plane IPs for Ansible inventory"
+  description = "ContentAI control plane IPs (for Ansible inventory)"
 }
 
 output "agent_ips" {
   value       = module.cluster.agent_ips
-  description = "Worker node IPs for Ansible inventory"
+  description = "ContentAI worker IPs (where Strapi will run)"
+}
+
+output "load_balancer_ip" {
+  value       = hcloud_load_balancer.contentai.ipv4
+  description = "Public IP for ContentAI (point DNS here)"
 }
 ```
 
 ---
 
-## Common Patterns
+## ContentAI Cost Summary
 
-### Count vs For_Each
+| Resource | Spec | Monthly Cost |
+|----------|------|--------------|
+| 3x Server VMs | CX31 (4 vCPU, 8GB) | €30 |
+| 3x Agent VMs | CX41 (8 vCPU, 16GB) | €60 |
+| Load Balancer | LB11 | €6 |
+| Private Network | Included | €0 |
+| **Total** | | **€96/month** |
 
-```hcl
-# Count: For identical resources (index-based)
-resource "hcloud_server" "agents" {
-  count = 3
-  name  = "agent-${count.index}"
-}
+*For comparison, this would cost ~$2,000/month on AWS.*
 
-# For_each: For distinct resources (named)
-resource "hcloud_server" "nodes" {
-  for_each = {
-    server-1 = { type = "cx31", role = "server" }
-    server-2 = { type = "cx31", role = "server" }
-    agent-1  = { type = "cx41", role = "agent" }
-  }
+---
 
-  name        = each.key
-  server_type = each.value.type
+## What's Next
 
-  labels = {
-    role = each.value.role
-  }
-}
-```
+Once you've run `tofu apply` and have 6 VMs ready:
 
-### Dynamic Blocks
-
-```hcl
-resource "hcloud_firewall" "cluster" {
-  name = "k3s-cluster"
-
-  dynamic "rule" {
-    for_each = var.firewall_rules
-    content {
-      direction  = rule.value.direction
-      protocol   = rule.value.protocol
-      port       = rule.value.port
-      source_ips = rule.value.source_ips
-    }
-  }
-}
-```
+1. **[Configuration Management](./03-Configuration-Management.md)** — Use Ansible to install k3s
+2. **[Container Orchestration](./04-Container-Orchestration.md)** — Understand k3s
+3. **[Exercise: OpenTofu](../04-Internship/Exercises/02-OpenTofu.md)** — Hands-on practice
 
 ---
 
