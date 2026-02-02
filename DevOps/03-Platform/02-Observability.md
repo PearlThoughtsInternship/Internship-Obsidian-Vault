@@ -1,10 +1,10 @@
-# Observability: Watching ContentAI's Heartbeat
+# Observability: Watching Autograph's Heartbeat
 
-> *"You can't fix what you can't see. Observability transforms 'ContentAI is broken' into 'The AI service latency increased at 14:32 when Claude's API rate limit hit.'"*
+> *"You can't fix what you can't see. Observability transforms 'Autograph is broken' into 'The AI service latency increased at 14:32 when Claude's API rate limit hit.'"*
 
-## The Purpose: Why Watch ContentAI?
+## The Purpose: Why Watch Autograph?
 
-**Why are we doing this?** Different people need different answers from ContentAI.
+**Why are we doing this?** Different people need different answers from Autograph.
 
 | Who | What They Ask | What Observability Tells Them |
 |-----|---------------|-------------------------------|
@@ -16,7 +16,7 @@
 
 ```mermaid
 flowchart TB
-    subgraph ContentAI["🏰 CONTENTAI PLATFORM"]
+    subgraph Autograph["🏰 CONTENTAI PLATFORM"]
         Strapi["Strapi CMS\n(content)"]
         AI["AI Service\n(generation)"]
         PG["PostgreSQL\n(storage)"]
@@ -37,19 +37,19 @@ flowchart TB
         Biz["Business\n'Are users creating?'"]
     end
 
-    ContentAI --> Observability
+    Autograph --> Observability
     Observability --> Stakeholders
 
-    style ContentAI fill:#4CAF50
+    style Autograph fill:#4CAF50
 ```
 
 ---
 
-## The Three Pillars (For ContentAI)
+## The Three Pillars (For Autograph)
 
 ```mermaid
 mindmap
-  root((Observability\nfor ContentAI))
+  root((Observability\nfor Autograph))
     Metrics
       Strapi: requests/sec, latency
       AI Service: tokens used, generation time
@@ -68,21 +68,21 @@ mindmap
 
 ### When to Use Each Pillar
 
-| Question | Pillar | ContentAI Example |
+| Question | Pillar | Autograph Example |
 |----------|--------|-------------------|
 | "How many articles created today?" | **Metrics** | `increase(strapi_content_created_total[24h])` |
 | "Why did AI generation fail for user X?" | **Logs** | Search for user ID in Loki |
 | "Why is article creation slow?" | **Traces** | Follow request: Strapi → AI Service → Claude |
-| "Is ContentAI meeting SLAs?" | **Metrics** | Dashboard showing p99 latency, error rate |
+| "Is Autograph meeting SLAs?" | **Metrics** | Dashboard showing p99 latency, error rate |
 | "What happened during the outage?" | **Logs** | Time-range query showing the cascade |
 
 ---
 
-## ContentAI Observability Architecture
+## Autograph Observability Architecture
 
 ```mermaid
 flowchart TB
-    subgraph ContentAI["ContentAI Applications"]
+    subgraph Autograph["Autograph Applications"]
         Strapi["Strapi CMS\n:1337/metrics"]
         AI["AI Service\n:3001/metrics"]
         PG["PostgreSQL\nExporter"]
@@ -108,9 +108,9 @@ flowchart TB
     end
 
     subgraph Visualization["Dashboards & Alerts"]
-        Graf["Grafana\nContentAI Dashboard"]
+        Graf["Grafana\nAutograph Dashboard"]
         AM["AlertManager"]
-        Slack["#contentai-alerts"]
+        Slack["#autograph-alerts"]
     end
 
     Strapi & AI & PG & Redis -->|"/metrics"| Prom
@@ -155,13 +155,13 @@ flowchart LR
 **Key metrics for DevOps:**
 
 ```promql
-# Are all ContentAI pods running?
-kube_deployment_status_replicas_available{namespace="contentai"}
+# Are all Autograph pods running?
+kube_deployment_status_replicas_available{namespace="autograph"}
 /
-kube_deployment_spec_replicas{namespace="contentai"}
+kube_deployment_spec_replicas{namespace="autograph"}
 
 # Any pods crashing?
-increase(kube_pod_container_status_restarts_total{namespace="contentai"}[1h])
+increase(kube_pod_container_status_restarts_total{namespace="autograph"}[1h])
 
 # Disk space on agents
 (node_filesystem_avail_bytes{mountpoint="/var/lib/longhorn"} / node_filesystem_size_bytes) * 100
@@ -206,7 +206,7 @@ histogram_quantile(0.95, rate(strapi_http_request_duration_seconds_bucket[5m]))
 topk(5, histogram_quantile(0.99, rate(strapi_http_request_duration_seconds_bucket[5m])))
 
 # PostgreSQL query duration
-pg_stat_activity_max_tx_duration{datname="contentai"}
+pg_stat_activity_max_tx_duration{datname="autograph"}
 
 # Redis cache hit ratio
 redis_keyspace_hits_total / (redis_keyspace_hits_total + redis_keyspace_misses_total)
@@ -216,13 +216,13 @@ redis_keyspace_hits_total / (redis_keyspace_hits_total + redis_keyspace_misses_t
 
 ```logql
 # Find errors in Strapi
-{namespace="contentai", app="strapi"} |= "error"
+{namespace="autograph", app="strapi"} |= "error"
 
 # Find slow database queries
-{namespace="contentai", app="strapi"} | json | duration > 1s
+{namespace="autograph", app="strapi"} | json | duration > 1s
 
 # Track specific content creation
-{namespace="contentai"} |= "article_id=12345"
+{namespace="autograph"} |= "article_id=12345"
 ```
 
 ---
@@ -289,7 +289,7 @@ rate(ai_service_provider_fallback_total[1h])
 
 ```mermaid
 flowchart TB
-    subgraph BusinessDashboard["ContentAI Business Dashboard"]
+    subgraph BusinessDashboard["Autograph Business Dashboard"]
         subgraph Today["Today's Activity"]
             Articles["📝 Articles Created: 234"]
             AI["🤖 AI Generations: 1,456"]
@@ -331,7 +331,7 @@ sum(rate(strapi_http_requests_total{status=~"5.."}[5m])) * 60 * 60 * 24
 
 ---
 
-## ContentAI-Specific Dashboards
+## Autograph-Specific Dashboards
 
 ### Strapi CMS Dashboard
 
@@ -395,15 +395,15 @@ flowchart TB
 
 ---
 
-## ContentAI Alert Rules
+## Autograph Alert Rules
 
 ### Critical Alerts (Wake Someone Up)
 
 ```yaml
-# alerts/contentai-critical.yml
+# alerts/autograph-critical.yml
 
 groups:
-  - name: contentai-critical
+  - name: autograph-critical
     interval: 30s
     rules:
       # Strapi is down
@@ -412,11 +412,11 @@ groups:
         for: 1m
         labels:
           severity: critical
-          product: contentai
+          product: autograph
         annotations:
           summary: "🚨 Strapi CMS is DOWN"
-          description: "Content creators cannot access ContentAI"
-          runbook: "Check pod status: kubectl get pods -n contentai -l app=strapi"
+          description: "Content creators cannot access Autograph"
+          runbook: "Check pod status: kubectl get pods -n autograph -l app=strapi"
 
       # AI Service errors blocking content creation
       - alert: AIServiceHighErrorRate
@@ -427,7 +427,7 @@ groups:
         for: 5m
         labels:
           severity: critical
-          product: contentai
+          product: autograph
         annotations:
           summary: "🚨 AI Service error rate > 10%"
           description: "AI content generation failing, affecting users"
@@ -439,10 +439,10 @@ groups:
         for: 1m
         labels:
           severity: critical
-          product: contentai
+          product: autograph
         annotations:
           summary: "🚨 PostgreSQL database is DOWN"
-          description: "ContentAI data layer unavailable"
+          description: "Autograph data layer unavailable"
 
       # Content API SLA breach
       - alert: ContentAPISLABreach
@@ -451,7 +451,7 @@ groups:
         for: 10m
         labels:
           severity: critical
-          product: contentai
+          product: autograph
         annotations:
           summary: "🚨 Content API p95 latency > 500ms"
           description: "SLA breach: p95 = {{ $value }}s"
@@ -461,10 +461,10 @@ groups:
 ### Warning Alerts (Look at it Soon)
 
 ```yaml
-# alerts/contentai-warning.yml
+# alerts/autograph-warning.yml
 
 groups:
-  - name: contentai-warning
+  - name: autograph-warning
     rules:
       # AI token usage high (cost control)
       - alert: AITokenUsageHigh
@@ -472,7 +472,7 @@ groups:
         for: 5m
         labels:
           severity: warning
-          product: contentai
+          product: autograph
         annotations:
           summary: "⚠️ High AI token usage"
           description: "{{ $value }} tokens in last hour"
@@ -484,7 +484,7 @@ groups:
         for: 1m
         labels:
           severity: warning
-          product: contentai
+          product: autograph
         annotations:
           summary: "⚠️ AI rate limit approaching"
           description: "Only {{ $value }} requests remaining"
@@ -498,7 +498,7 @@ groups:
         for: 15m
         labels:
           severity: warning
-          product: contentai
+          product: autograph
         annotations:
           summary: "⚠️ Redis cache hit ratio low"
           description: "Cache hit ratio: {{ $value | humanizePercentage }}"
@@ -510,7 +510,7 @@ groups:
         for: 5m
         labels:
           severity: warning
-          product: contentai
+          product: autograph
         annotations:
           summary: "⚠️ Search index lagging"
           description: "Search results may be stale"
@@ -518,7 +518,7 @@ groups:
 
 ---
 
-## Instrumenting ContentAI
+## Instrumenting Autograph
 
 ### Strapi Metrics Plugin
 
@@ -526,7 +526,7 @@ groups:
 // strapi/src/plugins/metrics/server/services/metrics.js
 
 module.exports = ({ strapi }) => ({
-  // Custom metrics for ContentAI
+  // Custom metrics for Autograph
   contentCreated: new client.Counter({
     name: 'strapi_content_created_total',
     help: 'Total content entries created',
@@ -596,7 +596,7 @@ export const aiMetrics = {
 
 ---
 
-## ContentAI Tracing
+## Autograph Tracing
 
 ### Distributed Trace: Article Creation
 
@@ -655,7 +655,7 @@ const sdk = new NodeSDK({
       },
     }),
   ],
-  serviceName: 'contentai-strapi',
+  serviceName: 'autograph-strapi',
 });
 
 sdk.start();
@@ -663,11 +663,11 @@ sdk.start();
 
 ---
 
-## Golden Signals for ContentAI
+## Golden Signals for Autograph
 
 ```mermaid
 flowchart TB
-    subgraph GoldenSignals["ContentAI Golden Signals"]
+    subgraph GoldenSignals["Autograph Golden Signals"]
         subgraph Latency["LATENCY\n'How fast?'"]
             L1["Content API: 85ms p95"]
             L2["AI Generation: 2.1s p95"]
@@ -703,11 +703,11 @@ flowchart TB
 
 ## Grafana Dashboard Panels
 
-### ContentAI Overview Dashboard JSON
+### Autograph Overview Dashboard JSON
 
 ```json
 {
-  "title": "ContentAI Overview",
+  "title": "Autograph Overview",
   "panels": [
     {
       "title": "Content Created (24h)",
@@ -780,7 +780,7 @@ flowchart TB
 
 ---
 
-## Helm Installation for ContentAI
+## Helm Installation for Autograph
 
 ### Prometheus Stack
 
@@ -790,11 +790,11 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm install prometheus prometheus-community/kube-prometheus-stack \
   --namespace monitoring \
   --create-namespace \
-  -f prometheus-contentai-values.yaml
+  -f prometheus-autograph-values.yaml
 ```
 
 ```yaml
-# prometheus-contentai-values.yaml
+# prometheus-autograph-values.yaml
 
 prometheus:
   prometheusSpec:
@@ -807,13 +807,13 @@ prometheus:
             requests:
               storage: 50Gi
 
-    # Scrape ContentAI services
+    # Scrape Autograph services
     additionalScrapeConfigs:
       - job_name: 'strapi'
         kubernetes_sd_configs:
           - role: pod
             namespaces:
-              names: ['contentai']
+              names: ['autograph']
         relabel_configs:
           - source_labels: [__meta_kubernetes_pod_label_app]
             regex: strapi
@@ -823,7 +823,7 @@ prometheus:
         kubernetes_sd_configs:
           - role: pod
             namespaces:
-              names: ['contentai']
+              names: ['autograph']
         relabel_configs:
           - source_labels: [__meta_kubernetes_pod_label_app]
             regex: ai-service
@@ -834,44 +834,44 @@ grafana:
   dashboardProviders:
     dashboardproviders.yaml:
       providers:
-        - name: 'contentai'
-          folder: 'ContentAI'
+        - name: 'autograph'
+          folder: 'Autograph'
           type: file
           options:
-            path: /var/lib/grafana/dashboards/contentai
+            path: /var/lib/grafana/dashboards/autograph
 
 alertmanager:
   config:
     route:
-      receiver: 'contentai-slack'
+      receiver: 'autograph-slack'
       routes:
         - match:
-            product: contentai
-          receiver: 'contentai-slack'
+            product: autograph
+          receiver: 'autograph-slack'
     receivers:
-      - name: 'contentai-slack'
+      - name: 'autograph-slack'
         slack_configs:
-          - channel: '#contentai-alerts'
-            title: 'ContentAI Alert: {{ .GroupLabels.alertname }}'
+          - channel: '#autograph-alerts'
+            title: 'Autograph Alert: {{ .GroupLabels.alertname }}'
 ```
 
 ---
 
 ## What's Next
 
-With ContentAI observability in place:
+With Autograph observability in place:
 
-1. **Security** — [03-Security.md](./03-Security.md) to protect ContentAI
+1. **Security** — [03-Security.md](./03-Security.md) to protect Autograph
 2. **Networking** — [04-Networking.md](./04-Networking.md) for ingress and service mesh
-3. **Exercises** — Build actual dashboards for ContentAI
+3. **Exercises** — Build actual dashboards for Autograph
 
 ---
 
 ## Related
 
-- [Architecture](../02-Engineering/01-Architecture.md) — ContentAI system design
-- [Container Orchestration](../02-Engineering/04-Container-Orchestration.md) — Where ContentAI runs
-- [GitOps](../02-Engineering/05-GitOps.md) — How ContentAI deploys
+- [Architecture](../02-Engineering/01-Architecture.md) — Autograph system design
+- [Container Orchestration](../02-Engineering/04-Container-Orchestration.md) — Where Autograph runs
+- [GitOps](../02-Engineering/05-GitOps.md) — How Autograph deploys
 
 ---
 
