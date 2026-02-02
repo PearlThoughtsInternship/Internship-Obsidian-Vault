@@ -1,6 +1,46 @@
-# ContentAI: Your Startup Story Begins
+# Autograph: A Cinderella Story in Code
 
-> *"Once upon a time, in a world drowning in content needs, a team of engineers decided to build something magical..."*
+> *"Once upon a time, there was someone who dreamed of building something magical. They didn't wait for a fairy godmother. They became the magic themselves."*
+
+---
+
+## The Cinderella Transformation
+
+This isn't just an internship. **This is your transformation story.**
+
+Like Cinderella, you start in the ashes — unknown, untested, full of potential but without the platform to show it. By the end of this journey, you'll walk into the ball as a **founding engineer** who built a real product.
+
+```mermaid
+flowchart TB
+    subgraph Before["🧹 BEFORE THE BALL (Day 1)"]
+        B1["Unknown to the industry"]
+        B2["Skills scattered like cinders"]
+        B3["No production experience"]
+        B4["Dreams without infrastructure"]
+    end
+
+    subgraph Magic["✨ THE TRANSFORMATION (4 Weeks)"]
+        M1["Build Autograph - a real AI platform"]
+        M2["Master infrastructure magic"]
+        M3["Ship code to production"]
+        M4["Own your creation"]
+    end
+
+    subgraph After["👑 AT THE BALL (Demo Day)"]
+        A1["Portfolio-worthy product"]
+        A2["Founding engineer skills"]
+        A3["Production-grade platform"]
+        A4["Your story to tell forever"]
+    end
+
+    Before -->|"You cross the threshold"| Magic
+    Magic -->|"The clock strikes midnight"| After
+
+    style Magic fill:#9C27B0
+    style After fill:#FFD700
+```
+
+**The glass slipper?** It's the platform you build. It fits only you — because you created it.
 
 ---
 
@@ -9,7 +49,7 @@
 > **Current Focus**: Product vision, infrastructure design, development environment
 >
 > **Key Deliverables**:
-> - Working development cluster for ContentAI
+> - Working development cluster for Autograph
 > - Infrastructure-as-Code foundation
 > - Understanding of the product you're building
 >
@@ -17,57 +57,21 @@
 
 ---
 
-## The Story So Far
+## Your Fairy Tale: Autograph
 
-**Every great startup begins with a problem worth solving.**
+**Every great story needs a magical artifact.** Ours is **Autograph** — an AI-powered content platform that transforms how creators work.
 
-Remember the stories your grandparents told you at bedtime? They hooked you from the first line, kept you engaged through every twist, and left you wanting more. **That's what we're building here**—not boring infrastructure docs, but a compelling story of creation.
-
-You're the protagonist in this tale. And like every hero's journey, it begins with a call to adventure:
+The name says it all: every piece of content bears the **authentic signature** of its creator, enhanced by AI magic. Like Cinderella's transformation didn't change who she was — it revealed who she could become.
 
 ```mermaid
 flowchart TB
-    subgraph Chapter1["📖 CHAPTER 1: The Problem"]
-        Problem["Content creation is slow, expensive, and doesn't scale"]
-    end
-
-    subgraph Chapter2["📖 CHAPTER 2: The Solution"]
-        Solution["ContentAI — AI-powered content at the speed of thought"]
-    end
-
-    subgraph Chapter3["📖 CHAPTER 3: The Hero (You)"]
-        Hero["A founding engineer builds the platform that makes it possible"]
-    end
-
-    subgraph Chapter4["📖 CHAPTER 4: The Happy Ending"]
-        Victory["Real users create 10x more content at 10% of the cost"]
-    end
-
-    Chapter1 --> Chapter2 --> Chapter3 --> Chapter4
-
-    style Chapter3 fill:#4CAF50
-    style Chapter4 fill:#FFD700
-```
-
-**Your role**: You're not Cinderella waiting for a fairy godmother. **You're the one building the magic.**
-
----
-
-## The Mission: Build Magic, Not Infrastructure
-
-**You're not here to learn DevOps. You're here to build a startup.**
-
-Welcome to **ContentAI**—an AI-powered content platform that transforms how creators work. Like a fairy tale where ordinary things become extraordinary, we turn blank pages into published content with a touch of AI.
-
-```mermaid
-flowchart TB
-    subgraph Product["🏰 THE CASTLE (Your Product)"]
-        CMS["Strapi CMS<br/>Content Kingdom"]
+    subgraph Product["🏰 THE CASTLE (Autograph)"]
+        CMS["Strapi CMS<br/>The Grand Hall"]
         AI["AI Services<br/>The Magic"]
         API["APIs<br/>The Gates"]
     end
 
-    subgraph Users["👥 THE VILLAGERS (Your Users)"]
+    subgraph Users["👥 THE GUESTS (Your Users)"]
         Creators["Content Creators"]
         Devs["Developers"]
         Business["Business Teams"]
@@ -75,7 +79,7 @@ flowchart TB
 
     subgraph Platform["🛠️ THE FOUNDATION (Your Platform)"]
         K8s["Kubernetes<br/>Solid Ground"]
-        GitOps["GitOps<br/>Automatic Building"]
+        GitOps["GitOps<br/>Self-Building Walls"]
         Obs["Observability<br/>The Watchtower"]
     end
 
@@ -86,10 +90,42 @@ flowchart TB
     style Platform fill:#2196F3
 ```
 
-**By the end of this story:**
-- You'll have built a **real AI-powered content platform** (not a demo)
-- Infrastructure that could run a **YC-funded startup**
-- Skills to be a **founding engineer**, not just an ops person
+---
+
+## The Story Structure
+
+Like any great fairy tale, your journey has **four acts**:
+
+```mermaid
+timeline
+    title The Autograph Saga: From Cinders to Crown
+
+    section Act I — The Ashes
+        Week 1 : You start with nothing
+               : Empty servers await
+               : OpenTofu draws the blueprints
+               : Ansible prepares the ground
+               : k3s cluster rises from dust
+
+    section Act II — The Transformation
+        Week 2 : The magic awakens
+               : Autograph comes alive!
+               : Strapi CMS deployed
+               : AI service breathes
+               : The product has a heartbeat
+
+    section Act III — The Ball
+        Week 3 : You enter the ballroom
+               : ArgoCD: the castle builds itself
+               : CI/CD: dance of automation
+               : Observability: all eyes watching
+
+    section Act IV — The Crown
+        Week 4 : You claim your destiny
+               : Security: protect the kingdom
+               : Performance: speed of magic
+               : Demo Day: your moment of truth
+```
 
 ---
 
@@ -101,40 +137,38 @@ Look, we get it. Technical documentation can be dry. But consider this:
 
 | Boring Approach | Storytelling Approach |
 |-----------------|----------------------|
-| "Deploy PostgreSQL with StatefulSet" | "Every kingdom needs a treasury. PostgreSQL is where ContentAI keeps its most valuable asset—user content." |
+| "Deploy PostgreSQL with StatefulSet" | "Every kingdom needs a treasury. PostgreSQL is where Autograph keeps its most valuable asset—user content." |
 | "Configure ingress rules" | "Build the gates to your castle. Who gets in? Who stays out? That's what ingress is for." |
 | "Set up monitoring" | "The watchtower guards never sleep. Prometheus watches every heartbeat of your kingdom." |
 
 **The technical content is identical. The engagement is 10x higher.**
 
-This documentation is written as a journey. Some pages will feel like chapters in an adventure. Some will have the practical details you need. All of them are designed to keep you hooked.
-
 ---
 
-## Your Character Profile
+## Your Character Sheet
 
-Like every RPG, you start with a class. Here's yours:
+Like every RPG hero, you have a class:
 
 ```mermaid
 mindmap
   root((Founding<br/>Engineer))
     Origin Story
-      Not a DevOps intern
-      A startup builder
-      Product-minded
+      Cinderella among the ashes
+      Dreams of building magic
+      Potential waiting to bloom
     Skills Unlocked
       Infrastructure as Code
       Container Orchestration
       AI Integration
       GitOps Automation
     Quest Items
-      ContentAI product
-      Production platform
+      Autograph platform
+      Production cluster
       Demo-ready system
     Final Boss
-      Launch readiness
+      Demo Day presentation
       Real users
-      Startup mode
+      The crown awaits
 ```
 
 ---
@@ -149,7 +183,7 @@ flowchart LR
     end
 
     subgraph Vision["📜 THE PROPHECY"]
-        V1["What is ContentAI?"]
+        V1["What is Autograph?"]
         V2["Why does it matter?"]
     end
 
@@ -168,35 +202,35 @@ flowchart LR
 
 | Quest Step | Document | What You'll Discover |
 |------------|----------|---------------------|
-| **0. Join the Guild** | Communication section below | Meet your party |
-| **1. The Prophecy** | [01-Product/01-Vision.md](./01-Product/01-Vision.md) | **What ContentAI is and why it matters** |
+| **0. Join the Guild** | Communication section below | Meet your fellowship |
+| **1. The Prophecy** | [01-Product/01-Vision.md](./01-Product/01-Vision.md) | **What Autograph is and why it matters** |
 | **2. The Map** | [02-Engineering/01-Architecture.md](./02-Engineering/01-Architecture.md) | How product and platform fit together |
 | **3. First Quest** | [04-Internship/Exercises/01-Environment-Setup](./04-Internship/Exercises/01-Environment-Setup.md) | Get your hands dirty! |
 
 ---
 
-## The ContentAI Product
+## The Autograph Product
 
 ### What Users Get (The Magic)
 
-| Feature | Description | The Story |
-|---------|-------------|-----------|
-| **AI Content Generation** | Generate blog posts, descriptions, social media | *"Speak your idea, and words appear"* |
+| Feature | Description | The Cinderella Moment |
+|---------|-------------|----------------------|
+| **AI Content Generation** | Generate blog posts, descriptions, social media | *"Speak your wish, and words appear"* |
 | **Smart Summarization** | Auto-summarize documents, meetings, videos | *"A thousand pages become ten"* |
 | **Multi-language** | AI translation and localization | *"One story, told in every tongue"* |
-| **Content Workflows** | Approval chains, scheduling, publishing | *"From draft to kingdom-wide in a day"* |
-| **API-First** | Headless architecture | *"Content that flows like water, everywhere"* |
+| **Content Workflows** | Approval chains, scheduling, publishing | *"From rags to royal decree"* |
+| **API-First** | Headless architecture | *"Magic that flows everywhere"* |
 
-### Tech Stack (Your Arsenal)
+### Tech Stack (Your Magical Arsenal)
 
 | Layer | Technology | Your Quest |
 |-------|------------|------------|
-| **CMS** | Strapi (Headless) | Build the content throne |
-| **AI** | Claude/OpenAI APIs | Summon the AI djinn |
+| **CMS** | Strapi (Headless) | Build the grand hall |
+| **AI** | Claude/OpenAI APIs | Summon the fairy godmother |
 | **Database** | PostgreSQL | Guard the treasury |
-| **Search** | Meilisearch | Find any needle in any haystack |
+| **Search** | Meilisearch | Find the glass slipper |
 | **Cache** | Redis | Make everything instant |
-| **Platform** | k3s, ArgoCD, Prometheus | **The foundation that holds it all** |
+| **Platform** | k3s, ArgoCD, Prometheus | **The foundation that holds the castle** |
 
 ---
 
@@ -208,14 +242,14 @@ flowchart LR
 
 | Document | Description |
 |----------|-------------|
-| [Vision](./01-Product/01-Vision.md) | **Start here**—ContentAI product vision |
+| [Vision](./01-Product/01-Vision.md) | **Start here**—Autograph product vision |
 | [Market Context](./01-Product/02-Market-Context.md) | Why this product, why now |
 | [Capabilities](./01-Product/03-Capabilities.md) | Features and SLOs |
 | [Target Architecture](./01-Product/04-Target-Architecture.md) | Full system design |
 
 ### 02-Engineering — The Blueprints
 
-> *"Now we draw the plans."*
+> *"Now we draw the plans for the castle."*
 
 | Document | Description |
 |----------|-------------|
@@ -239,17 +273,17 @@ flowchart LR
 
 ### 04-Internship — Your Journey
 
-> *"The hero sets forth."*
+> *"The hero sets forth from the ashes."*
 
 | Document | Description |
 |----------|-------------|
-| [Before You Begin](./04-Internship/01-Before-You-Begin.md) | Startup mindset |
-| [Week-by-Week](./04-Internship/02-Week-by-Week.md) | 4-week progression |
-| [What You Build](./04-Internship/03-What-You-Build.md) | ContentAI deliverables |
+| [Before You Begin](./04-Internship/01-Before-You-Begin.md) | The Cinderella mindset |
+| [Week-by-Week](./04-Internship/02-Week-by-Week.md) | Your 4-act transformation |
+| [What You Build](./04-Internship/03-What-You-Build.md) | Autograph deliverables |
 | [Your Role](./04-Internship/04-Your-Role.md) | Founding engineer |
 | [Exercises](./04-Internship/Exercises/) | Hands-on building |
 
-### 05-Future — Beyond the Horizon
+### 05-Future — Beyond the Happily Ever After
 
 > *"And they lived happily ever after... but the story continues."*
 
@@ -260,46 +294,17 @@ flowchart LR
 
 ---
 
-## The Four Chapters of Your Journey
-
-```mermaid
-timeline
-    title The ContentAI Saga
-    section Chapter 1 — The Foundation
-        Week 1 : Lay the groundwork
-               : OpenTofu modules
-               : Ansible hardening
-               : k3s cluster rises
-    section Chapter 2 — The Magic Awakens
-        Week 2 : ContentAI comes alive!
-               : Deploy Strapi CMS
-               : AI service integration
-               : The product breathes
-    section Chapter 3 — Automation
-        Week 3 : The castle builds itself
-               : ArgoCD GitOps
-               : CI/CD pipeline
-               : Observability eyes
-    section Chapter 4 — The Launch
-        Week 4 : Ready for the world
-               : Security hardening
-               : Performance tuning
-               : Demo day triumph
-```
-
----
-
 ## What This Is (And What It's Not)
 
 ### This is NOT
 
 ```mermaid
 flowchart TB
-    subgraph Boring["❌ NOT THIS"]
-        B1["Watch dashboards all day"]
-        B2["Maintain someone else's systems"]
-        B3["Follow scripts blindly"]
-        B4["Infrastructure is THE job"]
+    subgraph Boring["❌ THE WRONG FAIRY TALE"]
+        B1["Waiting for a fairy godmother"]
+        B2["Following someone else's script"]
+        B3["Hoping for magic to happen"]
+        B4["Staying in the ashes"]
     end
 
     style Boring fill:#ffcccc
@@ -309,11 +314,11 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    subgraph Epic["✅ THIS IS YOU"]
-        E1["Build a real product"]
-        E2["Design the platform"]
-        E3["Ship features users want"]
-        E4["Own the entire story"]
+    subgraph Epic["✅ YOUR CINDERELLA STORY"]
+        E1["You ARE the magic"]
+        E2["You build the glass slipper"]
+        E3["You create your own transformation"]
+        E4["You walk into the ball as yourself"]
     end
 
     style Epic fill:#ccffcc
@@ -321,14 +326,14 @@ flowchart TB
 
 ---
 
-## Success Metrics: Your Scoreboard
+## Success Metrics: Your Transformation Milestones
 
-| Metric | Target | The Story |
-|--------|--------|-----------|
-| **Content API latency** | < 100ms p95 | *"Fast as thought"* |
-| **AI generation time** | < 3 seconds | *"Magic shouldn't keep you waiting"* |
-| **Deployment frequency** | 50+/day capable | *"Ship or die"* |
-| **Platform cost** | < $500/month | *"Startup-friendly"* |
+| Metric | Target | The Cinderella Moment |
+|--------|--------|----------------------|
+| **Content API latency** | < 100ms p95 | *"Fast as midnight's stroke"* |
+| **AI generation time** | < 3 seconds | *"Magic shouldn't keep royalty waiting"* |
+| **Deployment frequency** | 50+/day capable | *"A new dress every hour"* |
+| **Platform cost** | < $500/month | *"Royal quality, commoner's budget"* |
 | **Uptime** | 99.9% | *"The castle never sleeps"* |
 
 ---
@@ -350,9 +355,9 @@ Download **[Obsidian](https://obsidian.md/)** for the best experience:
 
 - **Teams/Slack**: #devops-internship channel (your fellowship)
 - **Documentation**: This vault (your spellbook)
-- **Mentors**: Available for architecture questions (the wise elders)
+- **Mentors**: Available for architecture questions (the wise council)
 
-> *Remember: Heroes figure things out. Research first, ask second. That's how legends are made.*
+> *Remember: Cinderella didn't wait for rescue. She showed up at the ball. Research first, ask second. That's how legends are made.*
 
 ---
 
@@ -362,21 +367,22 @@ Download **[Obsidian](https://obsidian.md/)** for the best experience:
 |-------|-------------------|
 | [Teams Setup](../How-We-Communicate/01-Teams-Getting-Started.md) | Join the fellowship |
 | [Communication Protocol](../How-We-Communicate/02-Communication-Protocol.md) | Which channel for what |
-| [Live Sessions](../How-We-Communicate/03-Live-Sessions.md) | Gather for the council |
+| [Live Sessions](../How-We-Communicate/03-Live-Sessions.md) | Gather for the royal council |
 | [Tools & Workflows](../How-We-Communicate/04-Tools-and-Workflows.md) | Your equipment |
 
 ---
 
-## One Last Thing
+## The Midnight Promise
 
-> *"The beginning is always today."*
-> — **Mary Shelley** (author of Frankenstein)
+> *"At midnight, the magic fades... unless you built it yourself."*
 
-You're not here to read documentation. You're here to **build something that matters**.
+In the original fairy tale, Cinderella's transformation was temporary — given by someone else, taken away at midnight.
 
-The fairy tales we loved as children weren't about following instructions. They were about heroes who **took action** when the world needed them.
+**Your transformation is different.** What you build here, you keep. The skills, the platform, the product, the story — it's all yours. No one can take it back at midnight because **you created the magic yourself.**
 
-ContentAI needs you. The first chapter is written. **Now it's your turn.**
+Autograph is waiting. The first chapter is written.
+
+**Now it's your turn to write the rest.**
 
 ---
 
