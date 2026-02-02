@@ -1,12 +1,12 @@
-# Container Orchestration: Where ContentAI Lives
+# Container Orchestration: Where Autograph Lives
 
 > *"The castle is built, the walls are strong. Now we need rooms, halls, and the magic that brings it all to life."*
 
-## The Purpose: A Home for ContentAI
+## The Purpose: A Home for Autograph
 
-**Why are we doing this?** To give ContentAI a place to live and grow.
+**Why are we doing this?** To give Autograph a place to live and grow.
 
-Ansible gave us a k3s cluster. Now we need to understand how Kubernetes organizes and runs ContentAI—Strapi, AI services, databases, and everything that makes the magic happen.
+Ansible gave us a k3s cluster. Now we need to understand how Kubernetes organizes and runs Autograph—Strapi, AI services, databases, and everything that makes the magic happen.
 
 ```mermaid
 flowchart TB
@@ -37,7 +37,7 @@ flowchart TB
 
 ---
 
-## Why k3s for ContentAI?
+## Why k3s for Autograph?
 
 | Feature | k3s | Full Kubernetes |
 |---------|-----|-----------------|
@@ -49,11 +49,11 @@ flowchart TB
 | **CNCF certified** | Yes | Yes |
 | **Built-in components** | SQLite, Traefik, CoreDNS | External deps |
 
-**For ContentAI:** k3s provides full Kubernetes API compatibility with 90% less overhead—perfect for our cost-optimized Hetzner infrastructure. *The castle doesn't need a massive foundation when the walls are already strong.*
+**For Autograph:** k3s provides full Kubernetes API compatibility with 90% less overhead—perfect for our cost-optimized Hetzner infrastructure. *The castle doesn't need a massive foundation when the walls are already strong.*
 
 ---
 
-## ContentAI Cluster Architecture
+## Autograph Cluster Architecture
 
 ```mermaid
 flowchart TB
@@ -72,7 +72,7 @@ flowchart TB
         E3["etcd"]
     end
 
-    subgraph Workers["Worker Nodes (ContentAI runs here)"]
+    subgraph Workers["Worker Nodes (Autograph runs here)"]
         A1["contentai-agent-1\n• Strapi pods\n• AI service pods"]
         A2["contentai-agent-2\n• PostgreSQL\n• Redis"]
         A3["contentai-agent-3\n• Meilisearch\n• Overflow"]
@@ -97,11 +97,11 @@ flowchart TB
 
 ---
 
-## Core Concepts (Through ContentAI's Eyes)
+## Core Concepts (Through Autograph's Eyes)
 
 ### Pods: The Smallest Unit
 
-Every ContentAI component runs in a pod—Strapi, AI service, databases. A pod is like a room in our castle.
+Every Autograph component runs in a pod—Strapi, AI service, databases. A pod is like a room in our castle.
 
 ```mermaid
 flowchart TB
@@ -160,9 +160,9 @@ spec:
       emptyDir: {}
 ```
 
-### Deployments: Managing ContentAI Replicas
+### Deployments: Managing Autograph Replicas
 
-Deployments manage multiple copies of our ContentAI components, ensuring they stay running and update gracefully.
+Deployments manage multiple copies of our Autograph components, ensuring they stay running and update gracefully.
 
 ```mermaid
 flowchart TB
@@ -190,7 +190,7 @@ flowchart TB
 ```
 
 ```yaml
-# Strapi Deployment for ContentAI
+# Strapi Deployment for Autograph
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -247,7 +247,7 @@ spec:
             periodSeconds: 5
 ```
 
-### Services: How ContentAI Components Talk
+### Services: How Autograph Components Talk
 
 Services provide stable network addresses. Strapi talks to PostgreSQL through a service, not a specific pod IP.
 
@@ -257,14 +257,14 @@ flowchart LR
         User["User"]
     end
 
-    subgraph Services["ContentAI Services"]
+    subgraph Services["Autograph Services"]
         ING["Ingress\n(contentai.example.com)"]
         STRAPI["strapi-service\n(ClusterIP)"]
         PG["postgres-headless\n(Headless)"]
         REDIS["redis-service\n(ClusterIP)"]
     end
 
-    subgraph Pods["ContentAI Pods"]
+    subgraph Pods["Autograph Pods"]
         SP1["Strapi 1"]
         SP2["Strapi 2"]
         PGP["PostgreSQL"]
@@ -330,7 +330,7 @@ spec:
 
 ### Ingress: The Castle Gates
 
-Ingress routes external traffic to ContentAI. This is how users reach Strapi.
+Ingress routes external traffic to Autograph. This is how users reach Strapi.
 
 ```mermaid
 flowchart LR
@@ -342,7 +342,7 @@ flowchart LR
         LB["Hetzner LB"]
     end
 
-    subgraph Cluster["ContentAI Cluster"]
+    subgraph Cluster["Autograph Cluster"]
         ING["NGINX Ingress"]
 
         subgraph Routes["Routing Rules"]
@@ -367,7 +367,7 @@ flowchart LR
 ```
 
 ```yaml
-# ContentAI Ingress
+# Autograph Ingress
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -408,7 +408,7 @@ spec:
 
 ---
 
-## ContentAI Namespace Organization
+## Autograph Namespace Organization
 
 ```mermaid
 flowchart TB
@@ -435,7 +435,7 @@ flowchart TB
             LH["Longhorn"]
         end
 
-        subgraph ContentAI["contentai (YOUR PRODUCT)"]
+        subgraph Autograph["contentai (YOUR PRODUCT)"]
             Strapi["Strapi CMS"]
             AIService["AI Service"]
             Postgres["PostgreSQL"]
@@ -444,11 +444,11 @@ flowchart TB
         end
     end
 
-    style ContentAI fill:#4CAF50
+    style Autograph fill:#4CAF50
 ```
 
 ```yaml
-# ContentAI Namespace
+# Autograph Namespace
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -457,7 +457,7 @@ metadata:
     product: contentai
     environment: production
 ---
-# Resource Quota for ContentAI
+# Resource Quota for Autograph
 apiVersion: v1
 kind: ResourceQuota
 metadata:
@@ -474,7 +474,7 @@ spec:
 
 ---
 
-## StatefulSets: ContentAI's Treasury
+## StatefulSets: Autograph's Treasury
 
 PostgreSQL needs stable identity and persistent storage—it's the treasury where all content lives.
 
@@ -504,7 +504,7 @@ flowchart TB
 ```
 
 ```yaml
-# PostgreSQL StatefulSet for ContentAI
+# PostgreSQL StatefulSet for Autograph
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -566,11 +566,11 @@ spec:
 
 ## Storage with Longhorn
 
-Longhorn replicates ContentAI's data across nodes—so even if a server fails, no content is lost.
+Longhorn replicates Autograph's data across nodes—so even if a server fails, no content is lost.
 
 ```mermaid
 flowchart TB
-    subgraph ContentAI["ContentAI Workloads"]
+    subgraph Autograph["Autograph Workloads"]
         Strapi["Strapi\n(uploads)"]
         Postgres["PostgreSQL\n(content data)"]
         Meili["Meilisearch\n(search index)"]
@@ -594,11 +594,11 @@ flowchart TB
     Postgres --> PVC2
     Meili --> PVC3
 
-    style ContentAI fill:#4CAF50
+    style Autograph fill:#4CAF50
 ```
 
 ```yaml
-# StorageClass for ContentAI
+# StorageClass for Autograph
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -628,9 +628,9 @@ spec:
 
 ---
 
-## High Availability for ContentAI
+## High Availability for Autograph
 
-ContentAI pods spread across nodes—if one server fails, the platform keeps running.
+Autograph pods spread across nodes—if one server fails, the platform keeps running.
 
 ```mermaid
 flowchart TB
@@ -716,7 +716,7 @@ spec:
 
 ---
 
-## Health Checks: Is ContentAI Alive?
+## Health Checks: Is Autograph Alive?
 
 ```mermaid
 sequenceDiagram
@@ -750,7 +750,7 @@ sequenceDiagram
 ```
 
 ```yaml
-# ContentAI Health Probes
+# Autograph Health Probes
 spec:
   containers:
     - name: strapi
@@ -785,15 +785,15 @@ spec:
 
 ---
 
-## kubectl Essentials for ContentAI
+## kubectl Essentials for Autograph
 
 ```bash
-# Check ContentAI cluster status
+# Check Autograph cluster status
 kubectl cluster-info
 kubectl get nodes -o wide
 kubectl top nodes
 
-# ContentAI namespace operations
+# Autograph namespace operations
 kubectl config set-context --current --namespace=contentai
 kubectl get pods
 kubectl get pods -o wide  # See which node each pod runs on
@@ -807,7 +807,7 @@ kubectl describe pod -l app=strapi
 kubectl get pods -l app=postgres
 kubectl get pvc  # Persistent volumes
 
-# Debug ContentAI issues
+# Debug Autograph issues
 kubectl get events --sort-by='.lastTimestamp'
 kubectl top pods --sort-by=memory
 
@@ -821,15 +821,15 @@ kubectl port-forward svc/ai-service 3001:3001
 
 ---
 
-## k9s: Your ContentAI Dashboard
+## k9s: Your Autograph Dashboard
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│ k9s - Kubernetes CLI To Manage ContentAI                     │
+│ k9s - Kubernetes CLI To Manage Autograph                     │
 ├──────────────────────────────────────────────────────────────┤
 │                                                              │
 │  Quick Access:                                               │
-│  :pod      - View ContentAI pods                             │
+│  :pod      - View Autograph pods                             │
 │  :deploy   - View Strapi, AI service deployments             │
 │  :svc      - View services                                   │
 │  :pvc      - View storage claims (PostgreSQL, uploads)       │
@@ -855,11 +855,11 @@ kubectl port-forward svc/ai-service 3001:3001
 
 ## What's Next
 
-Once you understand how ContentAI runs in Kubernetes:
+Once you understand how Autograph runs in Kubernetes:
 
-1. **Deploy ContentAI** — [Exercise 10: Strapi Deployment](../04-Internship/Exercises/10-ContentAI-Strapi-Deployment.md)
+1. **Deploy Autograph** — [Exercise 10: Strapi Deployment](../04-Internship/Exercises/10-Autograph-Strapi-Deployment.md)
 2. **GitOps** — [05-GitOps.md](./05-GitOps.md) for automated deployments
-3. **Observability** — [Observability Stack](../03-Platform/02-Observability.md) to watch ContentAI
+3. **Observability** — [Observability Stack](../03-Platform/02-Observability.md) to watch Autograph
 
 ---
 
@@ -867,7 +867,7 @@ Once you understand how ContentAI runs in Kubernetes:
 
 - [Infrastructure-as-Code](./02-Infrastructure-as-Code.md) — Create the VMs
 - [Configuration Management](./03-Configuration-Management.md) — Install k3s
-- [GitOps](./05-GitOps.md) — Automated ContentAI deployments
+- [GitOps](./05-GitOps.md) — Automated Autograph deployments
 
 ---
 

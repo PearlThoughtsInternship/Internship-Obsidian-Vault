@@ -1,21 +1,61 @@
-# Cloud Platforms
+# Cloud Platforms: Where Autograph Lives
 
-## The Cloud Provider Landscape
+> *"Every castle needs land. The cloud is where we build Autograph's kingdom."*
 
-> *Choosing the right cloud provider isn't about which is "best" — it's about which fits your constraints: budget, compliance, team skills, and growth trajectory.*
+## The Purpose: A Home for Autograph
+
+**Why are we doing this?** Autograph needs servers, networks, and storage. Choosing the right cloud provider determines:
+
+- **How much it costs** to run Strapi and AI services
+- **How fast** users can publish content
+- **How reliable** the platform is during traffic spikes
+- **How quickly** you can scale when Autograph goes viral
+
+```mermaid
+flowchart TB
+    subgraph Problem["🚫 WITHOUT THE RIGHT CLOUD"]
+        P1["AWS bills eat your runway"]
+        P2["$1,000+/month for 6 servers"]
+        P3["Bandwidth charges surprise you"]
+        P4["Autograph shuts down, no money left"]
+    end
+
+    subgraph Solution["✅ WITH HETZNER"]
+        S1["€90/month for same infrastructure"]
+        S2["Bandwidth included"]
+        S3["10x runway extension"]
+        S4["Autograph thrives, money for growth"]
+    end
+
+    Problem -.->|"Burn rate kills startups"| X["😱"]
+    Solution -.->|"Smart economics"| Y["🚀 Autograph scales!"]
+
+    style Solution fill:#4CAF50
+```
 
 ---
 
-## Provider Comparison
+## Who Needs to Understand This?
+
+| Stakeholder | Why Cloud Choice Matters |
+|-------------|-------------------------|
+| **DevOps** | "Where do I provision Autograph's servers?" |
+| **Developers** | "How do I connect to the Strapi database?" |
+| **Business** | "How much does it cost to serve 10,000 users?" |
+| **Customers** | "Is my content safe in your data center?" |
+
+---
+
+## The Cloud Provider Landscape
 
 ```mermaid
 quadrantChart
-    title Cloud Provider Positioning
+    title Cloud Provider Positioning for Autograph
     x-axis Low Cost --> High Cost
     y-axis Simple --> Enterprise Features
     quadrant-1 Enterprise Grade
     quadrant-2 Cost-Effective Enterprise
-    quadrant-3 Budget Friendly
+    quadrant-3 Budget Friendly (Autograph Sweet Spot)
     quadrant-4 Premium Simple
     AWS: [0.85, 0.9]
     GCP: [0.75, 0.85]
@@ -26,246 +66,248 @@ quadrantChart
     Vultr: [0.25, 0.4]
 ```
 
+**For Autograph:** Hetzner sits in the sweet spot—affordable enough for a startup, capable enough for production.
+
 ---
 
-## Hetzner Cloud (Primary Platform)
+## Hetzner Cloud: Autograph's Home
 
-### Why Hetzner for Startups?
+### Why Hetzner for Autograph?
 
 ```mermaid
 mindmap
-  root((Hetzner<br/>Advantages))
-    Cost
-      80-90% cheaper than AWS
-      Predictable pricing
+  root((Hetzner for<br/>Autograph))
+    Cost Savings
+      92% cheaper than AWS
+      Predictable monthly bills
       No bandwidth charges
-      Included load balancer
+      Load balancer included
     Performance
-      NVMe storage standard
-      Dedicated vCPUs
-      Low latency EU/US
-      Modern hardware
-    Simplicity
-      Clean API
-      Intuitive console
-      Fast provisioning
-      Good documentation
+      NVMe storage for PostgreSQL
+      Dedicated vCPUs for AI inference
+      Low latency for EU/US users
+      Modern AMD/Intel hardware
+    Autograph Fit
+      Perfect for k3s clusters
+      Clean API for OpenTofu
+      Fast VM provisioning
+      Simple networking
     Compliance
-      GDPR ready
-      German data centers
-      ISO certified
+      GDPR ready (German DCs)
+      ISO 27001 certified
       SOC 2 available
+      Good for EU customers
 ```
 
-### Hetzner Services
+### Hetzner Services for Autograph
 
-| Service | Purpose | OpenTofu Resource |
-|---------|---------|-------------------|
-| **Cloud Servers** | Compute instances | `hcloud_server` |
-| **Networks** | Private networking | `hcloud_network` |
-| **Load Balancers** | Traffic distribution | `hcloud_load_balancer` |
-| **Volumes** | Block storage | `hcloud_volume` |
-| **Floating IPs** | Static public IPs | `hcloud_floating_ip` |
-| **Firewalls** | Network security | `hcloud_firewall` |
-| **SSH Keys** | Authentication | `hcloud_ssh_key` |
-| **Placement Groups** | HA distribution | `hcloud_placement_group` |
-
-### Hetzner Architecture
-
-```mermaid
-flowchart TB
-    subgraph Internet["Internet"]
-        Users["Users"]
-    end
-
-    subgraph Hetzner["Hetzner Cloud"]
-        subgraph Network["Private Network (10.0.0.0/8)"]
-            subgraph LB["Load Balancer"]
-                HLB["hcloud_load_balancer<br/>Distributes traffic"]
-            end
-
-            subgraph Servers["Server Group"]
-                S1["Server 1<br/>cx31 (4 vCPU, 8GB)"]
-                S2["Server 2<br/>cx31 (4 vCPU, 8GB)"]
-                S3["Server 3<br/>cx31 (4 vCPU, 8GB)"]
-            end
-
-            subgraph Storage["Volumes"]
-                V1["Volume 1<br/>100GB NVMe"]
-                V2["Volume 2<br/>100GB NVMe"]
-                V3["Volume 3<br/>100GB NVMe"]
-            end
-        end
-
-        FW["Firewall<br/>Allow: 80, 443, 6443"]
-    end
-
-    Users --> HLB
-    HLB --> S1 & S2 & S3
-    S1 --> V1
-    S2 --> V2
-    S3 --> V3
-    FW -.-> Network
-
-    style HLB fill:#4CAF50
-    style S1 fill:#2196F3
-    style S2 fill:#2196F3
-    style S3 fill:#2196F3
-```
-
-### Server Types
-
-| Type | vCPU | RAM | Storage | Price/mo | Use Case |
-|------|------|-----|---------|----------|----------|
-| **cx11** | 1 | 2GB | 20GB | €3.29 | Dev, testing |
-| **cx21** | 2 | 4GB | 40GB | €5.83 | Small workloads |
-| **cx31** | 4 | 8GB | 80GB | €10.59 | Production nodes |
-| **cx41** | 8 | 16GB | 160GB | €18.59 | Database servers |
-| **cx51** | 16 | 32GB | 240GB | €35.59 | Heavy workloads |
-| **ccx13** | 2 | 8GB | 80GB | €12.99 | Dedicated CPU |
-| **ccx23** | 4 | 16GB | 160GB | €24.99 | CPU-intensive |
-
-### Locations
-
-| Code | Location | Region | Use For |
-|------|----------|--------|---------|
-| `fsn1` | Falkenstein | Germany | EU primary |
-| `nbg1` | Nuremberg | Germany | EU backup |
-| `hel1` | Helsinki | Finland | Nordic users |
-| `ash` | Ashburn | USA East | US primary |
-| `hil` | Hillsboro | USA West | US West Coast |
+| Service | What It Provides | Autograph Use Case |
+|---------|-----------------|-------------------|
+| **Cloud Servers** | Virtual machines | Run k3s, Strapi, AI Service |
+| **Networks** | Private networking | Secure comms between components |
+| **Load Balancers** | Traffic distribution | Public access to Autograph |
+| **Volumes** | Block storage | PostgreSQL data, uploads |
+| **Floating IPs** | Static public IPs | DNS for autograph.example.com |
+| **Firewalls** | Network security | Protect k3s API, databases |
+| **Placement Groups** | HA distribution | Spread servers across hosts |
 
 ---
 
-## AWS (When You Need It)
+## Autograph Infrastructure Architecture
 
-### When to Choose AWS
+```mermaid
+flowchart TB
+    subgraph Internet["🌐 Internet"]
+        Users["Autograph Users"]
+    end
+
+    subgraph CF["☁️ Cloudflare (Edge)"]
+        CDN["CDN + WAF<br/>DDoS Protection"]
+    end
+
+    subgraph Hetzner["🏰 Hetzner Cloud (fsn1)"]
+        subgraph Network["Private Network (10.0.0.0/8)"]
+            subgraph LB["Load Balancer"]
+                HLB["autograph-lb<br/>Points to agents"]
+            end
+
+            subgraph Servers["Control Plane"]
+                S1["autograph-server-1<br/>cx31 (4 vCPU, 8GB)"]
+                S2["autograph-server-2<br/>cx31 (4 vCPU, 8GB)"]
+                S3["autograph-server-3<br/>cx31 (4 vCPU, 8GB)"]
+            end
+
+            subgraph Agents["Workers (Autograph Runs Here)"]
+                A1["autograph-agent-1<br/>cx41 (8 vCPU, 16GB)"]
+                A2["autograph-agent-2<br/>cx41 (8 vCPU, 16GB)"]
+                A3["autograph-agent-3<br/>cx41 (8 vCPU, 16GB)"]
+            end
+
+            subgraph Storage["Persistent Storage"]
+                V1["PostgreSQL Volume<br/>100GB NVMe"]
+                V2["Redis Volume<br/>20GB NVMe"]
+                V3["Uploads Volume<br/>200GB NVMe"]
+            end
+        end
+
+        FW["Firewall<br/>Allow: 80, 443, 6443 (k3s)"]
+    end
+
+    Users --> CDN
+    CDN --> HLB
+    HLB --> A1 & A2 & A3
+    S1 --> S2 --> S3
+    A1 --> V1
+    A2 --> V2
+    A3 --> V3
+    FW -.-> Network
+
+    style HLB fill:#4CAF50
+    style A1 fill:#2196F3
+    style A2 fill:#2196F3
+    style A3 fill:#2196F3
+```
+
+---
+
+## Server Types for Autograph
+
+| Type | vCPU | RAM | Storage | €/month | Autograph Role |
+|------|------|-----|---------|---------|----------------|
+| **cx21** | 2 | 4GB | 40GB | €5.83 | Dev environment |
+| **cx31** | 4 | 8GB | 80GB | €10.59 | k3s control plane |
+| **cx41** | 8 | 16GB | 160GB | €18.59 | Workers (Strapi, AI) |
+| **cx51** | 16 | 32GB | 240GB | €35.59 | Heavy AI workloads |
+| **ccx23** | 4 | 16GB | 160GB | €24.99 | AI inference (dedicated CPU) |
+
+### Autograph Recommended Setup
+
+| Component | Server Type | Count | Purpose |
+|-----------|-------------|-------|---------|
+| **Control Plane** | cx31 | 3 | k3s API, etcd (HA) |
+| **Workers** | cx41 | 3 | Strapi, AI Service, DBs |
+
+---
+
+## Location Strategy
+
+| Code | Location | Region | Autograph Use |
+|------|----------|--------|---------------|
+| `fsn1` | Falkenstein | Germany | **Primary** (EU users) |
+| `nbg1` | Nuremberg | Germany | Disaster recovery |
+| `ash` | Ashburn | USA East | US customers |
+| `hil` | Hillsboro | USA West | West Coast users |
+
+**For Autograph:** Start with `fsn1` for EU-first, add US later as customers demand.
+
+---
+
+## AWS vs Hetzner: The Autograph Math
+
+### When to Choose Each
 
 ```mermaid
 flowchart TD
-    Start["Choosing a Cloud Provider"] --> Q1{"Need managed<br/>services?"}
-    Q1 -->|"RDS, Lambda,<br/>SQS, etc."| AWS["Consider AWS"]
-    Q1 -->|"Can self-manage"| Q2{"Budget<br/>constrained?"}
+    Start["Choosing Cloud for Autograph"] --> Q1{"Need managed<br/>RDS, Lambda, SQS?"}
+    Q1 -->|"Yes, heavily"| AWS["Consider AWS"]
+    Q1 -->|"Can use k3s"| Q2{"Budget<br/>constrained?"}
 
-    Q2 -->|"Burn rate matters"| Hetzner["Choose Hetzner"]
-    Q2 -->|"Well-funded"| Q3{"Compliance<br/>requirements?"}
+    Q2 -->|"Startup, burn rate matters"| Hetzner["Choose Hetzner"]
+    Q2 -->|"Well-funded Series B+"| Q3{"Compliance<br/>requirements?"}
 
-    Q3 -->|"HIPAA, FedRAMP,<br/>PCI Level 1"| AWS
-    Q3 -->|"Basic GDPR,<br/>SOC 2"| Q4{"Team<br/>expertise?"}
+    Q3 -->|"HIPAA, FedRAMP"| AWS
+    Q3 -->|"GDPR, SOC 2"| Hetzner
 
-    Q4 -->|"AWS certified team"| AWS
-    Q4 -->|"DevOps generalists"| Hetzner
+    AWS --> AWSNote["AWS: More services,<br/>10x higher cost"]
+    Hetzner --> HetznerNote["Hetzner: 92% savings,<br/>perfect for Autograph k3s"]
 
-    AWS --> AWSNote["AWS: More services,<br/>higher cost,<br/>enterprise compliance"]
-    Hetzner --> HetznerNote["Hetzner: Lower cost,<br/>simpler,<br/>good for k8s"]
-
-    style AWS fill:#FF9900
     style Hetzner fill:#D50C2D
+    style AWS fill:#FF9900
 ```
 
-### AWS Services for k8s
-
-| Service | Purpose | Alternative on Hetzner |
-|---------|---------|------------------------|
-| **EKS** | Managed Kubernetes | k3s (self-managed) |
-| **EC2** | Compute | hcloud_server |
-| **VPC** | Networking | hcloud_network |
-| **ALB** | Load balancing | hcloud_load_balancer |
-| **EBS** | Block storage | hcloud_volume / Longhorn |
-| **S3** | Object storage | MinIO / Hetzner Object Storage |
-| **RDS** | Managed databases | Self-managed PostgreSQL |
-| **Route 53** | DNS | Cloudflare (external) |
-
-### Cost Comparison
+### Cost Comparison: Autograph Production Cluster
 
 ```mermaid
 xychart-beta
-    title "Monthly Cost: 6-Node k8s Cluster"
+    title "Monthly Cost: Autograph 6-Node Cluster"
     x-axis ["Compute", "Storage", "Load Balancer", "Bandwidth", "Total"]
     y-axis "Cost ($)" 0 --> 1200
     bar [540, 150, 20, 450, 1160]
-    bar [60, 30, 0, 0, 90]
+    bar [90, 30, 0, 0, 120]
 ```
 
 | Component | AWS Cost | Hetzner Cost | Savings |
 |-----------|----------|--------------|---------|
-| 6x Compute (4 vCPU, 8GB) | $540 | $60 | 89% |
-| 600GB Storage | $150 | $30 | 80% |
+| 3x Control (cx31 equiv) | $270 | €30 | 89% |
+| 3x Workers (cx41 equiv) | $270 | €60 | 78% |
+| 600GB NVMe Storage | $150 | €30 | 80% |
 | Load Balancer | $20 | Included | 100% |
-| Bandwidth (5TB) | $450 | Included | 100% |
-| **Total** | **$1,160** | **$90** | **92%** |
+| Bandwidth (5TB/month) | $450 | Included | 100% |
+| **Monthly Total** | **$1,160** | **€120** | **90%** |
 
-*Annual savings: $12,840*
+**Annual savings for Autograph: ~$12,500** — That's runway for 10 more months!
 
 ---
 
-## Multi-Cloud Strategy
+## Multi-Cloud Strategy for Autograph
 
 ### Hybrid Architecture
 
 ```mermaid
 flowchart TB
-    subgraph Users["Global Users"]
-        US["US Users"]
-        EU["EU Users"]
-        APAC["APAC Users"]
+    subgraph Users["Autograph Users"]
+        US["US Customers"]
+        EU["EU Customers"]
     end
 
-    subgraph CDN["Cloudflare (Edge)"]
-        CF["CDN + WAF + DDoS Protection"]
+    subgraph CDN["Cloudflare (Global Edge)"]
+        CF["CDN + WAF + DDoS<br/>autograph.example.com"]
     end
 
     subgraph Primary["Primary: Hetzner (90% workloads)"]
-        subgraph HetznerEU["Hetzner EU (fsn1)"]
-            K3S_EU["k3s Cluster<br/>Apps, APIs, Databases"]
-        end
-        subgraph HetznerUS["Hetzner US (ash)"]
-            K3S_US["k3s Cluster<br/>US-specific workloads"]
+        subgraph HetznerEU["Hetzner fsn1 (Germany)"]
+            K3S["k3s Cluster<br/>Strapi + AI Service<br/>PostgreSQL + Redis"]
         end
     end
 
-    subgraph AWS["AWS (Specialized)"]
-        Lambda["Lambda<br/>Serverless functions"]
-        S3["S3<br/>Large file storage"]
-        SES["SES<br/>Email delivery"]
+    subgraph AWS["AWS (Specialized Services Only)"]
+        S3["S3<br/>Large media storage"]
+        SES["SES<br/>Transactional email"]
+        Claude["AWS Bedrock<br/>Claude API fallback"]
     end
 
-    US & EU & APAC --> CF
-    CF --> K3S_EU
-    CF --> K3S_US
-    K3S_EU --> Lambda
-    K3S_EU --> S3
-    K3S_US --> SES
+    US & EU --> CF
+    CF --> K3S
+    K3S -->|"Media uploads"| S3
+    K3S -->|"Email notifications"| SES
+    K3S -->|"AI fallback"| Claude
 
     style CF fill:#F48120
-    style K3S_EU fill:#D50C2D
-    style K3S_US fill:#D50C2D
-    style Lambda fill:#FF9900
+    style K3S fill:#D50C2D
     style S3 fill:#FF9900
     style SES fill:#FF9900
 ```
 
-### When to Use Each
+### What Goes Where
 
-| Workload | Platform | Reason |
-|----------|----------|--------|
-| **Web apps** | Hetzner | Cost, simplicity |
-| **APIs** | Hetzner | Predictable performance |
-| **Databases** | Hetzner | No per-IOPS charges |
-| **AI/ML training** | AWS/GCP | GPU availability |
-| **Serverless** | AWS Lambda | No Hetzner equivalent |
-| **Email** | AWS SES | Deliverability |
-| **Large files** | AWS S3 | Ecosystem integration |
-| **CDN/Security** | Cloudflare | Best-in-class WAF |
+| Autograph Workload | Platform | Why |
+|--------------------|----------|-----|
+| **Strapi CMS** | Hetzner | Cost, predictable performance |
+| **AI Service** | Hetzner | No per-request charges |
+| **PostgreSQL** | Hetzner | No per-IOPS charges |
+| **Redis** | Hetzner | Low cost caching |
+| **Media Storage (>10GB)** | AWS S3 | Scalability, CDN integration |
+| **Email Delivery** | AWS SES | Deliverability, reputation |
+| **AI API Fallback** | AWS Bedrock | Alternative to direct OpenAI |
 
 ---
 
-## OpenTofu Provider Configuration
+## OpenTofu: Provisioning Autograph Infrastructure
 
-### Hetzner Provider
+### Provider Configuration
 
 ```hcl
-# providers.tf
+# providers.tf - Autograph Infrastructure
 
 terraform {
   required_providers {
@@ -277,299 +319,245 @@ terraform {
 }
 
 provider "hcloud" {
-  token = var.hcloud_token
+  token = var.hcloud_token  # Your Hetzner API token
 }
 
 variable "hcloud_token" {
   type        = string
   sensitive   = true
-  description = "Hetzner Cloud API token"
+  description = "Hetzner Cloud API token for Autograph"
 }
 ```
 
-### AWS Provider (for hybrid)
+### Autograph Cluster Module
 
 ```hcl
-# providers.tf (multi-cloud)
-
-terraform {
-  required_providers {
-    hcloud = {
-      source  = "hetznercloud/hcloud"
-      version = "~> 1.45"
-    }
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
-provider "hcloud" {
-  token = var.hcloud_token
-}
-
-provider "aws" {
-  region = "us-east-1"
-  # Credentials from environment or IAM role
-}
-```
-
----
-
-## Hetzner OpenTofu Modules
-
-### Server Module
-
-```hcl
-# modules/hetzner-server/main.tf
-
-variable "name" {
-  type        = string
-  description = "Server name"
-}
-
-variable "server_type" {
-  type        = string
-  default     = "cx31"
-  description = "Hetzner server type"
-}
-
-variable "location" {
-  type        = string
-  default     = "fsn1"
-  description = "Datacenter location"
-}
-
-variable "image" {
-  type        = string
-  default     = "ubuntu-22.04"
-  description = "OS image"
-}
-
-variable "ssh_keys" {
-  type        = list(string)
-  description = "SSH key IDs"
-}
-
-variable "network_id" {
-  type        = number
-  description = "Private network ID"
-}
-
-variable "labels" {
-  type        = map(string)
-  default     = {}
-  description = "Resource labels"
-}
-
-resource "hcloud_server" "this" {
-  name        = var.name
-  image       = var.image
-  server_type = var.server_type
-  location    = var.location
-  ssh_keys    = var.ssh_keys
-  labels      = var.labels
-
-  network {
-    network_id = var.network_id
-  }
-
-  public_net {
-    ipv4_enabled = true
-    ipv6_enabled = true
-  }
-}
-
-output "id" {
-  value = hcloud_server.this.id
-}
-
-output "ipv4_address" {
-  value = hcloud_server.this.ipv4_address
-}
-
-output "private_ip" {
-  value = hcloud_server.this.network[*].ip[0]
-}
-```
-
-### Cluster Module
-
-```hcl
-# modules/hetzner-k3s-cluster/main.tf
+# modules/autograph-cluster/main.tf
 
 variable "cluster_name" {
-  type = string
+  type    = string
+  default = "autograph"
 }
 
 variable "server_count" {
   type    = number
   default = 3
+  description = "Control plane nodes (must be odd for etcd quorum)"
 }
 
 variable "agent_count" {
   type    = number
   default = 3
-}
-
-variable "server_type" {
-  type    = string
-  default = "cx31"
+  description = "Worker nodes for Strapi, AI Service"
 }
 
 variable "location" {
   type    = string
   default = "fsn1"
+  description = "Hetzner datacenter (fsn1 for EU)"
 }
 
-# Private Network
-resource "hcloud_network" "cluster" {
+# Private Network for Autograph
+resource "hcloud_network" "autograph" {
   name     = "${var.cluster_name}-network"
   ip_range = "10.0.0.0/8"
 }
 
-resource "hcloud_network_subnet" "cluster" {
-  network_id   = hcloud_network.cluster.id
+resource "hcloud_network_subnet" "autograph" {
+  network_id   = hcloud_network.autograph.id
   type         = "cloud"
   network_zone = "eu-central"
   ip_range     = "10.0.1.0/24"
 }
 
-# SSH Key
-resource "hcloud_ssh_key" "cluster" {
+# SSH Key for Admin Access
+resource "hcloud_ssh_key" "autograph" {
   name       = "${var.cluster_name}-key"
   public_key = file("~/.ssh/id_rsa.pub")
 }
 
-# Placement Group (spread servers across hosts)
+# Placement Group (spread control plane across hosts)
 resource "hcloud_placement_group" "servers" {
   name = "${var.cluster_name}-servers"
   type = "spread"
 }
 
-# Server Nodes (Control Plane)
+# Control Plane Nodes
 resource "hcloud_server" "server" {
   count              = var.server_count
-  name               = "${var.cluster_name}-server-${count.index}"
+  name               = "${var.cluster_name}-server-${count.index + 1}"
   image              = "ubuntu-22.04"
-  server_type        = var.server_type
+  server_type        = "cx31"  # 4 vCPU, 8GB for k3s control plane
   location           = var.location
-  ssh_keys           = [hcloud_ssh_key.cluster.id]
+  ssh_keys           = [hcloud_ssh_key.autograph.id]
   placement_group_id = hcloud_placement_group.servers.id
 
   labels = {
     cluster = var.cluster_name
     role    = "server"
+    product = "autograph"
   }
 
   network {
-    network_id = hcloud_network.cluster.id
+    network_id = hcloud_network.autograph.id
     ip         = "10.0.1.${count.index + 10}"
   }
 }
 
-# Agent Nodes (Workers)
+# Worker Nodes (Where Autograph Actually Runs)
 resource "hcloud_server" "agent" {
   count       = var.agent_count
-  name        = "${var.cluster_name}-agent-${count.index}"
+  name        = "${var.cluster_name}-agent-${count.index + 1}"
   image       = "ubuntu-22.04"
-  server_type = var.server_type
+  server_type = "cx41"  # 8 vCPU, 16GB for Strapi + AI
   location    = var.location
-  ssh_keys    = [hcloud_ssh_key.cluster.id]
+  ssh_keys    = [hcloud_ssh_key.autograph.id]
 
   labels = {
     cluster = var.cluster_name
     role    = "agent"
+    product = "autograph"
   }
 
   network {
-    network_id = hcloud_network.cluster.id
+    network_id = hcloud_network.autograph.id
     ip         = "10.0.1.${count.index + 20}"
   }
 }
 
-# Load Balancer
-resource "hcloud_load_balancer" "cluster" {
+# Load Balancer for Public Access
+resource "hcloud_load_balancer" "autograph" {
   name               = "${var.cluster_name}-lb"
   load_balancer_type = "lb11"
   location           = var.location
 
   labels = {
     cluster = var.cluster_name
+    product = "autograph"
   }
 }
 
-resource "hcloud_load_balancer_network" "cluster" {
-  load_balancer_id = hcloud_load_balancer.cluster.id
-  network_id       = hcloud_network.cluster.id
+resource "hcloud_load_balancer_network" "autograph" {
+  load_balancer_id = hcloud_load_balancer.autograph.id
+  network_id       = hcloud_network.autograph.id
 }
 
-resource "hcloud_load_balancer_target" "servers" {
-  count            = var.server_count
-  load_balancer_id = hcloud_load_balancer.cluster.id
+# Point LB to worker nodes (where Strapi runs)
+resource "hcloud_load_balancer_target" "agents" {
+  count            = var.agent_count
+  load_balancer_id = hcloud_load_balancer.autograph.id
   type             = "server"
-  server_id        = hcloud_server.server[count.index].id
+  server_id        = hcloud_server.agent[count.index].id
   use_private_ip   = true
 }
 
-# Outputs
+# HTTPS for Autograph
+resource "hcloud_load_balancer_service" "https" {
+  load_balancer_id = hcloud_load_balancer.autograph.id
+  protocol         = "tcp"
+  listen_port      = 443
+  destination_port = 443
+
+  health_check {
+    protocol = "tcp"
+    port     = 443
+    interval = 10
+    timeout  = 5
+    retries  = 3
+  }
+}
+
+# Firewall Rules
+resource "hcloud_firewall" "autograph" {
+  name = "${var.cluster_name}-firewall"
+
+  # Allow SSH (for admin)
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "22"
+    source_ips = ["0.0.0.0/0"]
+  }
+
+  # Allow HTTP/HTTPS (for Autograph users)
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "80"
+    source_ips = ["0.0.0.0/0"]
+  }
+
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "443"
+    source_ips = ["0.0.0.0/0"]
+  }
+
+  # Allow k3s API (for kubectl)
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "6443"
+    source_ips = ["0.0.0.0/0"]  # Restrict in production!
+  }
+}
+
+# Outputs for Ansible
 output "server_ips" {
-  value = hcloud_server.server[*].ipv4_address
+  value       = hcloud_server.server[*].ipv4_address
+  description = "Autograph control plane IPs"
 }
 
 output "agent_ips" {
-  value = hcloud_server.agent[*].ipv4_address
+  value       = hcloud_server.agent[*].ipv4_address
+  description = "Autograph worker IPs (Strapi runs here)"
 }
 
 output "load_balancer_ip" {
-  value = hcloud_load_balancer.cluster.ipv4
+  value       = hcloud_load_balancer.autograph.ipv4
+  description = "Public IP for autograph.example.com"
 }
 
-output "network_id" {
-  value = hcloud_network.cluster.id
+output "private_network_id" {
+  value       = hcloud_network.autograph.id
+  description = "Network ID for additional resources"
 }
 ```
 
 ---
 
-## Provider Decision Matrix
+## Autograph Cost Summary
 
-```mermaid
-flowchart LR
-    subgraph Decision["Choosing Your Provider"]
-        Budget["Budget<br/>Constrained?"]
-        Managed["Need Managed<br/>Services?"]
-        Compliance["Enterprise<br/>Compliance?"]
-        Team["AWS<br/>Expertise?"]
-    end
+| Resource | Spec | Monthly Cost |
+|----------|------|--------------|
+| 3x Control Plane | cx31 (4 vCPU, 8GB) | €30 |
+| 3x Workers | cx41 (8 vCPU, 16GB) | €60 |
+| Load Balancer | lb11 | €6 |
+| Volumes (300GB) | NVMe | €12 |
+| Private Network | Included | €0 |
+| Bandwidth | Included | €0 |
+| **Total** | | **€108/month** |
 
-    Budget -->|"Yes"| Hetzner["Hetzner Cloud"]
-    Budget -->|"No"| Managed
+*For comparison: Same setup on AWS would cost **$1,200+/month***
 
-    Managed -->|"Self-manage OK"| Hetzner
-    Managed -->|"Need RDS, Lambda"| AWS["AWS"]
+---
 
-    Compliance -->|"HIPAA, FedRAMP"| AWS
-    Compliance -->|"GDPR, SOC2"| Team
+## What's Next
 
-    Team -->|"Strong AWS team"| AWS
-    Team -->|"DevOps generalists"| Hetzner
+Once you've provisioned Autograph's infrastructure with OpenTofu:
 
-    Hetzner --> Result1["90% cost savings<br/>k3s + Longhorn<br/>Full control"]
-    AWS --> Result2["Managed services<br/>Enterprise compliance<br/>Higher cost"]
-
-    style Hetzner fill:#D50C2D
-    style AWS fill:#FF9900
-```
+1. **[Configuration Management](../02-Engineering/03-Configuration-Management.md)** — Use Ansible to install k3s
+2. **[Container Orchestration](../02-Engineering/04-Container-Orchestration.md)** — Understand your k3s cluster
+3. **[Security](./03-Security.md)** — Protect Autograph from attackers
 
 ---
 
 ## Related
 
-- [Infrastructure-as-Code](../02-Engineering/02-Infrastructure-as-Code.md)
-- [Container Orchestration](../02-Engineering/04-Container-Orchestration.md)
-- [Observability](./02-Observability.md)
+- [Infrastructure-as-Code](../02-Engineering/02-Infrastructure-as-Code.md) — OpenTofu fundamentals
+- [Container Orchestration](../02-Engineering/04-Container-Orchestration.md) — k3s for Autograph
+- [Observability](./02-Observability.md) — Monitor Autograph's health
 
 ---
 

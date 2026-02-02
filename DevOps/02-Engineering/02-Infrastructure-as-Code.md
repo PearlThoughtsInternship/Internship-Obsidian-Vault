@@ -1,10 +1,10 @@
-# Infrastructure-as-Code: Building ContentAI's Foundation
+# Infrastructure-as-Code: Building Autograph's Foundation
 
-> *"Every castle stands on a foundation. OpenTofu is how we lay ContentAI's."*
+> *"Every castle stands on a foundation. OpenTofu is how we lay Autograph's."*
 
-## The Purpose: Infrastructure FOR ContentAI
+## The Purpose: Infrastructure FOR Autograph
 
-**Why are we doing this?** To give ContentAI a home.
+**Why are we doing this?** To give Autograph a home.
 
 Before we can deploy Strapi, AI services, and databases, we need servers. Not just any servers—**reliable, repeatable, documented infrastructure** that we can recreate at will.
 
@@ -14,33 +14,33 @@ flowchart TB
         P1["Click through Hetzner console"]
         P2["Forget the exact settings"]
         P3["Can't recreate when disaster strikes"]
-        P4["ContentAI dies, users suffer"]
+        P4["Autograph dies, users suffer"]
     end
 
     subgraph Solution["✅ WITH IaC"]
         S1["Define infrastructure in code"]
         S2["Version control everything"]
         S3["Recreate in minutes"]
-        S4["ContentAI survives anything"]
+        S4["Autograph survives anything"]
     end
 
     Problem -.->|"Manual chaos"| X["😱"]
-    Solution -.->|"Automated reliability"| Y["🚀 ContentAI runs forever"]
+    Solution -.->|"Automated reliability"| Y["🚀 Autograph runs forever"]
 
     style Solution fill:#4CAF50
 ```
 
 ---
 
-## What You'll Build for ContentAI
+## What You'll Build for Autograph
 
-| Infrastructure | Purpose for ContentAI |
+| Infrastructure | Purpose for Autograph |
 |---------------|----------------------|
 | **3 Server VMs** | k3s control plane (HA) |
 | **3 Agent VMs** | Run Strapi, AI service, databases |
 | **Private Network** | Secure communication between components |
-| **Load Balancer** | Public access to ContentAI |
-| **Firewall Rules** | Protect ContentAI from attacks |
+| **Load Balancer** | Public access to Autograph |
+| **Firewall Rules** | Protect Autograph from attacks |
 
 ---
 
@@ -56,7 +56,7 @@ flowchart TB
 | State | Same format | Same format |
 | Community | HashiCorp controlled | Linux Foundation |
 
-**For ContentAI:** OpenTofu is a drop-in Terraform replacement with no license risk.
+**For Autograph:** OpenTofu is a drop-in Terraform replacement with no license risk.
 
 ---
 
@@ -83,7 +83,7 @@ provider "hcloud" {
 ### Resources: The Actual Infrastructure
 
 ```hcl
-# Create a server for ContentAI
+# Create a server for Autograph
 resource "hcloud_server" "contentai_server" {
   name        = "contentai-server-1"
   image       = "ubuntu-22.04"
@@ -102,12 +102,12 @@ resource "hcloud_server" "contentai_server" {
 
 ---
 
-## Module Architecture for ContentAI
+## Module Architecture for Autograph
 
 ```mermaid
 flowchart TB
     subgraph Root["📁 Root Module (main.tf)"]
-        Main["ContentAI Infrastructure"]
+        Main["Autograph Infrastructure"]
     end
 
     subgraph Modules["📦 Reusable Modules"]
@@ -128,7 +128,7 @@ flowchart TB
         end
     end
 
-    subgraph Result["🚀 ContentAI Ready"]
+    subgraph Result["🚀 Autograph Ready"]
         R1["VMs running"]
         R2["Network configured"]
         R3["Ready for k3s + Strapi"]
@@ -146,7 +146,7 @@ flowchart TB
 
 ---
 
-## Module: Hetzner Server (For ContentAI Workers)
+## Module: Hetzner Server (For Autograph Workers)
 
 ### Variables
 
@@ -183,7 +183,7 @@ variable "ssh_key_ids" {
 
 variable "network_id" {
   type        = string
-  description = "Private network for ContentAI components"
+  description = "Private network for Autograph components"
 }
 
 variable "labels" {
@@ -247,13 +247,13 @@ output "ipv4_address" {
 
 output "private_ip" {
   value       = hcloud_server_network.this.ip
-  description = "Private IP (for internal ContentAI traffic)"
+  description = "Private IP (for internal Autograph traffic)"
 }
 ```
 
 ---
 
-## Module: k3s Cluster for ContentAI
+## Module: k3s Cluster for Autograph
 
 ```hcl
 # modules/k3s-cluster/main.tf
@@ -279,7 +279,7 @@ module "servers" {
 # Worker agents (run Strapi, AI service, databases)
 module "agents" {
   source   = "../hetzner-server"
-  count    = var.agent_count  # 3 for ContentAI workloads
+  count    = var.agent_count  # 3 for Autograph workloads
 
   name        = "contentai-agent-${count.index}"
   server_type = var.agent_type  # Bigger for Strapi
@@ -294,7 +294,7 @@ module "agents" {
   }
 }
 
-# Load balancer for public access to ContentAI
+# Load balancer for public access to Autograph
 resource "hcloud_load_balancer" "contentai" {
   name               = "contentai-lb"
   load_balancer_type = "lb11"
@@ -314,7 +314,7 @@ resource "hcloud_load_balancer_target" "agents" {
   server_id        = module.agents[count.index].id
 }
 
-# HTTP/HTTPS for ContentAI
+# HTTP/HTTPS for Autograph
 resource "hcloud_load_balancer_service" "https" {
   load_balancer_id = hcloud_load_balancer.contentai.id
   protocol         = "tcp"
@@ -371,7 +371,7 @@ sequenceDiagram
     You->>Lock: Acquire lock
     Lock-->>You: Lock acquired
     You->>State: Read state
-    You->>You: Plan ContentAI infrastructure
+    You->>You: Plan Autograph infrastructure
     You->>State: Write new state
     You->>Lock: Release lock
 
@@ -380,12 +380,12 @@ sequenceDiagram
 
 ---
 
-## Workflow: Building ContentAI Infrastructure
+## Workflow: Building Autograph Infrastructure
 
 ```mermaid
 flowchart LR
     subgraph Write["✍️ Write"]
-        W1["Define ContentAI VMs"]
+        W1["Define Autograph VMs"]
         W2["tofu fmt (format)"]
         W3["tofu validate"]
     end
@@ -422,7 +422,7 @@ tofu validate
 # Preview what will be created
 tofu plan
 
-# Create ContentAI infrastructure
+# Create Autograph infrastructure
 tofu apply
 
 # When done, tear it all down (careful!)
@@ -436,7 +436,7 @@ tofu destroy
 ```yaml
 # .github/workflows/contentai-infra.yml
 
-name: ContentAI Infrastructure
+name: Autograph Infrastructure
 
 on:
   pull_request:
@@ -464,7 +464,7 @@ jobs:
         run: tofu validate
         working-directory: terraform
 
-      - name: Plan ContentAI Infrastructure
+      - name: Plan Autograph Infrastructure
         run: tofu plan -out=plan.tfplan
         working-directory: terraform
         env:
@@ -483,14 +483,14 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Create ContentAI Infrastructure
+      - name: Create Autograph Infrastructure
         run: tofu apply -auto-approve plan.tfplan
         working-directory: terraform
 ```
 
 ---
 
-## Best Practices for ContentAI
+## Best Practices for Autograph
 
 ### 1. Use Modules for Consistency
 
@@ -534,23 +534,23 @@ variable "server_count" {
 # Outputs for the next step: Ansible configuration
 output "server_ips" {
   value       = module.cluster.server_ips
-  description = "ContentAI control plane IPs (for Ansible inventory)"
+  description = "Autograph control plane IPs (for Ansible inventory)"
 }
 
 output "agent_ips" {
   value       = module.cluster.agent_ips
-  description = "ContentAI worker IPs (where Strapi will run)"
+  description = "Autograph worker IPs (where Strapi will run)"
 }
 
 output "load_balancer_ip" {
   value       = hcloud_load_balancer.contentai.ipv4
-  description = "Public IP for ContentAI (point DNS here)"
+  description = "Public IP for Autograph (point DNS here)"
 }
 ```
 
 ---
 
-## ContentAI Cost Summary
+## Autograph Cost Summary
 
 | Resource | Spec | Monthly Cost |
 |----------|------|--------------|

@@ -1,10 +1,10 @@
-# Configuration Management: Making Servers Ready for ContentAI
+# Configuration Management: Making Servers Ready for Autograph
 
-> *"OpenTofu creates the castle walls. Ansible fills them with everything ContentAI needs to live."*
+> *"OpenTofu creates the castle walls. Ansible fills them with everything Autograph needs to live."*
 
 ## The Purpose: From Empty VMs to Running Platform
 
-**Why are we doing this?** OpenTofu gave us 6 empty servers. Ansible makes them into a working Kubernetes cluster ready for ContentAI.
+**Why are we doing this?** OpenTofu gave us 6 empty servers. Ansible makes them into a working Kubernetes cluster ready for Autograph.
 
 ```mermaid
 flowchart LR
@@ -21,14 +21,14 @@ flowchart LR
         G1["No packages"]
         G2["No k3s"]
         G3["No security"]
-        G4["Can't run ContentAI"]
+        G4["Can't run Autograph"]
     end
 
     subgraph After["🏰 AFTER ANSIBLE"]
         A1["k3s control plane (HA)"]
         A2["k3s workers"]
         A3["Security hardened"]
-        A4["Ready for ContentAI!"]
+        A4["Ready for Autograph!"]
     end
 
     Before --> Gap --> After
@@ -38,13 +38,13 @@ flowchart LR
 
 ---
 
-## What Ansible Does for ContentAI
+## What Ansible Does for Autograph
 
-| Task | What It Configures | Why ContentAI Needs It |
+| Task | What It Configures | Why Autograph Needs It |
 |------|-------------------|----------------------|
 | **Base hardening** | SSH, firewall, updates | Security before anything else |
 | **k3s servers** | Control plane cluster | Kubernetes to run Strapi |
-| **k3s agents** | Worker nodes | Where ContentAI actually runs |
+| **k3s agents** | Worker nodes | Where Autograph actually runs |
 | **Platform services** | Ingress, storage, certs | HTTPS, persistent data |
 
 ---
@@ -58,7 +58,7 @@ flowchart LR
 | **Learning curve** | Low | High |
 | **Ad-hoc commands** | Yes | No |
 
-**For ContentAI:** SSH into servers, configure them, done. No agents to manage.
+**For Autograph:** SSH into servers, configure them, done. No agents to manage.
 
 ---
 
@@ -75,7 +75,7 @@ flowchart TB
             S3["contentai-server-3"]
         end
 
-        subgraph Agents["[agents] - ContentAI Workers"]
+        subgraph Agents["[agents] - Autograph Workers"]
             A1["contentai-agent-1"]
             A2["contentai-agent-2"]
             A3["contentai-agent-3"]
@@ -91,7 +91,7 @@ flowchart TB
     style Result fill:#4CAF50
 ```
 
-### Static Inventory for ContentAI
+### Static Inventory for Autograph
 
 ```yaml
 # inventory/contentai.yml
@@ -154,7 +154,7 @@ compose:
 
 ---
 
-## Playbook Architecture for ContentAI
+## Playbook Architecture for Autograph
 
 ```mermaid
 flowchart TB
@@ -198,7 +198,7 @@ flowchart TB
 
 ## Role: Common (Base Hardening)
 
-Every ContentAI server needs this:
+Every Autograph server needs this:
 
 ```yaml
 # roles/common/tasks/main.yml
@@ -210,7 +210,7 @@ Every ContentAI server needs this:
     cache_valid_time: 3600
   when: ansible_os_family == "Debian"
 
-- name: Install essential packages for ContentAI
+- name: Install essential packages for Autograph
   ansible.builtin.apt:
     name:
       - curl
@@ -224,7 +224,7 @@ Every ContentAI server needs this:
       - gnupg
     state: present
 
-- name: Set timezone (for consistent ContentAI logs)
+- name: Set timezone (for consistent Autograph logs)
   ansible.builtin.timezone:
     name: "{{ timezone | default('UTC') }}"
 
@@ -245,7 +245,7 @@ Every ContentAI server needs this:
 
 ---
 
-## Role: Firewall (Protect ContentAI)
+## Role: Firewall (Protect Autograph)
 
 ```yaml
 # roles/firewall/tasks/main.yml
@@ -272,7 +272,7 @@ Every ContentAI server needs this:
     port: "22"
     proto: tcp
 
-- name: Allow internal network (ContentAI components talk)
+- name: Allow internal network (Autograph components talk)
   community.general.ufw:
     rule: allow
     src: "{{ private_network_cidr }}"
@@ -292,7 +292,7 @@ Every ContentAI server needs this:
   loop:
     - "80"
     - "443"
-  when: k3s_role == 'agent'  # Agents run ContentAI workloads
+  when: k3s_role == 'agent'  # Agents run Autograph workloads
 
 - name: Enable UFW
   community.general.ufw:
@@ -323,7 +323,7 @@ sequenceDiagram
     Server2-->>Ansible: Joined cluster
     Server3-->>Ansible: Joined cluster
 
-    Note over Ansible,Agent1: Phase 3: Join agents (ContentAI workers)
+    Note over Ansible,Agent1: Phase 3: Join agents (Autograph workers)
     Ansible->>Agent1: Install k3s (--agent)
     Agent1-->>Ansible: Joined cluster
 
@@ -345,7 +345,7 @@ sequenceDiagram
     mode: '0700'
 
 # Initialize first server (creates the cluster)
-- name: Initialize first k3s server for ContentAI
+- name: Initialize first k3s server for Autograph
   ansible.builtin.shell: |
     INSTALL_K3S_VERSION={{ k3s_version }} \
     K3S_TOKEN={{ k3s_token }} \
@@ -372,7 +372,7 @@ sequenceDiagram
   when: k3s_init.changed
 
 # Join additional servers (HA control plane)
-- name: Join server to ContentAI cluster
+- name: Join server to Autograph cluster
   ansible.builtin.shell: |
     INSTALL_K3S_VERSION={{ k3s_version }} \
     K3S_TOKEN={{ k3s_token }} \
@@ -388,8 +388,8 @@ sequenceDiagram
     - k3s_role == 'server'
     - not (k3s_server_init | default(false))
 
-# Join agents (where ContentAI actually runs)
-- name: Join agent to ContentAI cluster
+# Join agents (where Autograph actually runs)
+- name: Join agent to Autograph cluster
   ansible.builtin.shell: |
     INSTALL_K3S_VERSION={{ k3s_version }} \
     K3S_URL=https://{{ k3s_api_endpoint }}:6443 \
@@ -428,7 +428,7 @@ sequenceDiagram
 # group_vars/all.yml
 
 ---
-# Common settings for all ContentAI hosts
+# Common settings for all Autograph hosts
 timezone: UTC
 private_network_cidr: 10.1.0.0/16
 enable_fail2ban: true
@@ -437,7 +437,7 @@ enable_fail2ban: true
 k3s_version: v1.29.0+k3s1
 k3s_api_endpoint: "{{ hostvars[groups['servers'][0]]['ansible_host'] }}"
 
-# ContentAI observability
+# Autograph observability
 prometheus_retention: 15d
 loki_retention: 7d
 ```
@@ -456,7 +456,7 @@ etcd_snapshot_schedule: "0 */6 * * *"
 # group_vars/agents.yml
 
 ---
-# Worker node specific (where ContentAI runs)
+# Worker node specific (where Autograph runs)
 k3s_role: agent
 longhorn_disk_path: /var/lib/longhorn  # For PostgreSQL, Redis data
 ```
@@ -502,7 +502,7 @@ flowchart LR
     Run1 -->|"Same final state"| Run2
 ```
 
-**Idempotent patterns for ContentAI:**
+**Idempotent patterns for Autograph:**
 
 ```yaml
 # ✅ Idempotent: Uses state
@@ -535,7 +535,7 @@ flowchart LR
 
 ---
 
-## Running the ContentAI Playbooks
+## Running the Autograph Playbooks
 
 ### Full Setup (First Time)
 
@@ -566,7 +566,7 @@ ansible-playbook -i inventory/contentai.yml site.yml --limit "contentai-agent-1"
 
 ---
 
-## Best Practices for ContentAI
+## Best Practices for Autograph
 
 ### 1. Roles for Each Component
 
@@ -602,7 +602,7 @@ roles/
 ### 3. Error Handling
 
 ```yaml
-- name: Install and configure ContentAI prerequisites
+- name: Install and configure Autograph prerequisites
   block:
     - name: Install packages
       ansible.builtin.apt:
@@ -620,7 +620,7 @@ roles/
   rescue:
     - name: Notify failure
       ansible.builtin.debug:
-        msg: "ContentAI prerequisite installation failed!"
+        msg: "Autograph prerequisite installation failed!"
 
   always:
     - name: Log execution
@@ -635,7 +635,7 @@ roles/
 Once Ansible has configured all 6 nodes:
 
 1. **kubectl get nodes** — Verify your cluster is ready
-2. **Deploy ContentAI** — [Exercise 10: Strapi Deployment](../04-Internship/Exercises/10-ContentAI-Strapi-Deployment.md)
+2. **Deploy Autograph** — [Exercise 10: Strapi Deployment](../04-Internship/Exercises/10-Autograph-Strapi-Deployment.md)
 3. **GitOps** — [05-GitOps.md](./05-GitOps.md) for automated deployments
 
 ---
@@ -644,7 +644,7 @@ Once Ansible has configured all 6 nodes:
 
 - [Infrastructure-as-Code](./02-Infrastructure-as-Code.md) — Create the VMs first
 - [Container Orchestration](./04-Container-Orchestration.md) — Understand k3s
-- [GitOps](./05-GitOps.md) — Deploy ContentAI automatically
+- [GitOps](./05-GitOps.md) — Deploy Autograph automatically
 
 ---
 

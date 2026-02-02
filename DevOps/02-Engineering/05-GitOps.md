@@ -2,9 +2,9 @@
 
 > *"Write the blueprint once, and the castle rebuilds itself every time you change the plans."*
 
-## The Purpose: ContentAI Deploys Automatically
+## The Purpose: Autograph Deploys Automatically
 
-**Why are we doing this?** So ContentAI deploys itself whenever we push code.
+**Why are we doing this?** So Autograph deploys itself whenever we push code.
 
 No more `kubectl apply` commands. No more "it works on my machine." Push to Git, and ArgoCD makes the cluster match your intent. *The castle watches its blueprints and rebuilds any room that changes.*
 
@@ -36,7 +36,7 @@ flowchart TB
 
 ---
 
-## GitOps Principles (For ContentAI)
+## GitOps Principles (For Autograph)
 
 ```mermaid
 flowchart LR
@@ -47,9 +47,9 @@ flowchart LR
         P4["4. Self-Healing"]
     end
 
-    subgraph ContentAI["For ContentAI"]
+    subgraph Autograph["For Autograph"]
         D1["YAML defines Strapi,\nPostgreSQL, AI Service"]
-        D2["Git history shows\nevery ContentAI change"]
+        D2["Git history shows\nevery Autograph change"]
         D3["ArgoCD syncs\nautomatically"]
         D4["Drift gets\nauto-corrected"]
     end
@@ -59,12 +59,12 @@ flowchart LR
     P3 --> D3
     P4 --> D4
 
-    style ContentAI fill:#4CAF50
+    style Autograph fill:#4CAF50
 ```
 
 ---
 
-## Traditional vs GitOps (ContentAI Flow)
+## Traditional vs GitOps (Autograph Flow)
 
 ```mermaid
 flowchart TB
@@ -99,7 +99,7 @@ flowchart TB
 
 ---
 
-## Why ArgoCD for ContentAI?
+## Why ArgoCD for Autograph?
 
 | Feature | ArgoCD | Flux |
 |---------|--------|------|
@@ -110,7 +110,7 @@ flowchart TB
 | **Health checks** | Extensive (perfect for Strapi) | Basic |
 | **RBAC** | Fine-grained | Basic |
 
-**For ContentAI:** ArgoCD's UI lets you see Strapi deployment status at a glance. One click to rollback if an AI service update fails.
+**For Autograph:** ArgoCD's UI lets you see Strapi deployment status at a glance. One click to rollback if an AI service update fails.
 
 ---
 
@@ -146,7 +146,7 @@ flowchart TB
 
 ---
 
-## ContentAI Application Definition
+## Autograph Application Definition
 
 ```yaml
 # argocd/applications/strapi.yaml
@@ -187,7 +187,7 @@ spec:
 
 ---
 
-## ContentAI Sync Flow
+## Autograph Sync Flow
 
 ```mermaid
 sequenceDiagram
@@ -195,7 +195,7 @@ sequenceDiagram
     participant Git as GitHub
     participant Argo as ArgoCD
     participant K8S as k3s Cluster
-    participant CAI as ContentAI
+    participant CAI as Autograph
 
     Dev->>Git: 1. Update strapi deployment.yaml\n(new image tag)
 
@@ -225,9 +225,9 @@ sequenceDiagram
 
 ---
 
-## App of Apps: ContentAI's Magic Trick
+## App of Apps: Autograph's Magic Trick
 
-One root application deploys ALL of ContentAI. *One ring to rule them all.*
+One root application deploys ALL of Autograph. *One ring to rule them all.*
 
 ```mermaid
 flowchart TB
@@ -242,7 +242,7 @@ flowchart TB
         MON["monitoring\n(Prometheus)"]
     end
 
-    subgraph ContentAI["ContentAI Product"]
+    subgraph Autograph["Autograph Product"]
         STRAPI["strapi\n(CMS)"]
         AI["ai-service\n(Claude/OpenAI)"]
         PG["postgres\n(database)"]
@@ -260,7 +260,7 @@ flowchart TB
     AOA --> REDIS
     AOA --> MEILI
 
-    style ContentAI fill:#4CAF50
+    style Autograph fill:#4CAF50
 ```
 
 ### Root Application
@@ -353,7 +353,7 @@ spec:
 
 ---
 
-## ContentAI Repository Structure
+## Autograph Repository Structure
 
 ```
 contentai-infra/
@@ -369,7 +369,7 @@ contentai-infra/
 │   │   ├── nginx-ingress.yaml
 │   │   └── monitoring.yaml
 │   └── projects/
-│       ├── contentai.yaml       # ContentAI project RBAC
+│       ├── contentai.yaml       # Autograph project RBAC
 │       └── platform.yaml        # Platform project RBAC
 │
 ├── k8s/
@@ -418,7 +418,7 @@ contentai-infra/
 
 ## Sync Waves: Deploy in Order
 
-ContentAI components must deploy in order: namespace → secrets → database → app.
+Autograph components must deploy in order: namespace → secrets → database → app.
 
 ```mermaid
 flowchart LR
@@ -534,19 +534,19 @@ spec:
             - -c
             - |
               curl -X POST $SLACK_WEBHOOK \
-                -d '{"text": "🚀 ContentAI Strapi deployed!"}'
+                -d '{"text": "🚀 Autograph Strapi deployed!"}'
       restartPolicy: Never
 ```
 
 ---
 
-## ContentAI Health Checks
+## Autograph Health Checks
 
-ArgoCD monitors ContentAI health—green means users can create content.
+ArgoCD monitors Autograph health—green means users can create content.
 
 ```mermaid
 flowchart TB
-    subgraph HealthStatus["ContentAI Health Status"]
+    subgraph HealthStatus["Autograph Health Status"]
         Healthy["✅ Healthy\nStrapi serving, DB connected"]
         Progressing["🔄 Progressing\nRolling update in progress"]
         Degraded["⚠️ Degraded\nStrapi crashlooping"]
@@ -567,19 +567,19 @@ flowchart TB
 
 ---
 
-## ContentAI Projects and RBAC
+## Autograph Projects and RBAC
 
 Separate permissions for platform team vs. interns:
 
 ```yaml
-# ArgoCD Project for ContentAI
+# ArgoCD Project for Autograph
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: contentai
   namespace: argocd
 spec:
-  description: ContentAI product applications
+  description: Autograph product applications
 
   sourceRepos:
     - https://github.com/pearlthoughts/contentai-infra.git
@@ -589,7 +589,7 @@ spec:
     - namespace: contentai
       server: https://kubernetes.default.svc
 
-  # What resources ContentAI apps can create
+  # What resources Autograph apps can create
   namespaceResourceWhitelist:
     - group: ""
       kind: ConfigMap
@@ -619,7 +619,7 @@ spec:
         - interns
 
     - name: admin
-      description: Full access to ContentAI
+      description: Full access to Autograph
       policies:
         - p, proj:contentai:admin, applications, *, contentai/*, allow
       groups:
@@ -645,7 +645,7 @@ sequenceDiagram
     Argo->>K8S: 3. Apply v1.2.2 manifests
     K8S-->>Argo: 4. Strapi v1.2.2 running
 
-    Note over K8S: ContentAI back to working state
+    Note over K8S: Autograph back to working state
 
     alt Permanent Fix
         Eng->>Eng: 5. git revert (creates new commit)
@@ -669,7 +669,7 @@ argocd app history contentai-strapi
 
 ---
 
-## Notifications: Know When ContentAI Deploys
+## Notifications: Know When Autograph Deploys
 
 ```yaml
 # ArgoCD Notifications ConfigMap
@@ -684,13 +684,13 @@ data:
 
   template.contentai-deployed: |
     message: |
-      {{if eq .serviceType "slack"}}:rocket:{{end}} ContentAI {{.app.metadata.name}} deployed!
+      {{if eq .serviceType "slack"}}:rocket:{{end}} Autograph {{.app.metadata.name}} deployed!
       Version: {{.app.status.sync.revision | substr 0 7}}
       Status: {{.app.status.health.status}}
 
   template.contentai-degraded: |
     message: |
-      {{if eq .serviceType "slack"}}:warning:{{end}} ContentAI {{.app.metadata.name}} is DEGRADED!
+      {{if eq .serviceType "slack"}}:warning:{{end}} Autograph {{.app.metadata.name}} is DEGRADED!
       Check ArgoCD: https://argocd.contentai.io/applications/{{.app.metadata.name}}
 
   trigger.on-deployed: |
@@ -711,13 +711,13 @@ data:
 
 ---
 
-## ArgoCD CLI Essentials for ContentAI
+## ArgoCD CLI Essentials for Autograph
 
 ```bash
 # Login to ArgoCD
 argocd login argocd.contentai.io
 
-# List all ContentAI applications
+# List all Autograph applications
 argocd app list
 
 # Check Strapi status
@@ -744,7 +744,7 @@ argocd app refresh contentai-strapi
 
 ---
 
-## CI/CD Integration: Full ContentAI Pipeline
+## CI/CD Integration: Full Autograph Pipeline
 
 ```mermaid
 flowchart LR
@@ -768,7 +768,7 @@ flowchart LR
         DEPLOY["Deploy to k3s"]
     end
 
-    subgraph Cluster["ContentAI"]
+    subgraph Cluster["Autograph"]
         STRAPI["Strapi Running"]
     end
 
@@ -783,11 +783,11 @@ flowchart LR
 
 ## What's Next
 
-Once ArgoCD is deploying ContentAI:
+Once ArgoCD is deploying Autograph:
 
-1. **Deploy ContentAI** — [Exercise 10: Strapi Deployment](../04-Internship/Exercises/10-ContentAI-Strapi-Deployment.md)
-2. **Observability** — [Observability Stack](../03-Platform/02-Observability.md) to watch ContentAI
-3. **Security** — [Security](../03-Platform/03-Security.md) to protect ContentAI
+1. **Deploy Autograph** — [Exercise 10: Strapi Deployment](../04-Internship/Exercises/10-Autograph-Strapi-Deployment.md)
+2. **Observability** — [Observability Stack](../03-Platform/02-Observability.md) to watch Autograph
+3. **Security** — [Security](../03-Platform/03-Security.md) to protect Autograph
 
 ---
 
