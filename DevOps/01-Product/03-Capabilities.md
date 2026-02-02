@@ -1,306 +1,401 @@
-# Platform Capabilities
+# ContentAI Capabilities
 
-## Core Capabilities Overview
+> *"Make something people want."*
+> — **Paul Graham**, Y Combinator
 
-The platform provides these capabilities to development teams:
+## What ContentAI Does for Users
+
+ContentAI solves one problem: **Creating quality content is slow and expensive.**
 
 ```mermaid
-mindmap
-  root((Platform<br/>Capabilities))
-    Deploy
-      Git push → production
-      Rollback in seconds
-      Preview environments
-      Feature flags
-    Build
-      CI pipelines
-      Container builds
-      Security scans
-      Artifact registry
-    Run
-      Auto-scaling
-      Health checks
-      Load balancing
-      Service mesh
-    Observe
-      Metrics dashboards
-      Log aggregation
-      Distributed tracing
-      Alerting & PagerDuty
-    Secure
-      TLS everywhere
-      Secret management
-      Network policies
-      RBAC & SSO
-    Manage
-      DNS/Domains
-      Backup/Restore
-      Cost tracking
-      Audit logs
+flowchart TB
+    subgraph Before["❌ WITHOUT CONTENTAI"]
+        B1["4-8 hours per blog post"]
+        B2["$100-500 per piece"]
+        B3["Days for translation"]
+        B4["Manual SEO optimization"]
+        B5["5-10 articles per month"]
+    end
+
+    subgraph After["✅ WITH CONTENTAI"]
+        A1["30 minutes per blog post"]
+        A2["$5-10 in API costs"]
+        A3["Minutes for translation"]
+        A4["AI-generated SEO"]
+        A5["50-100+ articles per month"]
+    end
+
+    Before -->|"10x improvement"| After
+
+    style After fill:#4CAF50
 ```
 
 ---
 
-## Service Level Objectives (SLOs)
+## Product Capabilities
 
-### Platform SLOs
+### Capability 1: AI Content Generation
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| **Availability** | 99.9% (8.7h downtime/year) | Synthetic monitoring |
-| **Deployment Success Rate** | 99% | GitOps pipeline metrics |
-| **Deployment Time** | < 5 minutes | Pipeline duration |
-| **Recovery Time (MTTR)** | < 15 minutes | Incident tracking |
-| **API Latency (p99)** | < 200ms | Prometheus histograms |
+**The core feature that makes ContentAI valuable.**
 
-### Developer Experience SLOs
+```mermaid
+sequenceDiagram
+    participant U as Content Creator
+    participant S as Strapi CMS
+    participant AI as AI Service
+    participant C as Claude API
+    participant O as OpenAI (Backup)
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| **Time to First Deploy** | < 1 hour | Onboarding tracking |
-| **Feedback Loop Time** | < 10 minutes | Push to preview |
-| **Documentation Coverage** | 100% of features | Audit |
-| **Self-Service Rate** | 80% of requests | Ticket analysis |
+    U->>S: "Write a blog about DevOps trends"
+    S->>AI: Generate content request
+    AI->>C: Call Claude API
+    C-->>AI: Generated draft
+    AI-->>S: Content + metadata
+    S-->>U: Draft ready for review
+
+    Note over U,S: Time: ~30 seconds
+    Note over AI,C: Claude primary, OpenAI fallback
+```
+
+| Feature | What It Does | User Benefit |
+|---------|--------------|--------------|
+| **Blog Generation** | Creates full articles from topics | 10x content velocity |
+| **Summarization** | Condenses long content | Quick briefings, abstracts |
+| **Translation** | Multi-language content | Global reach without translators |
+| **SEO Metadata** | Generates titles, descriptions | Better search rankings |
+| **Brand Voice** | Maintains consistent tone | Professional consistency |
+
+### Capability 2: Content Management
+
+**Strapi CMS provides the foundation for all content operations.**
+
+```mermaid
+flowchart TB
+    subgraph Strapi["STRAPI CMS"]
+        subgraph Admin["Admin Panel"]
+            Editor["Content Editor"]
+            Types["Content Types"]
+            Media["Media Library"]
+            Users["User Management"]
+        end
+
+        subgraph API["Content API"]
+            REST["REST API"]
+            GQL["GraphQL API"]
+            Webhooks["Webhooks"]
+        end
+
+        subgraph Plugins["AI Plugins"]
+            Gen["Content Generation"]
+            Sum["Summarization"]
+            Trans["Translation"]
+        end
+    end
+
+    subgraph Consumers["CONTENT CONSUMERS"]
+        Web["Website"]
+        Mobile["Mobile App"]
+        Third["Third-party Services"]
+    end
+
+    Admin --> API
+    Plugins --> API
+    API --> Consumers
+
+    style Plugins fill:#4CAF50
+```
+
+| Feature | What It Does | User Benefit |
+|---------|--------------|--------------|
+| **Admin Panel** | Visual content management | No code needed |
+| **Content Types** | Custom data structures | Flexible content models |
+| **REST/GraphQL** | API-first delivery | Headless flexibility |
+| **Media Library** | Asset management | Organized media |
+| **Webhooks** | Event notifications | Workflow automation |
+
+### Capability 3: Content Search
+
+**Meilisearch powers instant, typo-tolerant search.**
+
+```mermaid
+flowchart LR
+    subgraph Input["USER SEARCH"]
+        Query["'devops trneds 2026'"]
+    end
+
+    subgraph Meilisearch["MEILISEARCH"]
+        Typo["Typo Tolerance"]
+        Rank["Relevance Ranking"]
+        Filter["Faceted Filtering"]
+    end
+
+    subgraph Results["RESULTS (< 50ms)"]
+        R1["'DevOps Trends in 2026'"]
+        R2["'Top DevOps Tools for 2026'"]
+        R3["'Future of DevOps'"]
+    end
+
+    Query --> Typo --> Rank --> Filter --> Results
+
+    style Results fill:#4CAF50
+```
+
+| Feature | What It Does | User Benefit |
+|---------|--------------|--------------|
+| **Typo Tolerance** | Finds "devops" from "devpos" | Better user experience |
+| **Instant Search** | < 50ms response time | Real-time results |
+| **Faceted Filtering** | Filter by category, date, author | Precise discovery |
+| **Relevance Ranking** | Best matches first | Quality results |
+
+### Capability 4: Performance & Caching
+
+**Redis ensures ContentAI responds fast.**
+
+```mermaid
+flowchart TB
+    subgraph Request["API REQUEST"]
+        User["User requests /api/articles/123"]
+    end
+
+    subgraph Cache["REDIS CACHE"]
+        Check{{"Cache hit?"}}
+        Hit["Return cached (< 10ms)"]
+        Miss["Fetch from DB (~100ms)"]
+        Store["Store in cache"]
+    end
+
+    subgraph Response["RESPONSE"]
+        Result["Article data"]
+    end
+
+    User --> Check
+    Check -->|"Yes"| Hit
+    Check -->|"No"| Miss
+    Miss --> Store
+    Hit --> Result
+    Store --> Result
+
+    style Hit fill:#4CAF50
+```
+
+| Metric | Without Cache | With Redis |
+|--------|---------------|------------|
+| **API Response** | 100-500ms | < 10ms |
+| **Database Load** | High | Minimal |
+| **AI Rate Limiting** | None | Controlled |
+| **Session Handling** | Slow | Fast |
 
 ---
 
-## Capability 1: Deployment Pipeline
+## Platform Capabilities (What Makes ContentAI Run)
 
-### GitOps Workflow
+The platform exists to serve ContentAI. Here's what it provides:
+
+### Deployment Pipeline
 
 ```mermaid
 sequenceDiagram
     participant Dev as Developer
     participant Git as GitHub
-    participant CI as CI/CD
-    participant Reg as Registry
+    participant CI as GitHub Actions
+    participant Reg as ghcr.io
     participant Argo as ArgoCD
-    participant K8s as Kubernetes
+    participant K8s as k3s Cluster
 
-    Dev->>Git: Git Push
-    Git->>CI: Trigger Build
+    Dev->>Git: Push ContentAI code
+    Git->>CI: Trigger workflow
     CI->>CI: Build & Test
-    CI->>Reg: Push Image
-    CI->>Git: Update Manifest
-    Argo->>Git: Detect Change
-    Argo->>K8s: Apply Deployment
-    K8s-->>Argo: Sync Complete
+    CI->>Reg: Push image
+    CI->>Git: Update manifests
 
-    Note over Dev,K8s: Time: Push → Production: ~5 minutes
-    Note over Dev,K8s: Rollback: Instant (Git revert)
+    Argo->>Git: Detect change
+    Argo->>K8s: Deploy ContentAI
+    K8s-->>Dev: ContentAI updated!
+
+    Note over Dev,K8s: Push → Production: ~5 minutes
 ```
 
-### Deployment Features
+### Auto-Scaling
 
-| Feature | Implementation | Benefit |
-|---------|----------------|---------|
-| **Blue-Green** | ArgoCD rollouts | Zero-downtime deploys |
-| **Canary** | Progressive delivery | Risk mitigation |
-| **Rollback** | Git revert + sync | Instant recovery |
-| **Preview Envs** | PR-triggered | Test before merge |
+ContentAI scales automatically based on demand:
 
----
+| Trigger | Action | Result |
+|---------|--------|--------|
+| **CPU > 70%** | Add Strapi pod | Handle more requests |
+| **Memory > 80%** | Add Strapi pod | Prevent OOM |
+| **AI Queue > 100** | Add AI service pod | Faster generation |
+| **P99 > 500ms** | Scale horizontally | Better latency |
 
-## Capability 2: Container Orchestration
+### High Availability
 
-### k3s Cluster Architecture
+ContentAI never goes down (almost):
 
 ```mermaid
 flowchart TB
-    subgraph ControlPlane["Control Plane (HA)"]
-        S1["Server 1<br/>(Leader)"]
-        S2["Server 2<br/>(Follower)"]
-        S3["Server 3<br/>(Follower)"]
+    subgraph HA["HIGH AVAILABILITY"]
+        subgraph Strapi["Strapi (2+ replicas)"]
+            S1["Pod 1"]
+            S2["Pod 2"]
+        end
 
-        S1 <--> S2
-        S2 <--> S3
-        S3 <--> S1
+        subgraph AI["AI Service (2+ replicas)"]
+            A1["Pod 1"]
+            A2["Pod 2"]
+        end
+
+        subgraph DB["PostgreSQL"]
+            PG["Primary"]
+        end
+
+        subgraph Cache["Redis"]
+            R["Cache"]
+        end
     end
 
-    subgraph Etcd["etcd (embedded)"]
-        E["Distributed<br/>Consensus"]
-    end
-
-    subgraph Workers["Worker Nodes"]
-        A1["Agent 1<br/>(16 vCPU)"]
-        A2["Agent 2<br/>(16 vCPU)"]
-        A3["Agent 3<br/>(GPU)"]
-    end
-
-    ControlPlane --> Etcd
-    ControlPlane --> Workers
+    LB["Load Balancer"] --> S1 & S2
+    S1 & S2 --> A1 & A2
+    S1 & S2 --> PG
+    S1 & S2 --> R
 
     style S1 fill:#4CAF50
-    style S2 fill:#2196F3
-    style S3 fill:#2196F3
+    style S2 fill:#4CAF50
 ```
-
-**Scaling**: Add agents via Ansible, auto-join cluster
-**HA**: 3 servers tolerate 1 failure, etcd consensus
-
-### Workload Types
-
-| Type | Use Case | Configuration |
-|------|----------|---------------|
-| **Deployment** | Stateless services | Replicas, rolling updates |
-| **StatefulSet** | Databases, caches | Stable network, ordered |
-| **DaemonSet** | Logging, monitoring | One per node |
-| **CronJob** | Batch processing | Scheduled execution |
-| **Job** | One-time tasks | Run to completion |
 
 ---
 
-## Capability 3: Observability Stack
+## Service Level Objectives
 
-### Three Pillars
+### Product SLOs (What Users Care About)
 
-```mermaid
-flowchart TB
-    subgraph Metrics["METRICS"]
-        Prom["Prometheus"]
-        M1["CPU/Memory"]
-        M2["Network"]
-        M3["Custom"]
-    end
+| Metric | Target | Why It Matters |
+|--------|--------|----------------|
+| **Availability** | 99.9% (8.7h downtime/year) | Content always accessible |
+| **API Latency (p99)** | < 200ms | Fast content delivery |
+| **AI Generation Time** | < 5 seconds | Responsive creation |
+| **Search Response** | < 50ms | Instant search |
+| **Publish Success** | 99.9% | Reliable publishing |
 
-    subgraph Logs["LOGS"]
-        Loki["Loki"]
-        L1["App logs"]
-        L2["System logs"]
-        L3["Audit logs"]
-    end
-
-    subgraph Traces["TRACES"]
-        Tempo["Tempo"]
-        T1["Spans"]
-        T2["Context"]
-        T3["Latency"]
-    end
-
-    Metrics --> Grafana
-    Logs --> Grafana
-    Traces --> Grafana
-
-    subgraph Visualization["Visualization"]
-        Grafana["Grafana<br/>Dashboards<br/>Alerting<br/>Explore"]
-    end
-
-    Grafana --> Alert["AlertManager"]
-    Alert --> PagerDuty["PagerDuty/Slack"]
-```
-
-### Key Dashboards
-
-| Dashboard | Purpose | Key Metrics |
-|-----------|---------|-------------|
-| **Cluster Overview** | Health at a glance | Node status, pod counts, resource usage |
-| **Application** | Service health | Request rate, error rate, latency (RED) |
-| **Infrastructure** | Resource usage | CPU, memory, disk, network (USE) |
-| **Deployments** | Release tracking | Deploy frequency, rollback rate |
-| **Costs** | Budget tracking | Resource costs by namespace |
-
----
-
-## Capability 4: Security
-
-### Zero-Trust Architecture
-
-```mermaid
-flowchart TB
-    subgraph Network["NETWORK SECURITY"]
-        N1["All traffic encrypted (mTLS)"]
-        N2["Network policies (default deny)"]
-        N3["Cloudflare DDoS protection"]
-        N4["VPN for admin access"]
-    end
-
-    subgraph Identity["IDENTITY & ACCESS"]
-        I1["SSO integration (OIDC)"]
-        I2["RBAC for Kubernetes"]
-        I3["Namespace isolation"]
-        I4["Audit logging"]
-    end
-
-    subgraph Secrets["SECRETS MANAGEMENT"]
-        S1["External Secrets Operator"]
-        S2["Sealed Secrets for GitOps"]
-        S3["Rotation policies"]
-        S4["No secrets in Git (ever)"]
-    end
-
-    subgraph Supply["SUPPLY CHAIN"]
-        SC1["Image scanning (Trivy)"]
-        SC2["Signed images (Cosign)"]
-        SC3["SBOM generation"]
-        SC4["Vulnerability alerts"]
-    end
-
-    Network --> Identity --> Secrets --> Supply
-```
-
-### Security SLOs
+### Platform SLOs (What Supports the Product)
 
 | Metric | Target | Measurement |
 |--------|--------|-------------|
-| **Critical CVE Response** | < 24 hours | Trivy alerts |
-| **Secret Rotation** | 90 days max | Vault audit |
-| **Compliance Drift** | 0 | Policy as code |
-| **Access Reviews** | Quarterly | Audit trail |
+| **Deployment Success** | 99% | GitOps pipeline |
+| **Recovery Time (MTTR)** | < 15 minutes | Incident tracking |
+| **Scaling Response** | < 2 minutes | HPA metrics |
+| **Backup Success** | 100% | Backup job status |
 
 ---
 
-## Capability 5: Developer Self-Service
+## ContentAI Dashboard Metrics
 
-### Golden Paths
-
-Developers get self-service access to:
-
-| Capability | Self-Service Method | Approval Needed |
-|------------|---------------------|-----------------|
-| **Deploy app** | Git push | No |
-| **Create database** | Helm chart in GitOps | No |
-| **Add domain** | Update ingress manifest | No |
-| **View logs** | Grafana access | No |
-| **SSH to pod** | kubectl exec | No |
-| **Scale up** | Update manifest | No |
-| **New namespace** | Terraform PR | Yes (automated) |
-| **Production access** | RBAC request | Yes (manual) |
-
-### Developer Portal
+What you'll see in Grafana:
 
 ```mermaid
 flowchart TB
-    subgraph Portal["Developer Portal"]
-        subgraph Services["MY SERVICES"]
-            S1["api-gateway (prod) ✅ Healthy"]
-            S2["user-service (prod) ✅ Healthy"]
-            S3["ml-inference (prod) ⚠️ High latency"]
+    subgraph Dashboard["CONTENTAI DASHBOARD"]
+        subgraph Business["📊 BUSINESS METRICS"]
+            BM1["Content created today: 47"]
+            BM2["AI generations: 128"]
+            BM3["API calls: 12,847"]
+            BM4["Active users: 23"]
         end
 
-        subgraph Actions["QUICK ACTIONS"]
-            A1["Deploy"]
-            A2["Rollback"]
-            A3["Scale"]
-            A4["Logs"]
-            A5["Metrics"]
-            A6["SSH"]
+        subgraph Product["🚀 PRODUCT HEALTH"]
+            PM1["API latency: 45ms (p99)"]
+            PM2["AI response: 2.3s avg"]
+            PM3["Error rate: 0.01%"]
+            PM4["Cache hit: 94%"]
         end
 
-        subgraph Deployments["RECENT DEPLOYMENTS"]
-            D1["10:45 | api-gateway | v2.3.1 | ✅ | @alice"]
-            D2["10:30 | user-service | v1.8.0 | ✅ | @bob"]
-            D3["09:15 | ml-inference | v3.0.0 | ⚠️ | @carol"]
+        subgraph Platform["⚙️ PLATFORM HEALTH"]
+            PL1["CPU: 34%"]
+            PL2["Memory: 52%"]
+            PL3["Pods: 8/8 healthy"]
+            PL4["Storage: 23GB used"]
+        end
+
+        subgraph Costs["💰 COST TRACKING"]
+            C1["Claude tokens: 45K today"]
+            C2["OpenAI tokens: 2K today"]
+            C3["Estimated cost: $12.40"]
+            C4["Budget remaining: $287.60"]
         end
     end
+
+    style Business fill:#4CAF50
 ```
+
+---
+
+## Security Capabilities
+
+### What's Protected
+
+| Asset | Protection | Why |
+|-------|------------|-----|
+| **Content Data** | PostgreSQL + Longhorn | Your content is valuable |
+| **User Sessions** | Redis + JWT | Authentication |
+| **AI API Keys** | Kubernetes Secrets | API access control |
+| **Media Assets** | S3/MinIO | Uploaded files |
+| **Admin Access** | RBAC + Network Policies | Access control |
+
+### Security Architecture
+
+```mermaid
+flowchart TB
+    subgraph External["Internet"]
+        User["Content Creator"]
+    end
+
+    subgraph Edge["Edge Protection"]
+        CF["CloudFlare\n• WAF\n• DDoS\n• Rate Limiting"]
+    end
+
+    subgraph ContentAI["ContentAI Cluster"]
+        TLS["TLS Termination"]
+        Auth["Authentication\n(JWT)"]
+
+        subgraph App["Application"]
+            Strapi["Strapi"]
+            AI["AI Service"]
+        end
+
+        subgraph Secrets["Secrets"]
+            Keys["API Keys\n(Sealed Secrets)"]
+        end
+    end
+
+    User --> CF --> TLS --> Auth --> App
+    App --> Keys
+
+    style App fill:#4CAF50
+```
+
+---
+
+## Self-Service for Content Teams
+
+What content creators can do without help:
+
+| Action | How | Need Approval? |
+|--------|-----|----------------|
+| **Create content** | Admin panel | No |
+| **Generate AI draft** | AI button | No |
+| **Translate content** | Translation plugin | No |
+| **Publish content** | Publish button | No |
+| **View analytics** | Grafana dashboard | No |
+| **Manage media** | Media library | No |
+| **Add users** | User management | Yes (admin) |
+| **Change content types** | Content-Type Builder | Yes (admin) |
 
 ---
 
 ## Related
 
-- [Product Vision](./01-Vision.md)
-- [Market Context](./02-Market-Context.md)
-- [Architecture Overview](../02-Engineering/01-Architecture.md)
+- [Product Vision](./01-Vision.md) — Why we're building ContentAI
+- [Market Context](./02-Market-Context.md) — The opportunity
+- [Target Architecture](./04-Target-Architecture.md) — Full system design
+- [Architecture Overview](../02-Engineering/01-Architecture.md) — Technical details
 
 ---
 

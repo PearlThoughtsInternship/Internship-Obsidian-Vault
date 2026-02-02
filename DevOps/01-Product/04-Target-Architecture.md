@@ -1,72 +1,150 @@
-# Target Architecture
+# ContentAI Target Architecture
 
-## Multi-Region, Multi-Tenant Platform
+> *"The best architectures are those that allow you to defer decisions about details."*
+> — **Clean Architecture** (Robert C. Martin)
 
-This document describes the production architecture you'll build incrementally over 4 weeks.
+## This Is What You'll Build
+
+By the end of your 4-week internship, you'll have built a production-ready AI content platform.
+
+**Not a demo. Not a toy. A real product that could serve real users.**
 
 ---
 
-## High-Level Architecture
+## Full System Architecture
 
 ```mermaid
 flowchart TB
-    subgraph Internet["Internet"]
-        Users[("Users")]
-        Agents[("AI Agents")]
+    subgraph Users["👥 CONTENT CREATORS"]
+        Creator[("Writers")]
+        Marketer[("Marketers")]
+        Dev[("Developers")]
     end
 
-    subgraph Edge["Edge Layer"]
-        CF["Cloudflare CDN\n+ DDoS Protection"]
+    subgraph Edge["🌍 EDGE LAYER"]
+        CF["CloudFlare CDN\n+ DDoS Protection"]
+        LB["Hetzner Load Balancer"]
     end
 
-    subgraph Platform["Platform (Hetzner)"]
-        subgraph LB["Load Balancer"]
-            HLB["Hetzner LB"]
+    subgraph ContentAI["🚀 CONTENTAI PRODUCT"]
+        subgraph App["Application Layer"]
+            Strapi["Strapi CMS\n(Content Management)"]
+            AI["AI Service\n(Claude/OpenAI)"]
+            Search["Meilisearch\n(Content Search)"]
         end
 
-        subgraph Cluster["k3s Cluster"]
+        subgraph Data["Data Layer"]
+            PG["PostgreSQL\n(Content Storage)"]
+            Redis["Redis\n(Cache & Sessions)"]
+            S3["S3/MinIO\n(Media Assets)"]
+        end
+    end
+
+    subgraph Platform["⚙️ PLATFORM LAYER"]
+        subgraph K8s["k3s Cluster"]
             subgraph CP["Control Plane (HA)"]
                 S1["Server 1"]
                 S2["Server 2"]
                 S3["Server 3"]
             end
-
             subgraph Workers["Worker Nodes"]
-                W1["Agent 1\n(General)"]
-                W2["Agent 2\n(General)"]
-                W3["Agent 3\n(GPU)"]
+                A1["Agent 1"]
+                A2["Agent 2"]
+                A3["Agent 3"]
             end
         end
 
-        subgraph Storage["Storage"]
-            LH["Longhorn\n(Block)"]
-            MINIO["MinIO\n(Object)"]
-        end
-
-        subgraph DB["Databases"]
-            PG["PostgreSQL"]
-            REDIS["Redis"]
-        end
+        GitOps["ArgoCD\n(Deployment)"]
+        Obs["Prometheus + Grafana\n(Observability)"]
     end
 
-    subgraph Observability["Observability"]
-        PROM["Prometheus"]
-        GRAF["Grafana"]
-        LOKI["Loki"]
+    subgraph Infra["🏗️ INFRASTRUCTURE"]
+        VMs["Hetzner Cloud VMs"]
+        Network["Private Network"]
+        Storage["Block Storage\n(Longhorn)"]
     end
 
-    Users --> CF
-    Agents --> CF
-    CF --> HLB
-    HLB --> CP
-    CP <--> Workers
-    Workers --> LH
-    Workers --> MINIO
-    Workers --> PG
-    Workers --> REDIS
-    Workers --> PROM
-    PROM --> GRAF
-    LOKI --> GRAF
+    Users --> CF --> LB --> Strapi
+    Strapi --> AI
+    Strapi --> Search
+    Strapi --> PG
+    Strapi --> Redis
+    Strapi --> S3
+
+    App --> K8s
+    K8s --> VMs
+    GitOps --> K8s
+    Obs --> K8s
+
+    style Strapi fill:#4CAF50
+    style AI fill:#4CAF50
+```
+
+---
+
+## ContentAI Component Architecture
+
+### Application Components
+
+```mermaid
+flowchart LR
+    subgraph Strapi["STRAPI CMS (Port 1337)"]
+        Admin["Admin Panel"]
+        REST["REST API"]
+        GQL["GraphQL API"]
+        Plugins["AI Plugins"]
+    end
+
+    subgraph AIService["AI SERVICE (Port 3001)"]
+        Gen["Content Generation"]
+        Sum["Summarization"]
+        Trans["Translation"]
+        SEO["SEO Metadata"]
+    end
+
+    subgraph Search["MEILISEARCH (Port 7700)"]
+        Index["Content Index"]
+        Query["Search API"]
+    end
+
+    Admin --> REST
+    REST --> AIService
+    REST --> Search
+    Plugins --> AIService
+
+    style Strapi fill:#4CAF50
+    style AIService fill:#4CAF50
+```
+
+### Data Flow
+
+```mermaid
+sequenceDiagram
+    participant U as Content Creator
+    participant S as Strapi
+    participant AI as AI Service
+    participant PG as PostgreSQL
+    participant R as Redis
+    participant MS as Meilisearch
+
+    rect rgb(200, 230, 200)
+    Note over U,MS: Content Creation Flow
+    U->>S: Create article with AI assist
+    S->>AI: Generate content
+    AI-->>S: AI-generated draft
+    S->>PG: Save content
+    S->>MS: Index for search
+    S->>R: Invalidate cache
+    S-->>U: Article created!
+    end
+
+    rect rgb(200, 200, 230)
+    Note over U,MS: Content Retrieval Flow
+    U->>S: Request article
+    S->>R: Check cache
+    R-->>S: Cache hit (fast!)
+    S-->>U: Article data
+    end
 ```
 
 ---
@@ -74,16 +152,16 @@ flowchart TB
 ## Network Architecture
 
 ```mermaid
-flowchart LR
-    subgraph Public["Public Internet"]
-        User["User/Agent"]
+flowchart TB
+    subgraph Internet["PUBLIC INTERNET"]
+        Users["Users"]
     end
 
-    subgraph DMZ["DMZ Network"]
-        LB["Load Balancer\n10.0.0.1"]
+    subgraph DMZ["DMZ (10.0.0.0/24)"]
+        LB["Load Balancer\n10.0.0.1\n(Public IP: 1.2.3.4)"]
     end
 
-    subgraph Private["Private Network (10.1.0.0/16)"]
+    subgraph Private["PRIVATE NETWORK (10.1.0.0/16)"]
         subgraph Servers["Server Subnet (10.1.1.0/24)"]
             S1["Server 1\n10.1.1.1"]
             S2["Server 2\n10.1.1.2"]
@@ -91,161 +169,158 @@ flowchart LR
         end
 
         subgraph Agents["Agent Subnet (10.1.2.0/24)"]
-            A1["Agent 1\n10.1.2.1"]
-            A2["Agent 2\n10.1.2.2"]
-            A3["Agent 3\n10.1.2.3"]
+            A1["Agent 1\n10.1.2.1\nContentAI workloads"]
+            A2["Agent 2\n10.1.2.2\nContentAI workloads"]
+            A3["Agent 3\n10.1.2.3\nContentAI workloads"]
         end
 
         subgraph Data["Data Subnet (10.1.3.0/24)"]
-            DB1["PostgreSQL\n10.1.3.1"]
-            DB2["Redis\n10.1.3.2"]
+            PG["PostgreSQL\n10.1.3.1"]
+            Redis["Redis\n10.1.3.2"]
+            Meili["Meilisearch\n10.1.3.3"]
         end
     end
 
-    User --> LB
-    LB --> S1
-    LB --> S2
-    LB --> S3
-    S1 <--> A1
-    S2 <--> A2
-    S3 <--> A3
-    A1 --> DB1
-    A2 --> DB2
+    Users --> LB
+    LB --> S1 & S2 & S3
+    S1 & S2 & S3 --> A1 & A2 & A3
+    A1 & A2 & A3 --> PG & Redis & Meili
+
+    style A1 fill:#4CAF50
+    style A2 fill:#4CAF50
+    style A3 fill:#4CAF50
 ```
 
 ---
 
-## Deployment Pipeline
+## ContentAI Deployment Pipeline
 
 ```mermaid
 sequenceDiagram
     participant Dev as Developer
     participant GH as GitHub
     participant CI as GitHub Actions
-    participant REG as Container Registry
+    participant REG as ghcr.io
     participant ARGO as ArgoCD
     participant K8S as k3s Cluster
+    participant CAI as ContentAI
 
-    Dev->>GH: git push
+    Dev->>GH: Push ContentAI code
     GH->>CI: Trigger workflow
+
+    rect rgb(200, 200, 230)
+    Note over CI: Build Phase
     CI->>CI: Run tests
     CI->>CI: Build container
-    CI->>CI: Security scan
-    CI->>REG: Push image
-    CI->>GH: Update manifest (image tag)
-
-    loop Every 3 minutes
-        ARGO->>GH: Poll for changes
+    CI->>CI: Security scan (Trivy)
+    CI->>REG: Push image (ghcr.io/org/contentai:v1.2.3)
     end
 
-    ARGO->>GH: Detect new manifest
-    ARGO->>K8S: Apply changes
-    K8S->>K8S: Rolling deployment
-    K8S-->>ARGO: Sync complete
+    CI->>GH: Update k8s/contentai/deployment.yaml
+
+    rect rgb(200, 230, 200)
+    Note over ARGO,K8S: Deploy Phase
+    ARGO->>GH: Detect manifest change
+    ARGO->>K8S: Apply new deployment
+    K8S->>CAI: Rolling update
+    CAI-->>K8S: Health check passed
+    end
+
+    K8S-->>Dev: ContentAI v1.2.3 deployed!
+
+    Note over Dev,CAI: Total time: ~5 minutes
+```
+
+---
+
+## ContentAI Namespace Layout
+
+```yaml
+# How ContentAI is organized in Kubernetes
+
+contentai/
+├── strapi/
+│   ├── deployment.yaml        # 2+ replicas, rolling updates
+│   ├── service.yaml           # ClusterIP for internal access
+│   ├── ingress.yaml           # HTTPS endpoint
+│   ├── configmap.yaml         # Environment configuration
+│   ├── secret.yaml            # Credentials (sealed)
+│   └── hpa.yaml               # Auto-scaling rules
+│
+├── ai-service/
+│   ├── deployment.yaml        # 2+ replicas
+│   ├── service.yaml           # Internal service
+│   ├── configmap.yaml         # AI configuration
+│   └── secret.yaml            # API keys (Claude, OpenAI)
+│
+├── database/
+│   ├── postgresql/
+│   │   ├── statefulset.yaml   # Persistent database
+│   │   ├── service.yaml       # Stable network identity
+│   │   ├── secret.yaml        # DB credentials
+│   │   └── pvc.yaml           # 10Gi storage
+│   └── redis/
+│       ├── deployment.yaml    # Cache instance
+│       ├── service.yaml
+│       └── pvc.yaml           # 1Gi persistence
+│
+└── search/
+    └── meilisearch/
+        ├── statefulset.yaml   # Search engine
+        ├── service.yaml
+        └── pvc.yaml           # Index storage
 ```
 
 ---
 
 ## Observability Architecture
 
+### Monitoring ContentAI
+
 ```mermaid
 flowchart TB
-    subgraph Apps["Applications"]
-        App1["Service A"]
-        App2["Service B"]
-        App3["Service C"]
+    subgraph ContentAI["CONTENTAI METRICS"]
+        Strapi["Strapi Metrics\n• requests/sec\n• error rate\n• latency"]
+        AI["AI Service Metrics\n• tokens used\n• generation time\n• provider (Claude/OpenAI)"]
+        Search["Search Metrics\n• query latency\n• index size"]
     end
 
-    subgraph Collection["Data Collection"]
-        PM["Prometheus\n(Metrics)"]
-        OT["OpenTelemetry\n(Traces)"]
-        FL["Fluent Bit\n(Logs)"]
+    subgraph Collection["COLLECTION"]
+        Prom["Prometheus"]
+        Loki["Loki (Logs)"]
     end
 
-    subgraph Storage["Time Series Storage"]
-        PROM["Prometheus TSDB"]
-        TEMPO["Tempo"]
-        LOKI["Loki"]
+    subgraph Visualization["VISUALIZATION"]
+        Graf["Grafana"]
+        Dash1["ContentAI Dashboard"]
+        Dash2["Infrastructure Dashboard"]
+        Dash3["Cost Tracking Dashboard"]
     end
 
-    subgraph Viz["Visualization"]
-        GRAF["Grafana"]
-    end
-
-    subgraph Alert["Alerting"]
+    subgraph Alerting["ALERTING"]
         AM["AlertManager"]
-        SLACK["Slack"]
-        PD["PagerDuty"]
+        Slack["Slack"]
     end
 
-    App1 --> PM
-    App2 --> PM
-    App3 --> PM
-    App1 --> OT
-    App2 --> OT
-    App3 --> OT
-    App1 --> FL
-    App2 --> FL
-    App3 --> FL
+    ContentAI --> Prom
+    ContentAI --> Loki
+    Prom --> Graf
+    Loki --> Graf
+    Graf --> Dash1 & Dash2 & Dash3
+    Prom --> AM --> Slack
 
-    PM --> PROM
-    OT --> TEMPO
-    FL --> LOKI
-
-    PROM --> GRAF
-    TEMPO --> GRAF
-    LOKI --> GRAF
-
-    PROM --> AM
-    AM --> SLACK
-    AM --> PD
+    style Dash1 fill:#4CAF50
 ```
 
----
+### ContentAI-Specific Alerts
 
-## GitOps Repository Structure
-
-```mermaid
-flowchart TB
-    subgraph Repos["Git Repositories"]
-        subgraph Infra["infra-repo"]
-            TF["terraform/"]
-            AN["ansible/"]
-            K8S["k8s/"]
-        end
-
-        subgraph Apps["app-repos"]
-            App1["user-service/"]
-            App2["api-gateway/"]
-            App3["ml-service/"]
-        end
-    end
-
-    subgraph ArgoCD["ArgoCD"]
-        AOA["App of Apps"]
-        A1["user-service app"]
-        A2["api-gateway app"]
-        A3["ml-service app"]
-        Platform["platform-services"]
-    end
-
-    subgraph Cluster["k3s Cluster"]
-        NS1["production namespace"]
-        NS2["staging namespace"]
-        NS3["platform namespace"]
-    end
-
-    Infra --> AOA
-    AOA --> A1
-    AOA --> A2
-    AOA --> A3
-    AOA --> Platform
-
-    A1 --> NS1
-    A2 --> NS1
-    A3 --> NS1
-    Platform --> NS3
-```
+| Alert | Condition | Severity | Action |
+|-------|-----------|----------|--------|
+| **High AI Cost** | tokens > 100K/hour | Warning | Review usage |
+| **AI Provider Down** | Claude AND OpenAI failing | Critical | Check API keys |
+| **Strapi Unhealthy** | Health check failed | Critical | Investigate pods |
+| **Search Slow** | p99 > 500ms | Warning | Check index |
+| **Content DB Full** | Storage > 80% | Warning | Expand storage |
 
 ---
 
@@ -253,171 +328,211 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    subgraph External["External Traffic"]
-        User["User"]
+    subgraph External["EXTERNAL USERS"]
+        User["Content Creator"]
     end
 
-    subgraph Edge["Edge Security"]
-        CF["Cloudflare\n• WAF\n• DDoS\n• Rate Limiting"]
+    subgraph Edge["EDGE SECURITY"]
+        CF["CloudFlare\n• WAF rules\n• DDoS protection\n• Rate limiting\n• Bot protection"]
     end
 
-    subgraph Cluster["Cluster Security"]
-        ING["Ingress\n• TLS Termination\n• Auth Headers"]
-
-        subgraph Mesh["Service Mesh (Linkerd)"]
-            SVC1["Service A"]
-            SVC2["Service B"]
+    subgraph Cluster["K3S CLUSTER"]
+        subgraph Ingress["INGRESS LAYER"]
+            ING["NGINX Ingress\n• TLS termination\n• Auth headers"]
         end
 
-        subgraph Secrets["Secrets Management"]
-            ESO["External Secrets\nOperator"]
-            VAULT["HashiCorp Vault\nor AWS SM"]
+        subgraph ContentAI["CONTENTAI NAMESPACE"]
+            subgraph NetPol["Network Policies"]
+                NP1["Default: Deny All"]
+                NP2["Allow: Strapi ↔ PostgreSQL"]
+                NP3["Allow: Strapi ↔ AI Service"]
+                NP4["Allow: Strapi ↔ Redis"]
+                NP5["Allow: Prometheus scraping"]
+            end
+
+            Strapi["Strapi\n(JWT Auth)"]
+            AI["AI Service"]
+            PG["PostgreSQL"]
         end
 
-        subgraph Policies["Policy Enforcement"]
-            NP["Network Policies\n(Default Deny)"]
-            RBAC["RBAC\n(Least Privilege)"]
-            OPA["OPA Gatekeeper\n(Policy as Code)"]
+        subgraph Secrets["SECRETS MANAGEMENT"]
+            Sealed["Sealed Secrets\n(GitOps-safe)"]
+            Keys["• DB password\n• AI API keys\n• JWT secrets"]
+        end
+
+        subgraph RBAC["RBAC"]
+            R1["admin: Full access"]
+            R2["developer: contentai namespace"]
+            R3["ci-bot: Deploy only"]
         end
     end
 
-    User --> CF
-    CF --> ING
-    ING --> SVC1
-    SVC1 <-->|mTLS| SVC2
-    SVC1 --> ESO
-    ESO --> VAULT
-    NP --> Mesh
-    RBAC --> Mesh
-    OPA --> Mesh
+    User --> CF --> ING --> Strapi
+    Strapi --> AI --> Keys
+    Strapi --> PG --> Keys
+    NetPol --> ContentAI
+    RBAC --> Cluster
+
+    style Strapi fill:#4CAF50
 ```
 
 ---
 
-## Disaster Recovery Architecture
+## Disaster Recovery
+
+### Backup Strategy
 
 ```mermaid
 flowchart LR
-    subgraph Primary["Primary Region (FSN1)"]
-        subgraph K8S1["k3s Cluster"]
-            App["Applications"]
-            LH1["Longhorn"]
+    subgraph Primary["PRIMARY (FSN1)"]
+        subgraph ContentAI["ContentAI"]
+            Strapi["Strapi"]
+            PG["PostgreSQL"]
+            Media["Media Files"]
         end
-        DB1["PostgreSQL\n(Primary)"]
+        LH1["Longhorn"]
     end
 
-    subgraph Backup["Backup Storage"]
+    subgraph Backup["BACKUP STORAGE"]
         S3["S3-Compatible\nObject Storage"]
     end
 
-    subgraph DR["DR Region (NBG1)"]
-        subgraph K8S2["k3s Cluster (Standby)"]
-            App2["Applications\n(Scaled to 0)"]
-            LH2["Longhorn"]
-        end
-        DB2["PostgreSQL\n(Replica)"]
+    subgraph DR["DR READY"]
+        Restore["Can restore in < 30 min"]
     end
 
-    LH1 -->|"Backup (hourly)"| S3
-    DB1 -->|"WAL Streaming"| DB2
-    S3 -->|"Restore"| LH2
+    PG -->|"Daily backup\n+ WAL streaming"| S3
+    Media -->|"Hourly sync"| S3
+    LH1 -->|"Hourly snapshots"| S3
+    S3 -->|"Restore"| Restore
 
-    style DR fill:#f5f5f5
+    style ContentAI fill:#4CAF50
 ```
+
+### Recovery Time Objectives
+
+| Component | RPO (Data Loss) | RTO (Downtime) |
+|-----------|-----------------|----------------|
+| **PostgreSQL** | 5 minutes | 15 minutes |
+| **Media Files** | 1 hour | 30 minutes |
+| **Redis Cache** | Acceptable loss | 5 minutes |
+| **Search Index** | Rebuilds from DB | 15 minutes |
+| **Full ContentAI** | 5 minutes | 30 minutes |
 
 ---
 
-## Scaling Strategy
+## Scaling Architecture
+
+### Auto-Scaling ContentAI
 
 ```mermaid
 flowchart TB
-    subgraph Triggers["Scale Triggers"]
+    subgraph Triggers["SCALE TRIGGERS"]
         CPU["CPU > 70%"]
         MEM["Memory > 80%"]
-        QUEUE["Queue Depth > 100"]
+        QUEUE["AI Queue > 100"]
         LATENCY["P99 > 500ms"]
     end
 
-    subgraph HPA["Horizontal Pod Autoscaler"]
-        METRICS["Custom Metrics API"]
-        SCALE["Scale Decision"]
+    subgraph HPA["HORIZONTAL POD AUTOSCALER"]
+        Metrics["Custom Metrics API"]
+        Decision["Scale Decision"]
     end
 
-    subgraph Pods["Pod Scaling"]
-        P1["Pod 1"]
-        P2["Pod 2"]
-        P3["Pod 3\n(new)"]
-        P4["Pod N\n(new)"]
+    subgraph Strapi["STRAPI PODS"]
+        S1["Pod 1 ✓"]
+        S2["Pod 2 ✓"]
+        S3["Pod 3 (scaling)"]
     end
 
-    subgraph CA["Cluster Autoscaler"]
-        PENDING["Pending Pods"]
-        PROVISION["Provision Node"]
+    subgraph AI["AI SERVICE PODS"]
+        A1["Pod 1 ✓"]
+        A2["Pod 2 ✓"]
     end
 
-    subgraph Nodes["Node Scaling"]
-        N1["Node 1"]
-        N2["Node 2"]
-        N3["Node 3\n(new)"]
-    end
+    Triggers --> Metrics --> Decision
+    Decision --> Strapi
+    Decision --> AI
 
-    CPU --> METRICS
-    MEM --> METRICS
-    QUEUE --> METRICS
-    LATENCY --> METRICS
-    METRICS --> SCALE
-    SCALE --> P1
-    SCALE --> P2
-    SCALE --> P3
-    SCALE --> P4
-
-    P4 -->|"No capacity"| PENDING
-    PENDING --> CA
-    CA --> PROVISION
-    PROVISION --> N3
+    style S1 fill:#4CAF50
+    style S2 fill:#4CAF50
+    style A1 fill:#4CAF50
+    style A2 fill:#4CAF50
 ```
+
+### Scaling Limits
+
+| Component | Min Replicas | Max Replicas | Scale On |
+|-----------|--------------|--------------|----------|
+| **Strapi** | 2 | 10 | CPU, Memory |
+| **AI Service** | 2 | 5 | Queue depth |
+| **Meilisearch** | 1 | 1 | Vertical only |
+| **PostgreSQL** | 1 | 1 | Vertical only |
+| **Redis** | 1 | 1 | Vertical only |
 
 ---
 
-## Cost Optimization
+## Cost Architecture
+
+### Hetzner vs AWS Comparison
 
 | Component | Hetzner Spec | Monthly Cost | AWS Equivalent |
 |-----------|--------------|--------------|----------------|
-| **3x Server (CX31)** | 4 vCPU, 8GB RAM | €30 (€10 each) | $180+ |
-| **3x Agent (CX41)** | 8 vCPU, 16GB RAM | €60 (€20 each) | $360+ |
-| **1x GPU (CCX33)** | RTX 4000, 32GB | €180 | $1,200+ |
+| **3x Server (CX31)** | 4 vCPU, 8GB RAM | €30 | $180+ |
+| **3x Agent (CX41)** | 8 vCPU, 16GB RAM | €60 | $360+ |
 | **Load Balancer** | Standard | €6 | $20+ |
 | **Storage (100GB)** | SSD | €5 | $10+ |
 | **Bandwidth** | 20TB included | €0 | $1,800 |
-| **Total** | | **€281** | **$3,570+** |
+| **Total** | | **€101/mo** | **$2,370/mo** |
 
-*Annual savings: ~$39,000*
+**Annual savings: ~$27,000** — That's 3 years of AI API costs!
+
+### ContentAI Operating Costs
+
+| Cost Center | Monthly Budget | Notes |
+|-------------|----------------|-------|
+| **Infrastructure** | €101 | Hetzner VMs + Storage |
+| **Claude API** | ~$200 | Primary AI provider |
+| **OpenAI API** | ~$50 | Backup provider |
+| **Domain/SSL** | ~$5 | CloudFlare |
+| **Total** | **~$360/mo** | Production-ready AI platform |
 
 ---
 
 ## Technology Decisions
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| **Cloud Provider** | Hetzner | 90% cost savings, EU sovereignty |
-| **Kubernetes** | k3s | Lightweight, production-ready, HA |
-| **IaC** | OpenTofu | Open source Terraform fork |
-| **Config Mgmt** | Ansible | Agentless, Python-based |
-| **GitOps** | ArgoCD | UI, multi-cluster, mature |
-| **CNI** | Cilium | eBPF, network policies, observability |
-| **Storage** | Longhorn | Distributed, built for k8s |
-| **Ingress** | Traefik | k3s native, middleware support |
-| **Monitoring** | Prometheus + Grafana | Industry standard |
-| **Logging** | Loki | Lightweight, Grafana native |
+| Decision | Choice | Why |
+|----------|--------|-----|
+| **CMS** | Strapi | Open source, API-first, extensible |
+| **AI Primary** | Claude | Best content quality |
+| **AI Fallback** | OpenAI | Reliability |
+| **Database** | PostgreSQL | Strapi default, JSON support |
+| **Cache** | Redis | Fast, sessions, rate limiting |
+| **Search** | Meilisearch | Typo-tolerant, fast |
+| **Orchestration** | k3s | Lightweight, production-ready |
+| **GitOps** | ArgoCD | UI, sync status, rollback |
+| **Observability** | Prometheus + Grafana | Industry standard |
+| **Cloud** | Hetzner | 90% cost savings |
+
+---
+
+## Implementation Timeline
+
+| Week | Focus | ContentAI Milestone |
+|------|-------|---------------------|
+| **Week 1** | Infrastructure | VMs provisioned, hardened |
+| **Week 2** | **ContentAI** | **Strapi + AI live!** |
+| **Week 3** | Automation | GitOps deploys ContentAI |
+| **Week 4** | Production | Secured, monitored, documented |
 
 ---
 
 ## Related
 
-- [Product Vision](./01-Vision.md)
-- [Market Context](./02-Market-Context.md)
-- [Capabilities](./03-Capabilities.md)
-- [Architecture Overview](../02-Engineering/01-Architecture.md)
+- [Product Vision](./01-Vision.md) — Why we're building ContentAI
+- [Market Context](./02-Market-Context.md) — The opportunity
+- [Capabilities](./03-Capabilities.md) — What ContentAI does
+- [Architecture Overview](../02-Engineering/01-Architecture.md) — Deep dive
 
 ---
 
