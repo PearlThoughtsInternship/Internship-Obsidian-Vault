@@ -16,7 +16,7 @@
 
 ```mermaid
 flowchart TB
-    subgraph Autograph["🏰 CONTENTAI PLATFORM"]
+    subgraph Autograph["🏰 AUTOGRAPH PLATFORM"]
         Strapi["Strapi CMS\n(content)"]
         AI["AI Service\n(generation)"]
         PG["PostgreSQL\n(storage)"]

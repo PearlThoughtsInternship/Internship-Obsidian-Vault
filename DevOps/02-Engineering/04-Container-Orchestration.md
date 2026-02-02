@@ -16,7 +16,7 @@ flowchart TB
         K3["No workloads"]
     end
 
-    subgraph After["🏰 CONTENTAI RUNNING"]
+    subgraph After["🏰 AUTOGRAPH RUNNING"]
         S["Strapi CMS"]
         AI["AI Service"]
         PG["PostgreSQL"]
@@ -58,9 +58,9 @@ flowchart TB
 ```mermaid
 flowchart TB
     subgraph CP["Control Plane (HA)"]
-        S1["contentai-server-1\n• API Server\n• Scheduler\n• Controller"]
-        S2["contentai-server-2\n• API Server\n• Scheduler\n• Controller"]
-        S3["contentai-server-3\n• API Server\n• Scheduler\n• Controller"]
+        S1["autograph-server-1\n• API Server\n• Scheduler\n• Controller"]
+        S2["autograph-server-2\n• API Server\n• Scheduler\n• Controller"]
+        S3["autograph-server-3\n• API Server\n• Scheduler\n• Controller"]
 
         S1 <--> S2 <--> S3
         S1 <--> S3
@@ -73,9 +73,9 @@ flowchart TB
     end
 
     subgraph Workers["Worker Nodes (Autograph runs here)"]
-        A1["contentai-agent-1\n• Strapi pods\n• AI service pods"]
-        A2["contentai-agent-2\n• PostgreSQL\n• Redis"]
-        A3["contentai-agent-3\n• Meilisearch\n• Overflow"]
+        A1["autograph-agent-1\n• Strapi pods\n• AI service pods"]
+        A2["autograph-agent-2\n• PostgreSQL\n• Redis"]
+        A3["autograph-agent-3\n• Meilisearch\n• Overflow"]
     end
 
     LB["Load Balancer\n(API: 6443)"]
@@ -126,21 +126,21 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: strapi-cms
-  namespace: contentai
+  namespace: autograph
   labels:
     app: strapi
-    product: contentai
+    product: autograph
 spec:
   containers:
     - name: strapi
-      image: ghcr.io/pearlthoughts/contentai-strapi:v1.0.0
+      image: ghcr.io/pearlthoughts/autograph-strapi:v1.0.0
       ports:
         - containerPort: 1337
       env:
         - name: DATABASE_HOST
-          value: postgres-headless.contentai.svc.cluster.local
+          value: postgres-headless.autograph.svc.cluster.local
         - name: REDIS_HOST
-          value: redis.contentai.svc.cluster.local
+          value: redis.autograph.svc.cluster.local
       volumeMounts:
         - name: uploads
           mountPath: /app/public/uploads
@@ -195,13 +195,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: strapi
-  namespace: contentai
+  namespace: autograph
 spec:
   replicas: 3
   selector:
     matchLabels:
       app: strapi
-      product: contentai
+      product: autograph
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -211,12 +211,12 @@ spec:
     metadata:
       labels:
         app: strapi
-        product: contentai
+        product: autograph
         version: v1.0.0
     spec:
       containers:
         - name: strapi
-          image: ghcr.io/pearlthoughts/contentai-strapi:v1.0.0
+          image: ghcr.io/pearlthoughts/autograph-strapi:v1.0.0
           ports:
             - containerPort: 1337
           resources:
@@ -258,7 +258,7 @@ flowchart LR
     end
 
     subgraph Services["Autograph Services"]
-        ING["Ingress\n(contentai.example.com)"]
+        ING["Ingress\n(autograph.example.com)"]
         STRAPI["strapi-service\n(ClusterIP)"]
         PG["postgres-headless\n(Headless)"]
         REDIS["redis-service\n(ClusterIP)"]
@@ -286,12 +286,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: strapi
-  namespace: contentai
+  namespace: autograph
 spec:
   type: ClusterIP
   selector:
     app: strapi
-    product: contentai
+    product: autograph
   ports:
     - name: http
       port: 1337
@@ -302,12 +302,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres-headless
-  namespace: contentai
+  namespace: autograph
 spec:
   clusterIP: None
   selector:
     app: postgres
-    product: contentai
+    product: autograph
   ports:
     - port: 5432
 ---
@@ -316,12 +316,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ai-service
-  namespace: contentai
+  namespace: autograph
 spec:
   type: ClusterIP
   selector:
     app: ai-service
-    product: contentai
+    product: autograph
   ports:
     - name: http
       port: 3001
@@ -346,9 +346,9 @@ flowchart LR
         ING["NGINX Ingress"]
 
         subgraph Routes["Routing Rules"]
-            R1["cms.contentai.io"]
-            R2["api.contentai.io"]
-            R3["search.contentai.io"]
+            R1["cms.autograph.io"]
+            R2["api.autograph.io"]
+            R3["search.autograph.io"]
         end
 
         subgraph Services["Services"]
@@ -371,8 +371,8 @@ flowchart LR
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: contentai
-  namespace: contentai
+  name: autograph
+  namespace: autograph
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/proxy-body-size: "50m"
@@ -380,11 +380,11 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - cms.contentai.io
-        - api.contentai.io
-      secretName: contentai-tls
+        - cms.autograph.io
+        - api.autograph.io
+      secretName: autograph-tls
   rules:
-    - host: cms.contentai.io
+    - host: cms.autograph.io
       http:
         paths:
           - path: /
@@ -394,7 +394,7 @@ spec:
                 name: strapi
                 port:
                   number: 1337
-    - host: api.contentai.io
+    - host: api.autograph.io
       http:
         paths:
           - path: /ai
@@ -435,7 +435,7 @@ flowchart TB
             LH["Longhorn"]
         end
 
-        subgraph Autograph["contentai (YOUR PRODUCT)"]
+        subgraph Autograph["autograph (YOUR PRODUCT)"]
             Strapi["Strapi CMS"]
             AIService["AI Service"]
             Postgres["PostgreSQL"]
@@ -452,17 +452,17 @@ flowchart TB
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: contentai
+  name: autograph
   labels:
-    product: contentai
+    product: autograph
     environment: production
 ---
 # Resource Quota for Autograph
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: contentai-quota
-  namespace: contentai
+  name: autograph-quota
+  namespace: autograph
 spec:
   hard:
     requests.cpu: "8"
@@ -509,19 +509,19 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres
-  namespace: contentai
+  namespace: autograph
 spec:
   serviceName: postgres-headless
   replicas: 1
   selector:
     matchLabels:
       app: postgres
-      product: contentai
+      product: autograph
   template:
     metadata:
       labels:
         app: postgres
-        product: contentai
+        product: autograph
     spec:
       containers:
         - name: postgres
@@ -530,7 +530,7 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_DB
-              value: contentai
+              value: autograph
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
@@ -616,7 +616,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: strapi-uploads
-  namespace: contentai
+  namespace: autograph
 spec:
   accessModes:
     - ReadWriteOnce
@@ -636,9 +636,9 @@ Autograph pods spread across nodes—if one server fails, the platform keeps run
 flowchart TB
     subgraph HA["High Availability Design"]
         subgraph AntiAffinity["Pod Anti-Affinity"]
-            N1["contentai-agent-1"]
-            N2["contentai-agent-2"]
-            N3["contentai-agent-3"]
+            N1["autograph-agent-1"]
+            N2["autograph-agent-2"]
+            N3["autograph-agent-3"]
 
             SP1["Strapi 1"] --> N1
             SP2["Strapi 2"] --> N2
@@ -665,7 +665,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: strapi
-  namespace: contentai
+  namespace: autograph
 spec:
   replicas: 3
   template:
@@ -676,7 +676,7 @@ spec:
             - labelSelector:
                 matchLabels:
                   app: strapi
-                  product: contentai
+                  product: autograph
               topologyKey: kubernetes.io/hostname
 ---
 # Pod Disruption Budget
@@ -684,20 +684,20 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: strapi-pdb
-  namespace: contentai
+  namespace: autograph
 spec:
   minAvailable: 2
   selector:
     matchLabels:
       app: strapi
-      product: contentai
+      product: autograph
 ---
 # Horizontal Pod Autoscaler
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: strapi-hpa
-  namespace: contentai
+  namespace: autograph
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -794,7 +794,7 @@ kubectl get nodes -o wide
 kubectl top nodes
 
 # Autograph namespace operations
-kubectl config set-context --current --namespace=contentai
+kubectl config set-context --current --namespace=autograph
 kubectl get pods
 kubectl get pods -o wide  # See which node each pod runs on
 
@@ -833,7 +833,7 @@ kubectl port-forward svc/ai-service 3001:3001
 │  :deploy   - View Strapi, AI service deployments             │
 │  :svc      - View services                                   │
 │  :pvc      - View storage claims (PostgreSQL, uploads)       │
-│  :ing      - View ingress (contentai.io routes)              │
+│  :ing      - View ingress (autograph.io routes)              │
 │                                                              │
 │  Actions:                                                    │
 │  l         - View Strapi logs                                │
@@ -844,7 +844,7 @@ kubectl port-forward svc/ai-service 3001:3001
 │                                                              │
 │  Namespaces:                                                 │
 │  0         - All namespaces                                  │
-│  1-9       - Quick switch (contentai = 1)                    │
+│  1-9       - Quick switch (autograph = 1)                    │
 │                                                              │
 │  Install: brew install k9s                                   │
 │                                                              │

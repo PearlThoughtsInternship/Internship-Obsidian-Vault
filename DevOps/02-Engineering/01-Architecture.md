@@ -24,7 +24,7 @@ flowchart TB
         LB["Load Balancer"]
     end
 
-    subgraph Product["🚀 CONTENTAI PRODUCT"]
+    subgraph Product["🚀 AUTOGRAPH PRODUCT"]
         subgraph App["Application Layer"]
             Strapi["Strapi CMS<br/>Content Management"]
             AI["AI Service<br/>Content Generation"]

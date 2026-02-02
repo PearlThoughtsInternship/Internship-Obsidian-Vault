@@ -9,7 +9,7 @@ Autograph solves one problem: **Creating quality content is slow and expensive.*
 
 ```mermaid
 flowchart TB
-    subgraph Before["❌ WITHOUT CONTENTAI"]
+    subgraph Before["❌ WITHOUT AUTOGRAPH"]
         B1["4-8 hours per blog post"]
         B2["$100-500 per piece"]
         B3["Days for translation"]
@@ -17,7 +17,7 @@ flowchart TB
         B5["5-10 articles per month"]
     end
 
-    subgraph After["✅ WITH CONTENTAI"]
+    subgraph After["✅ WITH AUTOGRAPH"]
         A1["30 minutes per blog post"]
         A2["$5-10 in API costs"]
         A3["Minutes for translation"]
@@ -292,7 +292,7 @@ What you'll see in Grafana:
 
 ```mermaid
 flowchart TB
-    subgraph Dashboard["CONTENTAI DASHBOARD"]
+    subgraph Dashboard["AUTOGRAPH DASHBOARD"]
         subgraph Business["📊 BUSINESS METRICS"]
             BM1["Content created today: 47"]
             BM2["AI generations: 128"]

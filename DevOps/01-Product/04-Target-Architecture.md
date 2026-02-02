@@ -26,7 +26,7 @@ flowchart TB
         LB["Hetzner Load Balancer"]
     end
 
-    subgraph Autograph["🚀 CONTENTAI PRODUCT"]
+    subgraph Autograph["🚀 AUTOGRAPH PRODUCT"]
         subgraph App["Application Layer"]
             Strapi["Strapi CMS\n(Content Management)"]
             AI["AI Service\n(Claude/OpenAI)"]
@@ -279,7 +279,7 @@ autograph/
 
 ```mermaid
 flowchart TB
-    subgraph Autograph["CONTENTAI METRICS"]
+    subgraph Autograph["AUTOGRAPH METRICS"]
         Strapi["Strapi Metrics\n• requests/sec\n• error rate\n• latency"]
         AI["AI Service Metrics\n• tokens used\n• generation time\n• provider (Claude/OpenAI)"]
         Search["Search Metrics\n• query latency\n• index size"]
@@ -341,7 +341,7 @@ flowchart TB
             ING["NGINX Ingress\n• TLS termination\n• Auth headers"]
         end
 
-        subgraph Autograph["CONTENTAI NAMESPACE"]
+        subgraph Autograph["AUTOGRAPH NAMESPACE"]
             subgraph NetPol["Network Policies"]
                 NP1["Default: Deny All"]
                 NP2["Allow: Strapi ↔ PostgreSQL"]

@@ -24,7 +24,7 @@ flowchart TB
         A4["One-click rollback"]
     end
 
-    subgraph Result["🚀 CONTENTAI"]
+    subgraph Result["🚀 AUTOGRAPH"]
         R["Strapi, AI Service, databases\nall deploy automatically"]
     end
 
@@ -82,7 +82,7 @@ flowchart TB
 
     subgraph GitOps["GitOps: Pull Model"]
         Dev2["Developer"]
-        Git["Git Repository\n(contentai-infra)"]
+        Git["Git Repository\n(autograph-infra)"]
         Argo["ArgoCD"]
         K8S2["k3s Cluster"]
 
@@ -126,7 +126,7 @@ flowchart TB
     end
 
     subgraph External["External"]
-        Git["github.com/pearlthoughts/\ncontentai-infra"]
+        Git["github.com/pearlthoughts/\nautograph-infra"]
         K8S["k3s Cluster"]
     end
 
@@ -153,21 +153,21 @@ flowchart TB
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: contentai-strapi
+  name: autograph-strapi
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: contentai
+  project: autograph
 
   source:
-    repoURL: https://github.com/pearlthoughts/contentai-infra.git
+    repoURL: https://github.com/pearlthoughts/autograph-infra.git
     targetRevision: main
     path: k8s/apps/strapi
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: contentai
+    namespace: autograph
 
   syncPolicy:
     automated:
@@ -232,7 +232,7 @@ One root application deploys ALL of Autograph. *One ring to rule them all.*
 ```mermaid
 flowchart TB
     subgraph Root["Root Application"]
-        AOA["contentai-app-of-apps"]
+        AOA["autograph-app-of-apps"]
     end
 
     subgraph Platform["Platform Services"]
@@ -270,12 +270,12 @@ flowchart TB
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: contentai-app-of-apps
+  name: autograph-app-of-apps
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://github.com/pearlthoughts/contentai-infra.git
+    repoURL: https://github.com/pearlthoughts/autograph-infra.git
     targetRevision: main
     path: argocd/applications
   destination:
@@ -297,14 +297,14 @@ metadata:
   name: strapi
   namespace: argocd
 spec:
-  project: contentai
+  project: autograph
   source:
-    repoURL: https://github.com/pearlthoughts/contentai-infra.git
+    repoURL: https://github.com/pearlthoughts/autograph-infra.git
     targetRevision: main
     path: k8s/apps/strapi
   destination:
     server: https://kubernetes.default.svc
-    namespace: contentai
+    namespace: autograph
   syncPolicy:
     automated:
       selfHeal: true
@@ -318,14 +318,14 @@ metadata:
   name: ai-service
   namespace: argocd
 spec:
-  project: contentai
+  project: autograph
   source:
-    repoURL: https://github.com/pearlthoughts/contentai-infra.git
+    repoURL: https://github.com/pearlthoughts/autograph-infra.git
     targetRevision: main
     path: k8s/apps/ai-service
   destination:
     server: https://kubernetes.default.svc
-    namespace: contentai
+    namespace: autograph
   syncPolicy:
     automated:
       selfHeal: true
@@ -337,14 +337,14 @@ metadata:
   name: postgres
   namespace: argocd
 spec:
-  project: contentai
+  project: autograph
   source:
-    repoURL: https://github.com/pearlthoughts/contentai-infra.git
+    repoURL: https://github.com/pearlthoughts/autograph-infra.git
     targetRevision: main
     path: k8s/apps/postgres
   destination:
     server: https://kubernetes.default.svc
-    namespace: contentai
+    namespace: autograph
   syncPolicy:
     automated:
       selfHeal: true
@@ -356,7 +356,7 @@ spec:
 ## Autograph Repository Structure
 
 ```
-contentai-infra/
+autograph-infra/
 ├── argocd/
 │   ├── app-of-apps.yaml         # Bootstrap (deploy this first)
 │   ├── applications/            # One file per app
@@ -369,15 +369,15 @@ contentai-infra/
 │   │   ├── nginx-ingress.yaml
 │   │   └── monitoring.yaml
 │   └── projects/
-│       ├── contentai.yaml       # Autograph project RBAC
+│       ├── autograph.yaml       # Autograph project RBAC
 │       └── platform.yaml        # Platform project RBAC
 │
 ├── k8s/
 │   ├── base/
 │   │   ├── namespaces/
-│   │   │   └── contentai.yaml
+│   │   │   └── autograph.yaml
 │   │   └── rbac/
-│   │       └── contentai-sa.yaml
+│   │       └── autograph-sa.yaml
 │   │
 │   └── apps/
 │       ├── strapi/
@@ -423,7 +423,7 @@ Autograph components must deploy in order: namespace → secrets → database �
 ```mermaid
 flowchart LR
     subgraph Wave1["Wave -1: Prerequisites"]
-        NS["Namespace\ncontentai"]
+        NS["Namespace\nautograph"]
         CERT["cert-manager\n(for TLS)"]
     end
 
@@ -450,7 +450,7 @@ flowchart LR
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: contentai
+  name: autograph
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
 ---
@@ -459,7 +459,7 @@ apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
   name: postgres-credentials
-  namespace: contentai
+  namespace: autograph
   annotations:
     argocd.argoproj.io/sync-wave: "0"
 ---
@@ -468,7 +468,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres
-  namespace: contentai
+  namespace: autograph
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 ---
@@ -477,7 +477,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: strapi
-  namespace: contentai
+  namespace: autograph
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 ```
@@ -494,7 +494,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: strapi-migrate
-  namespace: contentai
+  namespace: autograph
   annotations:
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
@@ -503,7 +503,7 @@ spec:
     spec:
       containers:
         - name: migrate
-          image: ghcr.io/pearlthoughts/contentai-strapi:v1.2.3
+          image: ghcr.io/pearlthoughts/autograph-strapi:v1.2.3
           command: ["npm", "run", "strapi", "migrate"]
           env:
             - name: DATABASE_HOST
@@ -576,17 +576,17 @@ Separate permissions for platform team vs. interns:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: contentai
+  name: autograph
   namespace: argocd
 spec:
   description: Autograph product applications
 
   sourceRepos:
-    - https://github.com/pearlthoughts/contentai-infra.git
-    - https://github.com/pearlthoughts/contentai-strapi.git
+    - https://github.com/pearlthoughts/autograph-infra.git
+    - https://github.com/pearlthoughts/autograph-strapi.git
 
   destinations:
-    - namespace: contentai
+    - namespace: autograph
       server: https://kubernetes.default.svc
 
   # What resources Autograph apps can create
@@ -613,15 +613,15 @@ spec:
     - name: intern
       description: Intern access - can sync and view
       policies:
-        - p, proj:contentai:intern, applications, get, contentai/*, allow
-        - p, proj:contentai:intern, applications, sync, contentai/*, allow
+        - p, proj:autograph:intern, applications, get, autograph/*, allow
+        - p, proj:autograph:intern, applications, sync, autograph/*, allow
       groups:
         - interns
 
     - name: admin
       description: Full access to Autograph
       policies:
-        - p, proj:contentai:admin, applications, *, contentai/*, allow
+        - p, proj:autograph:admin, applications, *, autograph/*, allow
       groups:
         - platform-team
 ```
@@ -658,13 +658,13 @@ sequenceDiagram
 
 ```bash
 # CLI rollback
-argocd app rollback contentai-strapi
+argocd app rollback autograph-strapi
 
 # To specific revision
-argocd app rollback contentai-strapi --revision 42
+argocd app rollback autograph-strapi --revision 42
 
 # History shows all deployments
-argocd app history contentai-strapi
+argocd app history autograph-strapi
 ```
 
 ---
@@ -682,28 +682,28 @@ data:
   service.slack: |
     token: $slack-token
 
-  template.contentai-deployed: |
+  template.autograph-deployed: |
     message: |
       {{if eq .serviceType "slack"}}:rocket:{{end}} Autograph {{.app.metadata.name}} deployed!
       Version: {{.app.status.sync.revision | substr 0 7}}
       Status: {{.app.status.health.status}}
 
-  template.contentai-degraded: |
+  template.autograph-degraded: |
     message: |
       {{if eq .serviceType "slack"}}:warning:{{end}} Autograph {{.app.metadata.name}} is DEGRADED!
-      Check ArgoCD: https://argocd.contentai.io/applications/{{.app.metadata.name}}
+      Check ArgoCD: https://argocd.autograph.io/applications/{{.app.metadata.name}}
 
   trigger.on-deployed: |
     - when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
-      send: [contentai-deployed]
+      send: [autograph-deployed]
 
   trigger.on-health-degraded: |
     - when: app.status.health.status == 'Degraded'
-      send: [contentai-degraded]
+      send: [autograph-degraded]
 
   subscriptions: |
     - recipients:
-        - slack:contentai-deploys
+        - slack:autograph-deploys
       triggers:
         - on-deployed
         - on-health-degraded
@@ -715,31 +715,31 @@ data:
 
 ```bash
 # Login to ArgoCD
-argocd login argocd.contentai.io
+argocd login argocd.autograph.io
 
 # List all Autograph applications
 argocd app list
 
 # Check Strapi status
-argocd app get contentai-strapi
+argocd app get autograph-strapi
 
 # Sync Strapi (if auto-sync disabled)
-argocd app sync contentai-strapi
+argocd app sync autograph-strapi
 
 # Force sync (recreate resources)
-argocd app sync contentai-strapi --force
+argocd app sync autograph-strapi --force
 
 # See what would change
-argocd app diff contentai-strapi
+argocd app diff autograph-strapi
 
 # View deployment history
-argocd app history contentai-strapi
+argocd app history autograph-strapi
 
 # Rollback to previous version
-argocd app rollback contentai-strapi
+argocd app rollback autograph-strapi
 
 # Refresh (check Git for new commits)
-argocd app refresh contentai-strapi
+argocd app refresh autograph-strapi
 ```
 
 ---
@@ -749,7 +749,7 @@ argocd app refresh contentai-strapi
 ```mermaid
 flowchart LR
     subgraph Code["Source Code"]
-        SC["contentai-strapi\n(application code)"]
+        SC["autograph-strapi\n(application code)"]
     end
 
     subgraph CI["GitHub Actions"]
@@ -760,7 +760,7 @@ flowchart LR
     end
 
     subgraph Infra["Infrastructure Repo"]
-        YAML["contentai-infra\n(Kubernetes manifests)"]
+        YAML["autograph-infra\n(Kubernetes manifests)"]
     end
 
     subgraph CD["ArgoCD"]

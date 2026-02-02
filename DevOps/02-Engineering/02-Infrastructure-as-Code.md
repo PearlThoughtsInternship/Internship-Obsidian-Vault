@@ -84,8 +84,8 @@ provider "hcloud" {
 
 ```hcl
 # Create a server for Autograph
-resource "hcloud_server" "contentai_server" {
-  name        = "contentai-server-1"
+resource "hcloud_server" "autograph_server" {
+  name        = "autograph-server-1"
   image       = "ubuntu-22.04"
   server_type = "cx31"  # 4 vCPU, 8GB RAM
   location    = "fsn1"  # Frankfurt
@@ -93,7 +93,7 @@ resource "hcloud_server" "contentai_server" {
   ssh_keys = [hcloud_ssh_key.admin.id]
 
   labels = {
-    product     = "contentai"
+    product     = "autograph"
     environment = "production"
     role        = "server"
   }
@@ -155,7 +155,7 @@ flowchart TB
 
 variable "name" {
   type        = string
-  description = "Server name (e.g., contentai-agent-1)"
+  description = "Server name (e.g., autograph-agent-1)"
 }
 
 variable "server_type" {
@@ -188,7 +188,7 @@ variable "network_id" {
 
 variable "labels" {
   type        = map(string)
-  default     = { product = "contentai" }
+  default     = { product = "autograph" }
   description = "Labels for organization"
 }
 ```
@@ -207,7 +207,7 @@ resource "hcloud_server" "this" {
 
   labels = merge(var.labels, {
     managed_by = "opentofu"
-    product    = "contentai"
+    product    = "autograph"
   })
 
   network {
@@ -263,14 +263,14 @@ module "servers" {
   source   = "../hetzner-server"
   count    = var.server_count  # 3 for HA
 
-  name        = "contentai-server-${count.index}"
+  name        = "autograph-server-${count.index}"
   server_type = var.server_type
   location    = var.location
   ssh_key_ids = var.ssh_key_ids
   network_id  = var.network_id
 
   labels = {
-    cluster = "contentai"
+    cluster = "autograph"
     role    = "server"
     index   = count.index
   }
@@ -281,27 +281,27 @@ module "agents" {
   source   = "../hetzner-server"
   count    = var.agent_count  # 3 for Autograph workloads
 
-  name        = "contentai-agent-${count.index}"
+  name        = "autograph-agent-${count.index}"
   server_type = var.agent_type  # Bigger for Strapi
   location    = var.location
   ssh_key_ids = var.ssh_key_ids
   network_id  = var.network_id
 
   labels = {
-    cluster = "contentai"
+    cluster = "autograph"
     role    = "agent"
     index   = count.index
   }
 }
 
 # Load balancer for public access to Autograph
-resource "hcloud_load_balancer" "contentai" {
-  name               = "contentai-lb"
+resource "hcloud_load_balancer" "autograph" {
+  name               = "autograph-lb"
   load_balancer_type = "lb11"
   location           = var.location
 
   labels = {
-    cluster = "contentai"
+    cluster = "autograph"
     role    = "loadbalancer"
   }
 }
@@ -309,14 +309,14 @@ resource "hcloud_load_balancer" "contentai" {
 # Point LB to agents (where Strapi runs)
 resource "hcloud_load_balancer_target" "agents" {
   count            = var.agent_count
-  load_balancer_id = hcloud_load_balancer.contentai.id
+  load_balancer_id = hcloud_load_balancer.autograph.id
   type             = "server"
   server_id        = module.agents[count.index].id
 }
 
 # HTTP/HTTPS for Autograph
 resource "hcloud_load_balancer_service" "https" {
-  load_balancer_id = hcloud_load_balancer.contentai.id
+  load_balancer_id = hcloud_load_balancer.autograph.id
   protocol         = "tcp"
   listen_port      = 443
   destination_port = 443
@@ -344,7 +344,7 @@ resource "hcloud_load_balancer_service" "https" {
 
 terraform {
   backend "s3" {
-    bucket = "contentai-terraform-state"
+    bucket = "autograph-terraform-state"
     key    = "clusters/production/terraform.tfstate"
     region = "eu-central-1"
 
@@ -434,7 +434,7 @@ tofu destroy
 ## CI/CD Integration
 
 ```yaml
-# .github/workflows/contentai-infra.yml
+# .github/workflows/autograph-infra.yml
 
 name: Autograph Infrastructure
 
@@ -499,7 +499,7 @@ jobs:
 module "production" {
   source = "./modules/k3s-cluster"
 
-  cluster_name = "contentai-prod"
+  cluster_name = "autograph-prod"
   server_count = 3
   agent_count  = 3
 }
@@ -508,7 +508,7 @@ module "production" {
 module "staging" {
   source = "./modules/k3s-cluster"
 
-  cluster_name = "contentai-staging"
+  cluster_name = "autograph-staging"
   server_count = 1
   agent_count  = 2
 }
@@ -543,7 +543,7 @@ output "agent_ips" {
 }
 
 output "load_balancer_ip" {
-  value       = hcloud_load_balancer.contentai.ipv4
+  value       = hcloud_load_balancer.autograph.ipv4
   description = "Public IP for Autograph (point DNS here)"
 }
 ```

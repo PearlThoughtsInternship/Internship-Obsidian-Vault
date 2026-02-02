@@ -70,15 +70,15 @@ flowchart LR
 flowchart TB
     subgraph Inventory["📋 INVENTORY"]
         subgraph Servers["[servers] - Control Plane"]
-            S1["contentai-server-1 (init)"]
-            S2["contentai-server-2"]
-            S3["contentai-server-3"]
+            S1["autograph-server-1 (init)"]
+            S2["autograph-server-2"]
+            S3["autograph-server-3"]
         end
 
         subgraph Agents["[agents] - Autograph Workers"]
-            A1["contentai-agent-1"]
-            A2["contentai-agent-2"]
-            A3["contentai-agent-3"]
+            A1["autograph-agent-1"]
+            A2["autograph-agent-2"]
+            A3["autograph-agent-3"]
         end
     end
 
@@ -94,32 +94,32 @@ flowchart TB
 ### Static Inventory for Autograph
 
 ```yaml
-# inventory/contentai.yml
+# inventory/autograph.yml
 
 all:
   children:
     servers:
       hosts:
-        contentai-server-1:
+        autograph-server-1:
           ansible_host: 10.1.1.1
           k3s_role: server
           k3s_server_init: true  # First server initializes cluster
-        contentai-server-2:
+        autograph-server-2:
           ansible_host: 10.1.1.2
           k3s_role: server
-        contentai-server-3:
+        autograph-server-3:
           ansible_host: 10.1.1.3
           k3s_role: server
 
     agents:
       hosts:
-        contentai-agent-1:
+        autograph-agent-1:
           ansible_host: 10.1.2.1
           k3s_role: agent
-        contentai-agent-2:
+        autograph-agent-2:
           ansible_host: 10.1.2.2
           k3s_role: agent
-        contentai-agent-3:
+        autograph-agent-3:
           ansible_host: 10.1.2.3
           k3s_role: agent
 
@@ -541,27 +541,27 @@ flowchart LR
 
 ```bash
 # Run everything: base hardening + k3s + platform services
-ansible-playbook -i inventory/contentai.yml site.yml --ask-vault-pass
+ansible-playbook -i inventory/autograph.yml site.yml --ask-vault-pass
 ```
 
 ### Selective Runs
 
 ```bash
 # Just base hardening
-ansible-playbook -i inventory/contentai.yml site.yml --tags "base"
+ansible-playbook -i inventory/autograph.yml site.yml --tags "base"
 
 # Just k3s installation
-ansible-playbook -i inventory/contentai.yml site.yml --tags "k3s"
+ansible-playbook -i inventory/autograph.yml site.yml --tags "k3s"
 
 # Skip certain tasks
-ansible-playbook -i inventory/contentai.yml site.yml --skip-tags "monitoring"
+ansible-playbook -i inventory/autograph.yml site.yml --skip-tags "monitoring"
 ```
 
 ### Single Host
 
 ```bash
 # Just reconfigure one agent
-ansible-playbook -i inventory/contentai.yml site.yml --limit "contentai-agent-1"
+ansible-playbook -i inventory/autograph.yml site.yml --limit "autograph-agent-1"
 ```
 
 ---
@@ -615,7 +615,7 @@ roles/
     - name: Configure system
       ansible.builtin.template:
         src: config.j2
-        dest: /etc/contentai/config
+        dest: /etc/autograph/config
 
   rescue:
     - name: Notify failure
