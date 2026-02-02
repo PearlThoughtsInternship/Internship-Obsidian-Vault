@@ -10,36 +10,37 @@
 
 Unlike typical internships where you support an existing team, **you own everything end-to-end**:
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                        YOUR OWNERSHIP SCOPE                              │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  WEEK 1: FOUNDATION                                                      │
-│  └── Design infrastructure architecture                                 │
-│  └── Set up cloud accounts and access                                   │
-│  └── Build first OpenTofu modules                                       │
-│  └── Write first Ansible playbooks                                      │
-│                                                                          │
-│  WEEK 2: ORCHESTRATION                                                   │
-│  └── Deploy k3s cluster (HA configuration)                              │
-│  └── Install core platform services                                     │
-│  └── Configure networking and storage                                   │
-│  └── Deploy first workload                                              │
-│                                                                          │
-│  WEEK 3: AUTOMATION                                                      │
-│  └── Implement GitOps with ArgoCD                                       │
-│  └── Set up CI/CD pipelines                                             │
-│  └── Build observability stack                                          │
-│  └── Create Python automation tools                                     │
-│                                                                          │
-│  WEEK 4: PRODUCTION READINESS                                           │
-│  └── Security hardening                                                 │
-│  └── Disaster recovery testing                                          │
-│  └── Documentation and runbooks                                         │
-│  └── Demo and presentation                                              │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph W1["WEEK 1: FOUNDATION"]
+        W1A["Design infrastructure architecture"]
+        W1B["Set up cloud accounts and access"]
+        W1C["Build first OpenTofu modules"]
+        W1D["Write first Ansible playbooks"]
+    end
+
+    subgraph W2["WEEK 2: ORCHESTRATION"]
+        W2A["Deploy k3s cluster (HA config)"]
+        W2B["Install core platform services"]
+        W2C["Configure networking and storage"]
+        W2D["Deploy first workload"]
+    end
+
+    subgraph W3["WEEK 3: AUTOMATION"]
+        W3A["Implement GitOps with ArgoCD"]
+        W3B["Set up CI/CD pipelines"]
+        W3C["Build observability stack"]
+        W3D["Create Python automation tools"]
+    end
+
+    subgraph W4["WEEK 4: PRODUCTION READINESS"]
+        W4A["Security hardening"]
+        W4B["Disaster recovery testing"]
+        W4C["Documentation and runbooks"]
+        W4D["Demo and presentation"]
+    end
+
+    W1 --> W2 --> W3 --> W4
 ```
 
 ---
@@ -78,21 +79,20 @@ Before you can orchestrate containers, you need infrastructure. This week you bu
 
 ### Week 1 Checkpoint
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                    WEEK 1 SUCCESS CRITERIA                               │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  ✓ OpenTofu provisions 6 VMs (3 servers + 3 agents)                     │
-│  ✓ Private network connects all VMs                                     │
-│  ✓ Load balancer distributes to servers                                 │
-│  ✓ Ansible can reach all nodes (SSH key auth)                           │
-│  ✓ Base hardening applied to all nodes                                  │
-│  ✓ Infrastructure can be destroyed and recreated in < 10 minutes        │
-│                                                                          │
-│  Deliverable: Infrastructure code in Git, working environment            │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph Success["Week 1 Success Criteria"]
+        C1["✓ OpenTofu provisions 6 VMs<br/>(3 servers + 3 agents)"]
+        C2["✓ Private network connects all VMs"]
+        C3["✓ Load balancer distributes to servers"]
+        C4["✓ Ansible can reach all nodes<br/>(SSH key auth)"]
+        C5["✓ Base hardening applied"]
+        C6["✓ Infrastructure can be destroyed<br/>and recreated in < 10 min"]
+    end
+
+    Deliverable["📦 Deliverable:<br/>Infrastructure code in Git,<br/>working environment"]
+
+    Success --> Deliverable
 ```
 
 ---
@@ -140,22 +140,21 @@ Now you have infrastructure. Time to run containers at scale.
 
 ### Week 2 Checkpoint
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                    WEEK 2 SUCCESS CRITERIA                               │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  ✓ k3s cluster operational (3 servers + 3 agents)                       │
-│  ✓ All nodes show Ready status                                          │
-│  ✓ Ingress routes traffic with TLS termination                          │
-│  ✓ Let's Encrypt certificates auto-renew                                │
-│  ✓ Longhorn provides persistent storage                                 │
-│  ✓ Sample app accessible at https://your-domain.com                     │
-│  ✓ Cluster survives single node failure                                 │
-│                                                                          │
-│  Deliverable: Working Kubernetes cluster, application deployed           │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph Success["Week 2 Success Criteria"]
+        C1["✓ k3s cluster operational<br/>(3 servers + 3 agents)"]
+        C2["✓ All nodes show Ready status"]
+        C3["✓ Ingress routes traffic with TLS"]
+        C4["✓ Let's Encrypt certs auto-renew"]
+        C5["✓ Longhorn provides persistent storage"]
+        C6["✓ Sample app accessible via HTTPS"]
+        C7["✓ Cluster survives single node failure"]
+    end
+
+    Deliverable["📦 Deliverable:<br/>Working Kubernetes cluster,<br/>application deployed"]
+
+    Success --> Deliverable
 ```
 
 ---
@@ -201,22 +200,21 @@ Manual deployments don't scale. This week you automate everything.
 
 ### Week 3 Checkpoint
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                    WEEK 3 SUCCESS CRITERIA                               │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  ✓ ArgoCD manages all applications                                      │
-│  ✓ Git push triggers automatic deployment                               │
-│  ✓ Prometheus collects metrics from all services                        │
-│  ✓ Grafana shows cluster health dashboards                              │
-│  ✓ Logs searchable in Grafana/Loki                                      │
-│  ✓ Critical alerts fire to Slack/Discord                                │
-│  ✓ Python CLI automates common tasks                                    │
-│                                                                          │
-│  Deliverable: Fully automated platform, self-service deployments         │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph Success["Week 3 Success Criteria"]
+        C1["✓ ArgoCD manages all applications"]
+        C2["✓ Git push triggers auto deployment"]
+        C3["✓ Prometheus collects metrics"]
+        C4["✓ Grafana shows health dashboards"]
+        C5["✓ Logs searchable in Grafana/Loki"]
+        C6["✓ Critical alerts fire to Slack"]
+        C7["✓ Python CLI automates common tasks"]
+    end
+
+    Deliverable["📦 Deliverable:<br/>Fully automated platform,<br/>self-service deployments"]
+
+    Success --> Deliverable
 ```
 
 ---
@@ -263,45 +261,48 @@ A platform isn't production-ready until it's secure, recoverable, and documented
 
 ### Week 4 Checkpoint
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                    WEEK 4 SUCCESS CRITERIA                               │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  ✓ Network policies enforce least privilege                             │
-│  ✓ Secrets never stored in Git                                          │
-│  ✓ Image scanning prevents vulnerable deploys                           │
-│  ✓ Cluster can be fully restored from backup                            │
-│  ✓ Documentation complete and accurate                                  │
-│  ✓ Demo video showcases platform capabilities                           │
-│  ✓ Post-mortem/retrospective complete                                   │
-│                                                                          │
-│  Deliverable: Production-ready platform, comprehensive documentation     │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph Success["Week 4 Success Criteria"]
+        C1["✓ Network policies enforce least privilege"]
+        C2["✓ Secrets never stored in Git"]
+        C3["✓ Image scanning prevents vulnerable deploys"]
+        C4["✓ Cluster can be fully restored from backup"]
+        C5["✓ Documentation complete and accurate"]
+        C6["✓ Demo video showcases capabilities"]
+        C7["✓ Retrospective complete"]
+    end
+
+    Deliverable["📦 Deliverable:<br/>Production-ready platform,<br/>comprehensive documentation"]
+
+    Success --> Deliverable
 ```
 
 ---
 
 ## Daily Rhythm
 
+```mermaid
+gantt
+    title Recommended Daily Schedule
+    dateFormat HH:mm
+    axisFormat %H:%M
+
+    section Morning
+    Plan (review, set goals)     :09:00, 30m
+    Build (deep work)            :09:30, 2h30m
+
+    section Midday
+    Break                        :12:00, 1h
+    Build (continue)             :13:00, 2h
+
+    section Afternoon
+    Document (write learnings)   :15:00, 30m
+    Research (docs, tutorials)   :15:30, 1h
+    Review (test, prepare Qs)    :16:30, 30m
 ```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                        RECOMMENDED DAILY SCHEDULE                        │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  09:00 - 09:30  │  Plan: Review yesterday, set today's goals            │
-│  09:30 - 12:00  │  Build: Deep work on infrastructure                   │
-│  12:00 - 13:00  │  Break: Step away from the screen                     │
-│  13:00 - 15:00  │  Build: Continue implementation                       │
-│  15:00 - 15:30  │  Document: Write down what you learned                │
-│  15:30 - 16:30  │  Research: Read docs, watch tutorials                 │
-│  16:30 - 17:00  │  Review: Test what you built, prepare questions       │
-│                                                                          │
-│  Live Session (when scheduled): 10:00 AM                                │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
-```
+
+**Live Session (when scheduled)**: 10:00 AM
 
 ---
 

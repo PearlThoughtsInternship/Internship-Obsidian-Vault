@@ -23,27 +23,28 @@ We're a **small organization** with limited time and resources. We offered this 
 
 **You're not joining an Ops team. You're founding the infrastructure of a startup.**
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                    THE PLATFORM ENGINEERING MINDSET                      │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  Traditional Ops:                                                        │
-│  ├── "Wait for tickets"                                                 │
-│  ├── "Run the same scripts"                                             │
-│  ├── "Watch dashboards"                                                 │
-│  └── "React to incidents"                                               │
-│                                                                          │
-│  Platform Engineering (This Program):                                   │
-│  ├── "Build systems that prevent tickets"                               │
-│  ├── "Automate everything"                                              │
-│  ├── "Create dashboards that matter"                                    │
-│  └── "Design for resilience"                                            │
-│                                                                          │
-│  You're not maintaining infrastructure.                                  │
-│  You're BUILDING the platform that could run the next OpenClaw.         │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Traditional["Traditional Ops"]
+        T1["Wait for tickets"]
+        T2["Run the same scripts"]
+        T3["Watch dashboards"]
+        T4["React to incidents"]
+    end
+
+    subgraph Platform["Platform Engineering (This Program)"]
+        P1["Build systems that prevent tickets"]
+        P2["Automate everything"]
+        P3["Create dashboards that matter"]
+        P4["Design for resilience"]
+    end
+
+    Traditional -.->|"NOT this"| X["❌"]
+    Platform -.->|"THIS"| Y["✅"]
+
+    Result["You're BUILDING the platform<br/>that could run the next OpenClaw"]
+
+    Platform --> Result
 ```
 
 ---
@@ -76,12 +77,29 @@ We're a **small organization** with limited time and resources. We offered this 
 
 Your performance this week determines whether we continue together. We have limited mentorship capacity — we invest it in people who demonstrate they can:
 
-1. **Debug independently** — when Terraform fails, what do you do?
-2. **Learn from documentation** — can you figure out a new tool from its docs?
-3. **Ship working infrastructure** — can you stand up a real VM, not just read about it?
-4. **Communicate clearly** — can you explain what you built and why?
+```mermaid
+flowchart LR
+    subgraph Skills["Skills We're Looking For"]
+        S1["Debug independently"]
+        S2["Learn from documentation"]
+        S3["Ship working infrastructure"]
+        S4["Communicate clearly"]
+    end
 
-This is not about being harsh. It's about being honest: startups need people who ship.
+    subgraph Questions["The Questions"]
+        Q1["When Terraform fails,<br/>what do you do?"]
+        Q2["Can you figure out a new tool<br/>from its docs?"]
+        Q3["Can you stand up a real VM,<br/>not just read about it?"]
+        Q4["Can you explain what you built<br/>and why?"]
+    end
+
+    S1 --> Q1
+    S2 --> Q2
+    S3 --> Q3
+    S4 --> Q4
+```
+
+This is not about being harsh. It's about being honest: **startups need people who ship**.
 
 ---
 
@@ -89,22 +107,28 @@ This is not about being harsh. It's about being honest: startups need people who
 
 When you're stuck, don't just say "Terraform doesn't work."
 
-**Bad question:**
+### Bad Question
+
 > "How do I deploy a Kubernetes cluster?"
 
-**Good question:**
+### Good Question
+
 > "I'm trying to deploy k3s on Hetzner using Ansible. I followed the quickstart guide and modified the inventory for my VMs. When I run the playbook, I get 'SSH connection refused' for the second node. I've verified:
 > - SSH key is on the node (can connect manually)
 > - Firewall allows port 22
 > - Ansible inventory has correct IP
 > Here's my inventory file: [code]. What am I missing?"
 
-The difference:
-- Shows you tried
-- Shows what you learned
-- Shows specific blockers
-- Includes relevant details
-- Respects our time
+```mermaid
+flowchart LR
+    subgraph Good["Good Question Anatomy"]
+        G1["Shows you tried"]
+        G2["Shows what you learned"]
+        G3["Shows specific blockers"]
+        G4["Includes relevant details"]
+        G5["Respects our time"]
+    end
+```
 
 ---
 
@@ -115,7 +139,7 @@ Before Week 1 starts, you need:
 ### Local Development
 
 | Tool | Purpose | Install |
-|------|---------|---------|
+|------|---------|---------||
 | **Git** | Version control | `brew install git` |
 | **OpenTofu** | Infrastructure-as-Code | `brew install opentofu` |
 | **Ansible** | Configuration management | `pip install ansible` |
@@ -134,7 +158,7 @@ Before Week 1 starts, you need:
 ### Knowledge Prerequisites
 
 | Topic | Minimum Level | Resources |
-|-------|---------------|-----------|
+|-------|---------------|-----------||
 | **Linux CLI** | Navigate, edit files, SSH | Linux Journey |
 | **Git** | Commit, branch, merge, PR | Git docs |
 | **YAML** | Read and write | Learn X in Y minutes |
@@ -160,32 +184,39 @@ If you demonstrate exceptional initiative:
 
 ## The Builder's Manifesto
 
+```mermaid
+mindmap
+  root((Platform<br/>Engineer's<br/>Creed))
+    Build
+      Enable others to ship faster
+      Automate toil
+    Design
+      Design for failure
+      Measure everything
+    Secure
+      Secure by default
+      Breaches are catastrophic
+    Test
+      Test in production
+      Feature flags + rollback
+    Own
+      Own mistakes publicly
+      Fix them faster
+    Ship
+      I SHIP
 ```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                      PLATFORM ENGINEER'S CREED                           │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  I build systems that enable others to ship faster.                      │
-│                                                                          │
-│  I automate toil so humans can focus on what matters.                   │
-│                                                                          │
-│  I design for failure because failures are inevitable.                  │
-│                                                                          │
-│  I document because future-me is a stranger who deserves context.       │
-│                                                                          │
-│  I measure because hope is not a strategy.                              │
-│                                                                          │
-│  I secure by default because breaches are catastrophic.                 │
-│                                                                          │
-│  I test in production because staging is a lie.                         │
-│  (But I have feature flags and rollback strategies.)                    │
-│                                                                          │
-│  I own my mistakes publicly and fix them faster.                        │
-│                                                                          │
-│  I ship.                                                                 │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
-```
+
+### The Principles
+
+1. **I build systems that enable others to ship faster.**
+2. **I automate toil so humans can focus on what matters.**
+3. **I design for failure because failures are inevitable.**
+4. **I document because future-me is a stranger who deserves context.**
+5. **I measure because hope is not a strategy.**
+6. **I secure by default because breaches are catastrophic.**
+7. **I test in production because staging is a lie.** (But I have feature flags and rollback strategies.)
+8. **I own my mistakes publicly and fix them faster.**
+9. **I ship.**
 
 ---
 
