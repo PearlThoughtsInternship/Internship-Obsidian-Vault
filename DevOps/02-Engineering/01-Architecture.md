@@ -1,509 +1,475 @@
-# Platform Architecture
+# ContentAI Architecture
 
-> *"Design for failure. Anticipate and mitigate cascading failures. Build systems that fail fast and recover gracefully."*
-> — **Release It!** (Michael Nygard)
+> *"The best architectures are those that allow you to defer decisions about details."*
+> — **Clean Architecture** (Robert C. Martin)
 
-## Beyond Traditional Infrastructure
+## Product-First Architecture
 
-> *Modern platform engineering is about building systems that enable developers to ship faster while maintaining enterprise-grade reliability.*
+ContentAI is an AI-powered content platform. The architecture serves one purpose: **enable users to create, manage, and distribute content faster with AI.**
 
 ---
 
-## The Architecture Layers
+## System Overview
 
 ```mermaid
 flowchart TB
-    subgraph L5["LAYER 5: DEVELOPER EXPERIENCE"]
-        DX1["Developer Portal"]
-        DX2["Documentation"]
-        DX3["Golden Paths"]
-        DX4["Self-Service"]
+    subgraph Users["👥 USERS"]
+        Creator["Content Creators"]
+        Dev["Developers"]
+        Admin["Administrators"]
     end
 
-    subgraph L4["LAYER 4: DELIVERY PIPELINE"]
-        DP1["CI/CD<br/>(GitHub Actions)"]
-        DP2["GitOps<br/>(ArgoCD)"]
-        DP3["Registry"]
-        DP4["Scanning"]
+    subgraph Edge["🌍 EDGE LAYER"]
+        CDN["CloudFlare CDN"]
+        LB["Load Balancer"]
     end
 
-    subgraph L3["LAYER 3: APPLICATION PLATFORM"]
-        AP1["Service Mesh"]
-        AP2["Ingress"]
-        AP3["Secrets"]
-        AP4["Certificates"]
-        AP5["DNS"]
+    subgraph Product["🚀 CONTENTAI PRODUCT"]
+        subgraph App["Application Layer"]
+            Strapi["Strapi CMS<br/>Content Management"]
+            AI["AI Service<br/>Content Generation"]
+            Search["Meilisearch<br/>Content Search"]
+        end
+
+        subgraph Data["Data Layer"]
+            PG["PostgreSQL<br/>Content Storage"]
+            Redis["Redis<br/>Cache & Sessions"]
+            S3["S3/MinIO<br/>Media Assets"]
+        end
     end
 
-    subgraph L2["LAYER 2: CONTAINER ORCHESTRATION"]
-        CO1["k3s Cluster"]
-        CO2["Namespaces"]
-        CO3["RBAC"]
-        CO4["Storage<br/>(Longhorn)"]
-        CO5["CNI<br/>(Cilium)"]
+    subgraph Platform["⚙️ PLATFORM LAYER"]
+        K8s["k3s Kubernetes"]
+        GitOps["ArgoCD"]
+        Obs["Prometheus + Grafana"]
     end
 
-    subgraph L1["LAYER 1: INFRASTRUCTURE"]
-        IN1["Compute<br/>(Hetzner/AWS)"]
-        IN2["Network<br/>(VPC)"]
-        IN3["Storage"]
-        IN4["DNS"]
-        IN5["CDN"]
+    subgraph Infra["🏗️ INFRASTRUCTURE"]
+        VMs["Hetzner Cloud"]
+        Network["Private Network"]
+        Storage["Block Storage"]
     end
 
-    subgraph L0["LAYER 0: OBSERVABILITY (Cross-Cutting)"]
-        OB1["Metrics<br/>(Prometheus)"]
-        OB2["Logs<br/>(Loki)"]
-        OB3["Traces<br/>(Tempo)"]
-        OB4["Alerts"]
-    end
+    Users --> Edge --> Product
+    Product --> Platform --> Infra
 
-    L5 --> L4 --> L3 --> L2 --> L1
-    L0 -.-> L1
-    L0 -.-> L2
-    L0 -.-> L3
-    L0 -.-> L4
-    L0 -.-> L5
+    style Strapi fill:#4CAF50
+    style AI fill:#4CAF50
 ```
 
 ---
 
-## Layer 1: Infrastructure (OpenTofu)
+## Product Layer: The Heart of ContentAI
 
-> *"Treat servers like cattle, not pets. If a server is misbehaving, shoot it in the head and create a new one."*
+### Content Flow
+
+```mermaid
+sequenceDiagram
+    participant User as Content Creator
+    participant Strapi as Strapi CMS
+    participant AI as AI Service
+    participant DB as PostgreSQL
+    participant Cache as Redis
+    participant API as Content API
+
+    User->>Strapi: "Write blog about DevOps"
+    Strapi->>AI: Generate content request
+    AI->>AI: Call Claude/OpenAI
+    AI->>Strapi: Generated draft
+    Strapi->>DB: Save draft
+    Strapi->>User: Draft for review
+
+    User->>Strapi: Edit and publish
+    Strapi->>DB: Save published
+    Strapi->>Cache: Invalidate cache
+    Strapi-->>User: Published!
+
+    API->>Cache: Check cache
+    Cache-->>API: Cache hit (fast!)
+    API->>DB: Cache miss (fetch)
+    DB-->>API: Content data
+```
+
+### Component Details
+
+| Component | Purpose | Technology | Port |
+|-----------|---------|------------|------|
+| **Strapi CMS** | Content management, admin panel | Node.js, REST/GraphQL | 1337 |
+| **AI Service** | Content generation, summarization | Node.js, Claude/OpenAI API | 3001 |
+| **PostgreSQL** | Persistent content storage | PostgreSQL 15 | 5432 |
+| **Redis** | Caching, session storage | Redis 7 | 6379 |
+| **Meilisearch** | Full-text content search | Meilisearch | 7700 |
+
+---
+
+## Architecture Layers
+
+### Layer 1: Infrastructure (OpenTofu)
+
+> *"Treat servers like cattle, not pets."*
 > — **Infrastructure as Code** (Kief Morris)
 
-### Infrastructure-as-Code Philosophy
-
-```mermaid
-mindmap
-  root((IaC<br/>Principles))
-    Declarative
-      Describe WHAT you want
-      State file tracks reality
-      Plan shows changes
-    Versioned
-      All infrastructure in Git
-      Review changes via PR
-      Audit trail
-    Modular
-      Reusable components
-      Composition over inheritance
-      DRY principle
-    Tested
-      Validate before apply
-      Policy as code
-      Integration tests
-```
-
-### Module Structure
-
-```hcl
-# modules/hetzner-k3s-cluster/main.tf
-
-variable "cluster_name" {
-  type        = string
-  description = "Name of the k3s cluster"
-}
-
-variable "server_count" {
-  type        = number
-  default     = 3
-  description = "Number of control plane nodes (odd number for HA)"
-}
-
-variable "agent_count" {
-  type        = number
-  default     = 3
-  description = "Number of worker nodes"
-}
-
-variable "server_type" {
-  type        = string
-  default     = "cx31"
-  description = "Hetzner server type"
-}
-
-# Create servers
-resource "hetzner_server" "k3s_server" {
-  count       = var.server_count
-  name        = "${var.cluster_name}-server-${count.index}"
-  image       = "ubuntu-22.04"
-  server_type = var.server_type
-  location    = "fsn1"
-
-  labels = {
-    cluster = var.cluster_name
-    role    = "server"
-  }
-}
-
-# Output for downstream modules
-output "server_ips" {
-  value = hetzner_server.k3s_server[*].ipv4_address
-}
-```
-
-### Cloud Provider Comparison
-
-| Resource | Hetzner | AWS | Notes |
-|----------|---------|-----|-------|
-| **Compute** | `hcloud_server` | `aws_instance` | Hetzner 80% cheaper |
-| **Network** | `hcloud_network` | `aws_vpc` | Similar concepts |
-| **Load Balancer** | `hcloud_load_balancer` | `aws_lb` | Hetzner included in price |
-| **Storage** | `hcloud_volume` | `aws_ebs_volume` | Hetzner simpler |
-| **Object Storage** | S3-compatible | `aws_s3_bucket` | Use MinIO for Hetzner |
-
----
-
-## Layer 2: Container Orchestration (k3s)
-
-### Why k3s?
-
-| Feature | k3s | Full K8s | Impact |
-|---------|-----|----------|--------|
-| **Binary Size** | ~50MB | ~1GB | Faster installs |
-| **Memory** | 512MB minimum | 2GB+ recommended | Lower cost |
-| **Components** | Bundled (SQLite/etcd) | Separate | Simpler ops |
-| **Certifications** | CNCF Certified | CNCF Certified | Same API |
-| **Production Ready** | Yes | Yes | Equal capability |
-
-### Cluster Topology
+The foundation that runs ContentAI:
 
 ```mermaid
 flowchart TB
-    subgraph External["External Traffic"]
-        LB["Load Balancer<br/>(Hetzner LB)"]
+    subgraph Hetzner["Hetzner Cloud"]
+        subgraph Network["Private Network (10.0.0.0/16)"]
+            LB["Load Balancer<br/>(Public IP)"]
+
+            subgraph Servers["Control Plane"]
+                S1["Server 1<br/>k3s + etcd"]
+                S2["Server 2<br/>k3s + etcd"]
+                S3["Server 3<br/>k3s + etcd"]
+            end
+
+            subgraph Agents["Workers"]
+                A1["Agent 1<br/>ContentAI workloads"]
+                A2["Agent 2<br/>ContentAI workloads"]
+                A3["Agent 3<br/>ContentAI workloads"]
+            end
+        end
+
+        Storage["Block Storage<br/>(Longhorn)"]
     end
 
-    subgraph ControlPlane["Control Plane (HA)"]
-        S1["Server 1<br/>(Primary)<br/>k3s server<br/>etcd member"]
-        S2["Server 2<br/>(Secondary)<br/>k3s server<br/>etcd member"]
-        S3["Server 3<br/>(Secondary)<br/>k3s server<br/>etcd member"]
+    Internet["Internet"] --> LB
+    LB --> Servers
+    Servers --> Agents
+    Agents --> Storage
 
-        S1 <--> S2
-        S2 <--> S3
-        S3 <--> S1
-    end
-
-    subgraph Workers["Worker Nodes"]
-        A1["Agent 1<br/>(Worker)<br/>Workloads"]
-        A2["Agent 2<br/>(Worker)<br/>Workloads"]
-        A3["Agent 3<br/>(GPU Node)<br/>ML/AI Jobs"]
-    end
-
-    LB --> S1
-    LB --> S2
-    LB --> S3
-
-    S1 --> A1
-    S2 --> A2
-    S3 --> A3
-
-    style S1 fill:#4CAF50
-    style S2 fill:#2196F3
-    style S3 fill:#2196F3
+    style A1 fill:#4CAF50
+    style A2 fill:#4CAF50
+    style A3 fill:#4CAF50
 ```
 
-**Fault Tolerance**: Survives 1 server failure (n/2 + 1 quorum)
-**Scaling**: Add agents with single command
+**Infrastructure Code Structure:**
 
-### Installation Flow (Ansible)
-
-```yaml
-# playbooks/k3s-install.yml
-
-- name: Install k3s cluster
-  hosts: all
-  become: yes
-
-  tasks:
-    - name: Install first server (initializes cluster)
-      when: inventory_hostname == groups['servers'][0]
-      shell: |
-        curl -sfL https://get.k3s.io | sh -s - server \
-          --cluster-init \
-          --tls-san={{ loadbalancer_ip }} \
-          --disable traefik \
-          --flannel-backend=none \
-          --disable-network-policy
-
-    - name: Get join token
-      when: inventory_hostname == groups['servers'][0]
-      slurp:
-        src: /var/lib/rancher/k3s/server/node-token
-      register: k3s_token
-
-    - name: Join additional servers
-      when: inventory_hostname in groups['servers'][1:]
-      shell: |
-        curl -sfL https://get.k3s.io | sh -s - server \
-          --server https://{{ groups['servers'][0] }}:6443 \
-          --token {{ k3s_token.content | b64decode | trim }} \
-          --tls-san={{ loadbalancer_ip }}
-
-    - name: Join agents
-      when: inventory_hostname in groups['agents']
-      shell: |
-        curl -sfL https://get.k3s.io | sh -s - agent \
-          --server https://{{ loadbalancer_ip }}:6443 \
-          --token {{ k3s_token.content | b64decode | trim }}
+```
+infra/
+├── terraform/
+│   ├── modules/
+│   │   ├── hetzner-server/       # VM provisioning
+│   │   ├── network/              # Private networking
+│   │   └── k3s-cluster/          # Cluster foundation
+│   └── environments/
+│       ├── dev/                  # Development
+│       └── prod/                 # Production
+└── ansible/
+    ├── playbooks/
+    │   ├── base-hardening.yml    # Security
+    │   └── k3s-install.yml       # Kubernetes
+    └── roles/
+        ├── common/
+        └── k3s/
 ```
 
----
+### Layer 2: Container Orchestration (k3s)
 
-## Layer 3: Application Platform
+ContentAI runs on Kubernetes for:
+- **High Availability**: Survives node failures
+- **Auto-scaling**: Handles traffic spikes
+- **Rolling Updates**: Zero-downtime deployments
+- **Resource Management**: Efficient use of infrastructure
 
-### Core Platform Services
+**Cluster Topology:**
+
+| Node Type | Count | Purpose |
+|-----------|-------|---------|
+| **Servers** | 3 | Control plane, etcd, API server |
+| **Agents** | 3 | ContentAI workloads |
+| **Total** | 6 | HA cluster |
+
+**Why k3s over full Kubernetes:**
+
+| Feature | k3s | Full K8s |
+|---------|-----|----------|
+| Binary size | 50MB | 1GB+ |
+| Memory | 512MB | 2GB+ |
+| Setup time | 5 minutes | Hours |
+| CNCF Certified | ✅ | ✅ |
+| Production Ready | ✅ | ✅ |
+
+### Layer 3: Application Platform
+
+Platform services that ContentAI needs:
 
 ```mermaid
 flowchart TB
-    subgraph Ingress["INGRESS LAYER"]
-        ING["Traefik / NGINX Ingress"]
-        I1["TLS termination<br/>(Let's Encrypt)"]
-        I2["Rate limiting"]
-        I3["Path-based routing"]
-        I4["Canary deployments"]
+    subgraph Ingress["INGRESS"]
+        ING["NGINX Ingress"]
+        TLS["cert-manager<br/>Let's Encrypt"]
     end
 
-    subgraph Mesh["SERVICE MESH (Optional)"]
-        SM["Linkerd / Istio"]
-        M1["mTLS between services"]
-        M2["Traffic management"]
-        M3["Automatic observability"]
-        M4["Fault injection"]
+    subgraph DNS["DNS & ROUTING"]
+        D1["contentai.domain.com → Strapi"]
+        D2["api.domain.com → Strapi API"]
+        D3["ai.domain.com → AI Service"]
     end
 
-    subgraph Secrets["SECRETS & CONFIG"]
-        SEC["External Secrets Operator"]
-        S1["Sync from Vault/AWS SM"]
-        S2["Auto-rotation"]
-        S3["Sealed Secrets for GitOps"]
+    subgraph Storage["PERSISTENT STORAGE"]
+        LH["Longhorn"]
+        S1["PostgreSQL data"]
+        S2["Media uploads"]
+        S3["Redis persistence"]
     end
 
-    subgraph Storage["STORAGE"]
-        STR["Longhorn / MinIO"]
-        ST1["Replicated block storage"]
-        ST2["Snapshots and backups"]
-        ST3["S3-compatible objects"]
+    subgraph Secrets["SECRETS"]
+        ESO["External Secrets<br/>or Sealed Secrets"]
+        K1["Database credentials"]
+        K2["AI API keys"]
+        K3["JWT secrets"]
     end
 
-    Ingress --> Mesh --> Secrets --> Storage
+    Ingress --> DNS
+    DNS --> Storage
+    Storage --> Secrets
 ```
 
-### Helm Charts vs Kustomize
+### Layer 4: Delivery Pipeline (GitOps)
 
-| Approach | When to Use | Pros | Cons |
-|----------|-------------|------|------|
-| **Helm** | Third-party apps | Templating, versioned releases | Complexity |
-| **Kustomize** | Your apps | Native kubectl, overlays | Limited templating |
-| **Both** | Best of both | Flexibility | Learning curve |
-
----
-
-## Layer 4: Delivery Pipeline
-
-### GitOps Flow
+How ContentAI gets deployed:
 
 ```mermaid
 sequenceDiagram
     participant Dev as Developer
-    participant AppRepo as Application Repo
-    participant CI as CI Pipeline
-    participant Registry as Container Registry
-    participant InfraRepo as Infrastructure Repo
+    participant Git as GitHub
+    participant CI as GitHub Actions
+    participant Reg as ghcr.io
     participant Argo as ArgoCD
     participant K8s as k3s Cluster
 
-    Dev->>AppRepo: Push code
-    AppRepo->>CI: Trigger workflow
+    Dev->>Git: Push code
+    Git->>CI: Trigger workflow
     CI->>CI: Build & Test
-    CI->>Registry: Push image (ghcr.io)
-    CI->>InfraRepo: Update image tag
+    CI->>Reg: Push image
+    CI->>Git: Update manifests
 
     loop Every 3 minutes
-        Argo->>InfraRepo: Poll for changes
+        Argo->>Git: Poll for changes
     end
 
-    Argo->>InfraRepo: Detect new tag
-    Argo->>K8s: Sync to cluster
-    K8s-->>Argo: Deployment complete
+    Argo->>Git: Detect change
+    Argo->>K8s: Deploy ContentAI
+    K8s-->>Dev: ContentAI updated!
 
-    Note over Dev,K8s: Git is the source of truth
-    Note over Dev,K8s: Cluster converges to Git state
+    Note over Git,K8s: Git is the single source of truth
 ```
 
-### ArgoCD Application Definition
+**ArgoCD manages ContentAI:**
 
 ```yaml
-# argocd/applications/user-service.yaml
-
+# argocd/applications/contentai.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: user-service
+  name: contentai
   namespace: argocd
 spec:
   project: default
-
   source:
-    repoURL: https://github.com/org/infra
+    repoURL: https://github.com/org/contentai-infra
     targetRevision: main
-    path: k8s/overlays/prod/user-service
-
+    path: k8s/overlays/prod/contentai
   destination:
     server: https://kubernetes.default.svc
-    namespace: production
-
+    namespace: contentai
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-
-  # Health checks
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      jsonPointers:
-        - /spec/replicas  # Allow HPA to manage replicas
 ```
 
----
+### Layer 0: Observability (Cross-Cutting)
 
-## Layer 0: Observability
-
-> *"Hope is not a strategy. Without visibility into your systems, you're flying blind."*
-> — **Site Reliability Engineering** (Google)
-
-### Metrics Pipeline
+See everything happening in ContentAI:
 
 ```mermaid
 flowchart LR
-    subgraph Collection["COLLECTION"]
-        App["Applications<br/>(metrics port)"]
-        Node["Node Exporter"]
-        KSM["kube-state-metrics"]
+    subgraph Collect["COLLECTION"]
+        Strapi["Strapi metrics"]
+        AI["AI Service metrics"]
+        K8s["Kubernetes metrics"]
     end
 
-    subgraph Storage["STORAGE"]
-        Prom["Prometheus<br/>• TSDB<br/>• 15d retention<br/>• PromQL"]
+    subgraph Store["STORAGE"]
+        Prom["Prometheus<br/>(Metrics)"]
+        Loki["Loki<br/>(Logs)"]
     end
 
     subgraph Viz["VISUALIZATION"]
-        Graf["Grafana<br/>• Dashboards<br/>• Explore<br/>• Alerting UI"]
+        Graf["Grafana<br/>Dashboards"]
     end
 
-    subgraph Alerting["ALERTING"]
-        AM["AlertManager<br/>• Deduplication<br/>• Grouping<br/>• Routing"]
+    subgraph Alert["ALERTING"]
+        AM["AlertManager"]
         Slack["Slack/PagerDuty"]
     end
 
-    App --> Prom
-    Node --> Prom
-    KSM --> Prom
-    Prom --> Graf
-    Prom --> AM
-    AM --> Slack
+    Collect --> Store --> Viz
+    Store --> Alert --> Slack
 ```
 
-### Golden Signals
+**ContentAI-Specific Metrics:**
 
-| Signal | What It Measures | Example Metrics |
-|--------|------------------|-----------------|
-| **Latency** | Time to serve request | `http_request_duration_seconds` |
-| **Traffic** | Demand on system | `http_requests_total` |
-| **Errors** | Failed requests | `http_requests_total{status=~"5.."}` |
-| **Saturation** | System capacity | `container_memory_usage_bytes` |
+| Metric | Purpose | Alert Threshold |
+|--------|---------|-----------------|
+| `strapi_requests_total` | API usage | > 10k/min |
+| `ai_tokens_total` | API cost tracking | > 100k/hour |
+| `ai_latency_avg_ms` | Generation speed | > 5000ms |
+| `content_created_total` | Product usage | Business metric |
 
 ---
 
-## Implementation Approach for Interns
+## ContentAI Namespace Layout
+
+```yaml
+# How ContentAI is organized in Kubernetes
+
+contentai/
+├── strapi/
+│   ├── deployment.yaml        # 2 replicas
+│   ├── service.yaml           # ClusterIP
+│   ├── ingress.yaml           # HTTPS endpoint
+│   ├── configmap.yaml         # Environment config
+│   ├── secret.yaml            # Credentials
+│   └── hpa.yaml               # Auto-scaling
+├── ai-service/
+│   ├── deployment.yaml        # 2 replicas
+│   ├── service.yaml           # Internal only
+│   ├── configmap.yaml         # AI config
+│   └── secret.yaml            # API keys
+├── database/
+│   ├── postgresql/
+│   │   ├── statefulset.yaml   # Persistent DB
+│   │   └── service.yaml
+│   └── redis/
+│       ├── deployment.yaml
+│       └── service.yaml
+└── search/
+    └── meilisearch/
+        ├── statefulset.yaml
+        └── service.yaml
+```
+
+---
+
+## Implementation Timeline
 
 ### Week 1: Foundation
 
 ```mermaid
 flowchart LR
-    subgraph W1["Week 1: Foundation"]
-        T1["Hetzner Account"] --> T2["OpenTofu Provider"]
-        T2 --> T3["First VM Module"]
-        T3 --> T4["Basic Ansible"]
-    end
+    T1["Hetzner Setup"] --> T2["OpenTofu Modules"]
+    T2 --> T3["Ansible Playbooks"]
+    T3 --> T4["6 VMs Ready"]
 ```
 
-1. **Infrastructure Setup**
-   - Create Hetzner account, configure OpenTofu provider
-   - Write first module: single VM with SSH access
-   - Learn: State management, plan/apply workflow
+**Deliverables:**
+- Infrastructure-as-Code foundation
+- 6 VMs provisioned and hardened
+- Ready for k3s installation
 
-2. **Basic Ansible**
-   - Inventory file with your VM
-   - First playbook: install packages, configure firewall
-   - Learn: Idempotency, roles, variables
-
-### Week 2: Cluster
+### Week 2: ContentAI Core
 
 ```mermaid
 flowchart LR
-    subgraph W2["Week 2: Cluster"]
-        T5["k3s HA Cluster"] --> T6["Ansible Automation"]
-        T6 --> T7["Ingress Controller"]
-        T7 --> T8["First App Deployed"]
-    end
+    T5["k3s Cluster"] --> T6["Platform Services"]
+    T6 --> T7["Strapi Deployment"]
+    T7 --> T8["AI Integration"]
+    T8 --> T9["ContentAI LIVE!"]
+
+    style T9 fill:#4CAF50
 ```
 
-3. **k3s Installation**
-   - HA cluster (3 servers, 3 agents)
-   - Ansible automation for reproducibility
-   - Learn: Kubernetes fundamentals, kubectl
+**Deliverables:**
+- HA Kubernetes cluster
+- PostgreSQL, Redis, Meilisearch
+- **Strapi CMS running**
+- **AI content generation working**
 
-4. **Core Services**
-   - Install ingress controller
-   - Deploy first application
-   - Learn: Services, ingress, namespaces
-
-### Week 3: Platform
+### Week 3: Scale
 
 ```mermaid
 flowchart LR
-    subgraph W3["Week 3: Platform"]
-        T9["ArgoCD Setup"] --> T10["GitOps App"]
-        T10 --> T11["Prometheus Stack"]
-        T11 --> T12["First Dashboard"]
-    end
+    T10["ArgoCD"] --> T11["CI/CD Pipeline"]
+    T11 --> T12["Observability"]
+    T12 --> T13["Auto-deploy on git push"]
 ```
 
-5. **GitOps Setup**
-   - Install ArgoCD
-   - First GitOps-managed application
-   - Learn: Declarative operations, self-healing
+**Deliverables:**
+- GitOps automation
+- ContentAI dashboards
+- Alerting for product metrics
 
-6. **Observability**
-   - Deploy Prometheus stack
-   - Create first dashboard
-   - Learn: PromQL, alerting
-
-### Week 4: Production Readiness
+### Week 4: Production Ready
 
 ```mermaid
 flowchart LR
-    subgraph W4["Week 4: Production"]
-        T13["Network Policies"] --> T14["Secrets Management"]
-        T14 --> T15["Python CLI Tool"]
-        T15 --> T16["Runbooks & Docs"]
-    end
+    T14["Security Hardening"] --> T15["DR Testing"]
+    T15 --> T16["Documentation"]
+    T16 --> T17["Demo Ready"]
 ```
 
-7. **Security Hardening**
-   - Network policies
-   - Secrets management
-   - Learn: Zero-trust principles
+**Deliverables:**
+- Network policies, RBAC
+- Backup and recovery tested
+- ContentAI ready for real users
 
-8. **Documentation & Automation**
-   - Python CLI tool for common operations
-   - Runbooks for incidents
-   - Learn: Toil elimination
+---
+
+## Key Architecture Decisions
+
+| Decision | Choice | Reasoning |
+|----------|--------|-----------|
+| **CMS** | Strapi | Open source, API-first, extensible |
+| **AI Provider** | Claude (primary) | Best content quality |
+| **AI Fallback** | OpenAI | Reliability |
+| **Database** | PostgreSQL | Strapi default, reliable |
+| **Cache** | Redis | Session + API caching |
+| **Search** | Meilisearch | Fast, typo-tolerant |
+| **Orchestration** | k3s | Lightweight, production-ready |
+| **GitOps** | ArgoCD | UI, multi-cluster support |
+| **Observability** | Prometheus + Grafana | Industry standard |
+| **Cloud** | Hetzner | 90% cost savings |
+
+---
+
+## Security Architecture
+
+```mermaid
+flowchart TB
+    subgraph External["External"]
+        User["Users"]
+    end
+
+    subgraph Edge["Edge"]
+        WAF["CloudFlare WAF"]
+        TLS["TLS 1.3"]
+    end
+
+    subgraph Cluster["k3s Cluster"]
+        subgraph NetworkPolicies["Network Policies"]
+            NP1["Default Deny All"]
+            NP2["Allow Strapi → PostgreSQL"]
+            NP3["Allow Strapi → AI Service"]
+            NP4["Allow Prometheus scraping"]
+        end
+
+        subgraph RBAC["RBAC"]
+            R1["Admin: Full access"]
+            R2["Developer: contentai namespace"]
+            R3["CI: Deploy only"]
+        end
+
+        subgraph Secrets["Secrets Management"]
+            S1["Sealed Secrets (GitOps)"]
+            S2["External Secrets (Vault)"]
+        end
+    end
+
+    User --> WAF --> TLS --> Cluster
+```
 
 ---
 
@@ -513,6 +479,7 @@ flowchart LR
 - [Configuration Management](./03-Configuration-Management.md)
 - [Container Orchestration](./04-Container-Orchestration.md)
 - [GitOps](./05-GitOps.md)
+- [Product Vision](../01-Product/01-Vision.md)
 
 ---
 
