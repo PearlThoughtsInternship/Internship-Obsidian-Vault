@@ -1,116 +1,125 @@
-# Configuration Management with Ansible
+# Configuration Management: Making Servers Ready for ContentAI
 
-## Why Configuration Management?
+> *"OpenTofu creates the castle walls. Ansible fills them with everything ContentAI needs to live."*
 
-> *Infrastructure-as-Code provisions machines. Configuration Management makes them useful.*
+## The Purpose: From Empty VMs to Running Platform
 
----
-
-## The Configuration Gap
+**Why are we doing this?** OpenTofu gave us 6 empty servers. Ansible makes them into a working Kubernetes cluster ready for ContentAI.
 
 ```mermaid
 flowchart LR
-    subgraph IaC["Infrastructure-as-Code"]
-        TF["OpenTofu"]
-        VM["Empty VMs"]
-        TF --> VM
+    subgraph Before["📦 AFTER OPENTOFU"]
+        V1["Empty VM 1"]
+        V2["Empty VM 2"]
+        V3["Empty VM 3"]
+        V4["Empty VM 4"]
+        V5["Empty VM 5"]
+        V6["Empty VM 6"]
     end
 
-    subgraph Gap["The Gap"]
-        Q1["No packages installed"]
-        Q2["No users configured"]
-        Q3["No services running"]
-        Q4["No security hardening"]
+    subgraph Gap["❓ THE GAP"]
+        G1["No packages"]
+        G2["No k3s"]
+        G3["No security"]
+        G4["Can't run ContentAI"]
     end
 
-    subgraph CM["Configuration Management"]
-        AN["Ansible"]
-        Ready["Production-Ready Servers"]
-        AN --> Ready
+    subgraph After["🏰 AFTER ANSIBLE"]
+        A1["k3s control plane (HA)"]
+        A2["k3s workers"]
+        A3["Security hardened"]
+        A4["Ready for ContentAI!"]
     end
 
-    VM --> Gap --> AN
+    Before --> Gap --> After
+
+    style After fill:#4CAF50
 ```
 
 ---
 
-## Why Ansible?
+## What Ansible Does for ContentAI
+
+| Task | What It Configures | Why ContentAI Needs It |
+|------|-------------------|----------------------|
+| **Base hardening** | SSH, firewall, updates | Security before anything else |
+| **k3s servers** | Control plane cluster | Kubernetes to run Strapi |
+| **k3s agents** | Worker nodes | Where ContentAI actually runs |
+| **Platform services** | Ingress, storage, certs | HTTPS, persistent data |
+
+---
+
+## Why Ansible (Not Puppet/Chef)
 
 | Feature | Ansible | Puppet/Chef |
 |---------|---------|-------------|
 | **Architecture** | Agentless (SSH) | Requires agent |
-| **Language** | YAML (declarative) | Ruby DSL |
+| **Language** | YAML (easy) | Ruby DSL (complex) |
 | **Learning curve** | Low | High |
 | **Ad-hoc commands** | Yes | No |
-| **Push vs Pull** | Push | Pull |
-| **Python integration** | Native | Limited |
 
-**For this project:** Ansible's agentless model means no software to install on target nodes—perfect for ephemeral cloud infrastructure.
+**For ContentAI:** SSH into servers, configure them, done. No agents to manage.
 
 ---
 
 ## Core Concepts
 
-### Inventory
+### Inventory: Which Servers to Configure
 
 ```mermaid
 flowchart TB
-    subgraph Inventory["Inventory Sources"]
-        Static["Static Inventory\n(hosts.yml)"]
-        Dynamic["Dynamic Inventory\n(cloud plugin)"]
-        Tofu["OpenTofu Output\n(terraform.py)"]
+    subgraph Inventory["📋 INVENTORY"]
+        subgraph Servers["[servers] - Control Plane"]
+            S1["contentai-server-1 (init)"]
+            S2["contentai-server-2"]
+            S3["contentai-server-3"]
+        end
+
+        subgraph Agents["[agents] - ContentAI Workers"]
+            A1["contentai-agent-1"]
+            A2["contentai-agent-2"]
+            A3["contentai-agent-3"]
+        end
     end
 
-    subgraph Hosts["Target Hosts"]
-        S1["server-1"]
-        S2["server-2"]
-        S3["server-3"]
-        A1["agent-1"]
-        A2["agent-2"]
-        A3["agent-3"]
+    subgraph Result["🎯 RESULT"]
+        R["6-node k3s cluster ready for Strapi + AI"]
     end
 
-    subgraph Groups["Host Groups"]
-        Servers["[servers]"]
-        Agents["[agents]"]
-        K3S["[k3s:children]"]
-    end
+    Inventory --> Result
 
-    Static --> Groups
-    Dynamic --> Groups
-    Tofu --> Groups
-    Groups --> Hosts
+    style Result fill:#4CAF50
 ```
 
-### Static Inventory Example
+### Static Inventory for ContentAI
 
 ```yaml
-# inventory/hosts.yml
+# inventory/contentai.yml
 
 all:
   children:
     servers:
       hosts:
-        server-1:
+        contentai-server-1:
           ansible_host: 10.1.1.1
           k3s_role: server
-          k3s_server_init: true
-        server-2:
+          k3s_server_init: true  # First server initializes cluster
+        contentai-server-2:
           ansible_host: 10.1.1.2
           k3s_role: server
-        server-3:
+        contentai-server-3:
           ansible_host: 10.1.1.3
           k3s_role: server
 
     agents:
       hosts:
-        agent-1:
+        contentai-agent-1:
           ansible_host: 10.1.2.1
           k3s_role: agent
-        agent-2:
+        contentai-agent-2:
           ansible_host: 10.1.2.2
           k3s_role: agent
-        agent-3:
+        contentai-agent-3:
           ansible_host: 10.1.2.3
           k3s_role: agent
 
@@ -124,7 +133,7 @@ all:
         k3s_service_cidr: 10.43.0.0/16
 ```
 
-### Dynamic Inventory from OpenTofu
+### Dynamic Inventory from Hetzner
 
 ```yaml
 # inventory/hcloud.yml
@@ -137,8 +146,6 @@ keyed_groups:
     prefix: role
   - key: labels.cluster
     prefix: cluster
-  - key: location
-    prefix: location
 
 compose:
   ansible_host: ipv4_address
@@ -147,48 +154,51 @@ compose:
 
 ---
 
-## Playbook Architecture
+## Playbook Architecture for ContentAI
 
 ```mermaid
 flowchart TB
-    subgraph Playbooks["Playbooks"]
-        Site["site.yml\n(orchestrator)"]
+    subgraph Playbooks["📚 PLAYBOOKS"]
+        Site["site.yml<br/>(orchestrator)"]
         Base["base-hardening.yml"]
         K3S["k3s-install.yml"]
-        Apps["platform-services.yml"]
+        Platform["platform-services.yml"]
     end
 
-    subgraph Roles["Roles"]
-        Common["common/"]
-        FW["firewall/"]
-        K3SRole["k3s/"]
-        Cert["cert-manager/"]
-        Ingress["traefik/"]
-        Storage["longhorn/"]
+    subgraph Roles["🔧 ROLES"]
+        Common["common/<br/>packages, users"]
+        FW["firewall/<br/>UFW rules"]
+        K3SRole["k3s/<br/>cluster install"]
+        Cert["cert-manager/<br/>TLS"]
+        Ingress["nginx-ingress/<br/>HTTP routing"]
+        Storage["longhorn/<br/>persistent storage"]
     end
 
-    subgraph Targets["Target Groups"]
-        All["all"]
-        Servers["servers"]
-        Agents["agents"]
+    subgraph Targets["🎯 TARGETS"]
+        All["all hosts"]
+        Servers["servers only"]
+        Agents["agents only"]
     end
 
     Site --> Base --> Common
     Site --> Base --> FW
     Site --> K3S --> K3SRole
-    Site --> Apps --> Cert
-    Site --> Apps --> Ingress
-    Site --> Apps --> Storage
+    Site --> Platform --> Cert
+    Site --> Platform --> Ingress
+    Site --> Platform --> Storage
 
     Base --> All
     K3S --> Servers
     K3S --> Agents
-    Apps --> Servers
+
+    style Site fill:#4CAF50
 ```
 
 ---
 
 ## Role: Common (Base Hardening)
+
+Every ContentAI server needs this:
 
 ```yaml
 # roles/common/tasks/main.yml
@@ -200,7 +210,7 @@ flowchart TB
     cache_valid_time: 3600
   when: ansible_os_family == "Debian"
 
-- name: Install essential packages
+- name: Install essential packages for ContentAI
   ansible.builtin.apt:
     name:
       - curl
@@ -214,28 +224,18 @@ flowchart TB
       - gnupg
     state: present
 
-- name: Set timezone
+- name: Set timezone (for consistent ContentAI logs)
   ansible.builtin.timezone:
     name: "{{ timezone | default('UTC') }}"
 
-- name: Configure sshd
-  ansible.builtin.template:
-    src: sshd_config.j2
-    dest: /etc/ssh/sshd_config
-    owner: root
-    group: root
-    mode: '0644'
-    validate: 'sshd -t -f %s'
-  notify: Restart sshd
-
-- name: Disable password authentication
+- name: Disable password authentication (security)
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: '^#?PasswordAuthentication'
     line: 'PasswordAuthentication no'
   notify: Restart sshd
 
-- name: Configure fail2ban
+- name: Configure fail2ban (protect against attacks)
   ansible.builtin.include_tasks: fail2ban.yml
   when: enable_fail2ban | default(true)
 
@@ -243,7 +243,9 @@ flowchart TB
   ansible.builtin.include_tasks: unattended-upgrades.yml
 ```
 
-### Role: Firewall (UFW)
+---
+
+## Role: Firewall (Protect ContentAI)
 
 ```yaml
 # roles/firewall/tasks/main.yml
@@ -254,23 +256,23 @@ flowchart TB
     name: ufw
     state: present
 
-- name: Set default incoming policy to deny
+- name: Default deny incoming
   community.general.ufw:
     direction: incoming
     policy: deny
 
-- name: Set default outgoing policy to allow
+- name: Default allow outgoing
   community.general.ufw:
     direction: outgoing
     policy: allow
 
-- name: Allow SSH
+- name: Allow SSH (admin access)
   community.general.ufw:
     rule: allow
     port: "22"
     proto: tcp
 
-- name: Allow internal network
+- name: Allow internal network (ContentAI components talk)
   community.general.ufw:
     rule: allow
     src: "{{ private_network_cidr }}"
@@ -282,7 +284,7 @@ flowchart TB
     proto: tcp
   when: "'servers' in group_names"
 
-- name: Allow HTTP/HTTPS (ingress nodes)
+- name: Allow HTTP/HTTPS (for Strapi ingress)
   community.general.ufw:
     rule: allow
     port: "{{ item }}"
@@ -290,7 +292,7 @@ flowchart TB
   loop:
     - "80"
     - "443"
-  when: k3s_role == 'agent' or ingress_node | default(false)
+  when: k3s_role == 'agent'  # Agents run ContentAI workloads
 
 - name: Enable UFW
   community.general.ufw:
@@ -300,6 +302,8 @@ flowchart TB
 ---
 
 ## Role: k3s Installation
+
+### The k3s Installation Flow
 
 ```mermaid
 sequenceDiagram
@@ -316,16 +320,16 @@ sequenceDiagram
     Note over Ansible,Agent1: Phase 2: Join other servers
     Ansible->>Server2: Install k3s (--server)
     Ansible->>Server3: Install k3s (--server)
-    Server2-->>Ansible: Joined
-    Server3-->>Ansible: Joined
+    Server2-->>Ansible: Joined cluster
+    Server3-->>Ansible: Joined cluster
 
-    Note over Ansible,Agent1: Phase 3: Join agents
+    Note over Ansible,Agent1: Phase 3: Join agents (ContentAI workers)
     Ansible->>Agent1: Install k3s (--agent)
-    Agent1-->>Ansible: Joined
+    Agent1-->>Ansible: Joined cluster
 
     Note over Ansible,Agent1: Phase 4: Verify
     Ansible->>Server1: kubectl get nodes
-    Server1-->>Ansible: All nodes Ready
+    Server1-->>Ansible: All 6 nodes Ready!
 ```
 
 ### k3s Role Implementation
@@ -340,8 +344,8 @@ sequenceDiagram
     dest: /tmp/k3s-install.sh
     mode: '0700'
 
-# Server initialization (first server only)
-- name: Initialize first k3s server
+# Initialize first server (creates the cluster)
+- name: Initialize first k3s server for ContentAI
   ansible.builtin.shell: |
     INSTALL_K3S_VERSION={{ k3s_version }} \
     K3S_TOKEN={{ k3s_token }} \
@@ -367,8 +371,8 @@ sequenceDiagram
     timeout: 300
   when: k3s_init.changed
 
-# Join additional servers
-- name: Join server to cluster
+# Join additional servers (HA control plane)
+- name: Join server to ContentAI cluster
   ansible.builtin.shell: |
     INSTALL_K3S_VERSION={{ k3s_version }} \
     K3S_TOKEN={{ k3s_token }} \
@@ -384,8 +388,8 @@ sequenceDiagram
     - k3s_role == 'server'
     - not (k3s_server_init | default(false))
 
-# Join agents
-- name: Join agent to cluster
+# Join agents (where ContentAI actually runs)
+- name: Join agent to ContentAI cluster
   ansible.builtin.shell: |
     INSTALL_K3S_VERSION={{ k3s_version }} \
     K3S_URL=https://{{ k3s_api_endpoint }}:6443 \
@@ -395,7 +399,7 @@ sequenceDiagram
     creates: /var/lib/rancher/k3s/agent
   when: k3s_role == 'agent'
 
-# Fetch kubeconfig
+# Get kubeconfig for local access
 - name: Fetch kubeconfig from first server
   ansible.builtin.fetch:
     src: /etc/rancher/k3s/k3s.yaml
@@ -416,37 +420,7 @@ sequenceDiagram
 
 ---
 
-## Variables and Secrets
-
-```mermaid
-flowchart TB
-    subgraph Sources["Variable Sources"]
-        Defaults["Role Defaults\n(lowest priority)"]
-        GroupVars["Group Vars\n(per environment)"]
-        HostVars["Host Vars\n(per server)"]
-        Extra["Extra Vars\n(CLI, highest priority)"]
-    end
-
-    subgraph Secrets["Secret Management"]
-        Vault["ansible-vault"]
-        EnvVar["Environment Variables"]
-        External["External Secrets\n(HashiCorp Vault)"]
-    end
-
-    subgraph Playbook["Playbook Execution"]
-        Merge["Variable Merge"]
-        Template["Template Rendering"]
-        Task["Task Execution"]
-    end
-
-    Defaults --> Merge
-    GroupVars --> Merge
-    HostVars --> Merge
-    Extra --> Merge
-    Vault --> Merge
-    EnvVar --> Merge
-    Merge --> Template --> Task
-```
+## Variables: Group and Host Configuration
 
 ### Group Variables
 
@@ -454,7 +428,7 @@ flowchart TB
 # group_vars/all.yml
 
 ---
-# Common settings for all hosts
+# Common settings for all ContentAI hosts
 timezone: UTC
 private_network_cidr: 10.1.0.0/16
 enable_fail2ban: true
@@ -463,7 +437,7 @@ enable_fail2ban: true
 k3s_version: v1.29.0+k3s1
 k3s_api_endpoint: "{{ hostvars[groups['servers'][0]]['ansible_host'] }}"
 
-# Observability
+# ContentAI observability
 prometheus_retention: 15d
 loki_retention: 7d
 ```
@@ -472,7 +446,7 @@ loki_retention: 7d
 # group_vars/servers.yml
 
 ---
-# Control plane specific settings
+# Control plane specific
 k3s_role: server
 etcd_snapshot_retention: 5
 etcd_snapshot_schedule: "0 */6 * * *"
@@ -482,9 +456,9 @@ etcd_snapshot_schedule: "0 */6 * * *"
 # group_vars/agents.yml
 
 ---
-# Worker node specific settings
+# Worker node specific (where ContentAI runs)
 k3s_role: agent
-longhorn_disk_path: /var/lib/longhorn
+longhorn_disk_path: /var/lib/longhorn  # For PostgreSQL, Redis data
 ```
 
 ### Encrypted Secrets
@@ -507,34 +481,28 @@ ansible-vault edit group_vars/all/vault.yml
 
 # Run playbook with vault
 ansible-playbook site.yml --ask-vault-pass
-# Or with password file
-ansible-playbook site.yml --vault-password-file ~/.vault_pass
 ```
 
 ---
 
-## Idempotency
+## Idempotency: Run Multiple Times, Same Result
 
 ```mermaid
 flowchart LR
     subgraph Run1["First Run"]
-        T1a["Task 1: Install packages"]
-        T2a["Task 2: Configure SSH"]
-        T3a["Task 3: Start service"]
-        T1a -->|"changed"| T2a -->|"changed"| T3a
+        T1a["Install packages"] -->|"changed"| T2a["Configure SSH"]
+        T2a -->|"changed"| T3a["Start k3s"]
     end
 
-    subgraph Run2["Second Run"]
-        T1b["Task 1: Install packages"]
-        T2b["Task 2: Configure SSH"]
-        T3b["Task 3: Start service"]
-        T1b -->|"ok"| T2b -->|"ok"| T3b
+    subgraph Run2["Second Run (Same Code)"]
+        T1b["Install packages"] -->|"ok (no change)"| T2b["Configure SSH"]
+        T2b -->|"ok"| T3b["Start k3s"]
     end
 
-    Run1 -->|"Same result"| Run2
+    Run1 -->|"Same final state"| Run2
 ```
 
-**Idempotent patterns:**
+**Idempotent patterns for ContentAI:**
 
 ```yaml
 # ✅ Idempotent: Uses state
@@ -548,16 +516,11 @@ flowchart LR
   ansible.builtin.get_url:
     url: https://get.k3s.io
     dest: /tmp/k3s.sh
-    mode: '0700'
+  args:
+    creates: /tmp/k3s.sh
 
-# ❌ Not idempotent: Always runs
-- name: Restart nginx
-  ansible.builtin.service:
-    name: nginx
-    state: restarted
-
-# ✅ Idempotent: Uses handler
-- name: Configure nginx
+# ✅ Idempotent: Uses handler (only restarts if changed)
+- name: Configure nginx for Strapi
   ansible.builtin.template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
@@ -572,112 +535,52 @@ flowchart LR
 
 ---
 
-## Testing with Molecule
+## Running the ContentAI Playbooks
 
-```mermaid
-flowchart LR
-    subgraph Develop["Development"]
-        Write["Write Role"]
-        Lint["Lint\n(yamllint, ansible-lint)"]
-    end
+### Full Setup (First Time)
 
-    subgraph Test["Testing"]
-        Create["Create\n(Docker/VM)"]
-        Converge["Converge\n(Apply role)"]
-        Verify["Verify\n(Tests pass)"]
-        Destroy["Destroy\n(Cleanup)"]
-    end
-
-    Write --> Lint --> Create --> Converge --> Verify --> Destroy
-    Verify -->|"Fail"| Write
+```bash
+# Run everything: base hardening + k3s + platform services
+ansible-playbook -i inventory/contentai.yml site.yml --ask-vault-pass
 ```
 
-### Molecule Configuration
+### Selective Runs
 
-```yaml
-# roles/common/molecule/default/molecule.yml
+```bash
+# Just base hardening
+ansible-playbook -i inventory/contentai.yml site.yml --tags "base"
 
----
-dependency:
-  name: galaxy
+# Just k3s installation
+ansible-playbook -i inventory/contentai.yml site.yml --tags "k3s"
 
-driver:
-  name: docker
-
-platforms:
-  - name: ubuntu-22
-    image: ubuntu:22.04
-    command: /sbin/init
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:rw
-    privileged: true
-
-provisioner:
-  name: ansible
-  inventory:
-    host_vars:
-      ubuntu-22:
-        ansible_python_interpreter: /usr/bin/python3
-
-verifier:
-  name: ansible
+# Skip certain tasks
+ansible-playbook -i inventory/contentai.yml site.yml --skip-tags "monitoring"
 ```
 
-### Verification Playbook
+### Single Host
 
-```yaml
-# roles/common/molecule/default/verify.yml
-
----
-- name: Verify common role
-  hosts: all
-  gather_facts: true
-  tasks:
-    - name: Check essential packages installed
-      ansible.builtin.package:
-        name: "{{ item }}"
-        state: present
-      check_mode: true
-      register: pkg_check
-      failed_when: pkg_check.changed
-      loop:
-        - curl
-        - vim
-        - htop
-
-    - name: Check SSH config
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        line: "PasswordAuthentication no"
-        state: present
-      check_mode: true
-      register: ssh_check
-      failed_when: ssh_check.changed
-
-    - name: Check timezone
-      ansible.builtin.command: timedatectl show --property=Timezone
-      register: tz_result
-      changed_when: false
-      failed_when: "'Timezone=UTC' not in tz_result.stdout"
+```bash
+# Just reconfigure one agent
+ansible-playbook -i inventory/contentai.yml site.yml --limit "contentai-agent-1"
 ```
 
 ---
 
-## Best Practices
+## Best Practices for ContentAI
 
-### 1. Use Roles for Reusability
+### 1. Roles for Each Component
 
 ```
 roles/
 ├── common/           # Base system configuration
 ├── firewall/         # UFW rules
 ├── k3s/              # k3s installation
-├── longhorn/         # Storage provisioner
+├── longhorn/         # Storage for PostgreSQL, Redis
 ├── cert-manager/     # TLS certificates
-└── monitoring/       # Prometheus stack
+└── nginx-ingress/    # HTTP routing to Strapi
 ```
 
-### 2. Use Tags for Selective Execution
+### 2. Tags for Flexibility
 
 ```yaml
 - name: Install packages
@@ -685,63 +588,63 @@ roles/
     name: nginx
   tags:
     - packages
-    - nginx
+    - base
 
-- name: Configure nginx
+- name: Configure k3s
   ansible.builtin.template:
-    src: nginx.conf.j2
-    dest: /etc/nginx/nginx.conf
+    src: k3s.yaml.j2
+    dest: /etc/rancher/k3s/config.yaml
   tags:
+    - k3s
     - config
-    - nginx
 ```
 
-```bash
-# Run only tagged tasks
-ansible-playbook site.yml --tags "packages"
-
-# Skip certain tags
-ansible-playbook site.yml --skip-tags "config"
-```
-
-### 3. Use Blocks for Error Handling
+### 3. Error Handling
 
 ```yaml
-- name: Install and configure service
+- name: Install and configure ContentAI prerequisites
   block:
-    - name: Install package
+    - name: Install packages
       ansible.builtin.apt:
-        name: myservice
+        name: "{{ item }}"
         state: present
+      loop:
+        - curl
+        - jq
 
-    - name: Start service
-      ansible.builtin.service:
-        name: myservice
-        state: started
+    - name: Configure system
+      ansible.builtin.template:
+        src: config.j2
+        dest: /etc/contentai/config
 
   rescue:
-    - name: Cleanup on failure
-      ansible.builtin.apt:
-        name: myservice
-        state: absent
-
     - name: Notify failure
       ansible.builtin.debug:
-        msg: "Service installation failed!"
+        msg: "ContentAI prerequisite installation failed!"
 
   always:
-    - name: Always run this
+    - name: Log execution
       ansible.builtin.debug:
-        msg: "Execution complete"
+        msg: "Prerequisite installation complete"
 ```
+
+---
+
+## What's Next
+
+Once Ansible has configured all 6 nodes:
+
+1. **kubectl get nodes** — Verify your cluster is ready
+2. **Deploy ContentAI** — [Exercise 10: Strapi Deployment](../04-Internship/Exercises/10-ContentAI-Strapi-Deployment.md)
+3. **GitOps** — [05-GitOps.md](./05-GitOps.md) for automated deployments
 
 ---
 
 ## Related
 
-- [Infrastructure-as-Code](./02-Infrastructure-as-Code.md)
-- [Container Orchestration](./04-Container-Orchestration.md)
-- [GitOps](./05-GitOps.md)
+- [Infrastructure-as-Code](./02-Infrastructure-as-Code.md) — Create the VMs first
+- [Container Orchestration](./04-Container-Orchestration.md) — Understand k3s
+- [GitOps](./05-GitOps.md) — Deploy ContentAI automatically
 
 ---
 
