@@ -1,12 +1,12 @@
-# What You Build: ContentAI
+# What You Build: Autograph
 
 ## The Product You're Creating
 
-By the end of 4 weeks, you'll have built **ContentAI**—a real, working AI-powered content platform with production-grade infrastructure.
+By the end of 4 weeks, you'll have built **Autograph**—a real, working AI-powered content platform with production-grade infrastructure.
 
 ---
 
-## ContentAI: The Complete Product
+## Autograph: The Complete Product
 
 ```mermaid
 flowchart TB
@@ -47,7 +47,7 @@ flowchart TB
 
 ### What You Build
 
-The cloud infrastructure that will run ContentAI.
+The cloud infrastructure that will run Autograph.
 
 ```
 infra/
@@ -80,14 +80,14 @@ infra/
 
 ---
 
-## Week 2: The Product (ContentAI Core)
+## Week 2: The Product (Autograph Core)
 
 ### What You Build
 
-The actual ContentAI product—this is why infrastructure exists.
+The actual Autograph product—this is why infrastructure exists.
 
 ```
-contentai/
+autograph/
 ├── strapi/
 │   ├── deployment.yaml         # Strapi CMS
 │   ├── service.yaml
@@ -111,7 +111,7 @@ contentai/
         └── deployment.yaml     # Fast content search
 ```
 
-### ContentAI Features You'll Deploy
+### Autograph Features You'll Deploy
 
 | Component | What It Does | User Value |
 |-----------|--------------|------------|
@@ -130,7 +130,7 @@ contentai/
 | **AI integration** | Content generation works | Prompt → Generated text |
 | **Database** | PostgreSQL operational | Data persists across restarts |
 | **Search** | Meilisearch indexed | Search returns results |
-| **HTTPS endpoint** | TLS certificates | `https://contentai.yourdomain.com` works |
+| **HTTPS endpoint** | TLS certificates | `https://autograph.yourdomain.com` works |
 
 ---
 
@@ -138,13 +138,13 @@ contentai/
 
 ### What You Build
 
-The automation that lets ContentAI scale.
+The automation that lets Autograph scale.
 
 ```
 platform/
 ├── argocd/
 │   ├── projects/
-│   │   └── contentai.yaml      # ContentAI project
+│   │   └── autograph.yaml      # Autograph project
 │   ├── applications/
 │   │   ├── app-of-apps.yaml    # Manages all apps
 │   │   ├── strapi.yaml         # CMS deployment
@@ -157,12 +157,12 @@ platform/
 │   ├── prometheus/
 │   │   ├── values.yaml
 │   │   └── rules/
-│   │       ├── contentai.yaml  # Product metrics
+│   │       ├── autograph.yaml  # Product metrics
 │   │       └── cluster.yaml    # Platform metrics
 │   ├── grafana/
 │   │   ├── values.yaml
 │   │   └── dashboards/
-│   │       ├── contentai-overview.json
+│   │       ├── autograph-overview.json
 │   │       ├── ai-generation-metrics.json
 │   │       └── api-latency.json
 │   └── loki/
@@ -175,12 +175,12 @@ platform/
             └── deploy.yaml     # Trigger ArgoCD
 ```
 
-### ContentAI Dashboards
+### Autograph Dashboards
 
 ```mermaid
 flowchart LR
     subgraph Dashboards["Grafana Dashboards You'll Build"]
-        D1["ContentAI Overview\n- Active users\n- Content created\n- API requests"]
+        D1["Autograph Overview\n- Active users\n- Content created\n- API requests"]
         D2["AI Generation Metrics\n- Latency by model\n- Tokens used\n- Cost tracking"]
         D3["API Performance\n- Request rate\n- Error rate\n- p95 latency"]
     end
@@ -202,7 +202,7 @@ flowchart LR
 
 ### What You Build
 
-Production hardening to make ContentAI ready for real users.
+Production hardening to make Autograph ready for real users.
 
 ```
 security/
@@ -212,8 +212,8 @@ security/
 │   ├── allow-ai.yaml           # Strapi → AI services
 │   └── allow-monitoring.yaml   # Prometheus scraping
 ├── rbac/
-│   ├── contentai-admin.yaml    # Admin access
-│   ├── contentai-viewer.yaml   # Read-only access
+│   ├── autograph-admin.yaml    # Admin access
+│   ├── autograph-viewer.yaml   # Read-only access
 │   └── ci-deployer.yaml        # CI service account
 ├── secrets/
 │   ├── sealed-secrets/
@@ -227,7 +227,7 @@ security/
 
 docs/
 ├── product/
-│   ├── contentai-overview.md   # What the product does
+│   ├── autograph-overview.md   # What the product does
 │   ├── api-documentation.md    # GraphQL/REST docs
 │   └── user-guide.md           # How to use it
 ├── architecture/
@@ -253,13 +253,13 @@ docs/
 | **Network policies** | Default deny | Unauthorized traffic blocked |
 | **Secrets management** | No secrets in Git | Sealed secrets work |
 | **RBAC** | Least privilege | Limited access by role |
-| **DR test** | Full recovery | Restore ContentAI from backup |
+| **DR test** | Full recovery | Restore Autograph from backup |
 | **Documentation** | Complete | New person can understand |
 | **Demo** | 15 min walkthrough | Shows working product |
 
 ---
 
-## Demo Day: Showcasing ContentAI
+## Demo Day: Showcasing Autograph
 
 Your final demo tells the story of building a startup:
 
@@ -271,7 +271,7 @@ sequenceDiagram
     participant ARGO as ArgoCD
     participant GRAF as Grafana
 
-    You->>You: 1. "This is ContentAI"
+    You->>You: 1. "This is Autograph"
 
     You->>STRAPI: 2. Create content request
     STRAPI->>AI: Generate blog post
@@ -294,7 +294,7 @@ sequenceDiagram
 ### Demo Script
 
 1. **The Product** (3 min)
-   - Show ContentAI in action
+   - Show Autograph in action
    - Create content with AI generation
    - Demonstrate search
 
@@ -327,7 +327,7 @@ sequenceDiagram
 | Artifact | Description |
 |----------|-------------|
 | **GitHub Repository** | Production IaC, K8s manifests, CI/CD |
-| **Live Product** | Working ContentAI (if infra still up) |
+| **Live Product** | Working Autograph (if infra still up) |
 | **Documentation** | Architecture docs, runbooks, ADRs |
 | **Demo Video** | 15-min recorded walkthrough |
 
@@ -365,14 +365,14 @@ flowchart LR
         T3["Infrastructure project"]
     end
 
-    subgraph ContentAI["This Internship"]
+    subgraph Autograph["This Internship"]
         P1["Built a real product"]
         P2["Deployed AI services"]
         P3["Startup from scratch"]
     end
 
     Traditional -.->|"Generic portfolio"| X["🤷"]
-    ContentAI -.->|"Founder-level experience"| Y["🚀"]
+    Autograph -.->|"Founder-level experience"| Y["🚀"]
 ```
 
 ---

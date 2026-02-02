@@ -1,4 +1,4 @@
-# ContentAI Target Architecture
+# Autograph Target Architecture
 
 > *"The best architectures are those that allow you to defer decisions about details."*
 > — **Clean Architecture** (Robert C. Martin)
@@ -26,7 +26,7 @@ flowchart TB
         LB["Hetzner Load Balancer"]
     end
 
-    subgraph ContentAI["🚀 CONTENTAI PRODUCT"]
+    subgraph Autograph["🚀 CONTENTAI PRODUCT"]
         subgraph App["Application Layer"]
             Strapi["Strapi CMS\n(Content Management)"]
             AI["AI Service\n(Claude/OpenAI)"]
@@ -82,7 +82,7 @@ flowchart TB
 
 ---
 
-## ContentAI Component Architecture
+## Autograph Component Architecture
 
 ### Application Components
 
@@ -169,9 +169,9 @@ flowchart TB
         end
 
         subgraph Agents["Agent Subnet (10.1.2.0/24)"]
-            A1["Agent 1\n10.1.2.1\nContentAI workloads"]
-            A2["Agent 2\n10.1.2.2\nContentAI workloads"]
-            A3["Agent 3\n10.1.2.3\nContentAI workloads"]
+            A1["Agent 1\n10.1.2.1\nAutograph workloads"]
+            A2["Agent 2\n10.1.2.2\nAutograph workloads"]
+            A3["Agent 3\n10.1.2.3\nAutograph workloads"]
         end
 
         subgraph Data["Data Subnet (10.1.3.0/24)"]
@@ -193,7 +193,7 @@ flowchart TB
 
 ---
 
-## ContentAI Deployment Pipeline
+## Autograph Deployment Pipeline
 
 ```mermaid
 sequenceDiagram
@@ -203,9 +203,9 @@ sequenceDiagram
     participant REG as ghcr.io
     participant ARGO as ArgoCD
     participant K8S as k3s Cluster
-    participant CAI as ContentAI
+    participant CAI as Autograph
 
-    Dev->>GH: Push ContentAI code
+    Dev->>GH: Push Autograph code
     GH->>CI: Trigger workflow
 
     rect rgb(200, 200, 230)
@@ -213,10 +213,10 @@ sequenceDiagram
     CI->>CI: Run tests
     CI->>CI: Build container
     CI->>CI: Security scan (Trivy)
-    CI->>REG: Push image (ghcr.io/org/contentai:v1.2.3)
+    CI->>REG: Push image (ghcr.io/org/autograph:v1.2.3)
     end
 
-    CI->>GH: Update k8s/contentai/deployment.yaml
+    CI->>GH: Update k8s/autograph/deployment.yaml
 
     rect rgb(200, 230, 200)
     Note over ARGO,K8S: Deploy Phase
@@ -226,19 +226,19 @@ sequenceDiagram
     CAI-->>K8S: Health check passed
     end
 
-    K8S-->>Dev: ContentAI v1.2.3 deployed!
+    K8S-->>Dev: Autograph v1.2.3 deployed!
 
     Note over Dev,CAI: Total time: ~5 minutes
 ```
 
 ---
 
-## ContentAI Namespace Layout
+## Autograph Namespace Layout
 
 ```yaml
-# How ContentAI is organized in Kubernetes
+# How Autograph is organized in Kubernetes
 
-contentai/
+autograph/
 ├── strapi/
 │   ├── deployment.yaml        # 2+ replicas, rolling updates
 │   ├── service.yaml           # ClusterIP for internal access
@@ -275,11 +275,11 @@ contentai/
 
 ## Observability Architecture
 
-### Monitoring ContentAI
+### Monitoring Autograph
 
 ```mermaid
 flowchart TB
-    subgraph ContentAI["CONTENTAI METRICS"]
+    subgraph Autograph["CONTENTAI METRICS"]
         Strapi["Strapi Metrics\n• requests/sec\n• error rate\n• latency"]
         AI["AI Service Metrics\n• tokens used\n• generation time\n• provider (Claude/OpenAI)"]
         Search["Search Metrics\n• query latency\n• index size"]
@@ -292,7 +292,7 @@ flowchart TB
 
     subgraph Visualization["VISUALIZATION"]
         Graf["Grafana"]
-        Dash1["ContentAI Dashboard"]
+        Dash1["Autograph Dashboard"]
         Dash2["Infrastructure Dashboard"]
         Dash3["Cost Tracking Dashboard"]
     end
@@ -302,8 +302,8 @@ flowchart TB
         Slack["Slack"]
     end
 
-    ContentAI --> Prom
-    ContentAI --> Loki
+    Autograph --> Prom
+    Autograph --> Loki
     Prom --> Graf
     Loki --> Graf
     Graf --> Dash1 & Dash2 & Dash3
@@ -312,7 +312,7 @@ flowchart TB
     style Dash1 fill:#4CAF50
 ```
 
-### ContentAI-Specific Alerts
+### Autograph-Specific Alerts
 
 | Alert | Condition | Severity | Action |
 |-------|-----------|----------|--------|
@@ -341,7 +341,7 @@ flowchart TB
             ING["NGINX Ingress\n• TLS termination\n• Auth headers"]
         end
 
-        subgraph ContentAI["CONTENTAI NAMESPACE"]
+        subgraph Autograph["CONTENTAI NAMESPACE"]
             subgraph NetPol["Network Policies"]
                 NP1["Default: Deny All"]
                 NP2["Allow: Strapi ↔ PostgreSQL"]
@@ -362,7 +362,7 @@ flowchart TB
 
         subgraph RBAC["RBAC"]
             R1["admin: Full access"]
-            R2["developer: contentai namespace"]
+            R2["developer: autograph namespace"]
             R3["ci-bot: Deploy only"]
         end
     end
@@ -370,7 +370,7 @@ flowchart TB
     User --> CF --> ING --> Strapi
     Strapi --> AI --> Keys
     Strapi --> PG --> Keys
-    NetPol --> ContentAI
+    NetPol --> Autograph
     RBAC --> Cluster
 
     style Strapi fill:#4CAF50
@@ -385,7 +385,7 @@ flowchart TB
 ```mermaid
 flowchart LR
     subgraph Primary["PRIMARY (FSN1)"]
-        subgraph ContentAI["ContentAI"]
+        subgraph Autograph["Autograph"]
             Strapi["Strapi"]
             PG["PostgreSQL"]
             Media["Media Files"]
@@ -406,7 +406,7 @@ flowchart LR
     LH1 -->|"Hourly snapshots"| S3
     S3 -->|"Restore"| Restore
 
-    style ContentAI fill:#4CAF50
+    style Autograph fill:#4CAF50
 ```
 
 ### Recovery Time Objectives
@@ -417,13 +417,13 @@ flowchart LR
 | **Media Files** | 1 hour | 30 minutes |
 | **Redis Cache** | Acceptable loss | 5 minutes |
 | **Search Index** | Rebuilds from DB | 15 minutes |
-| **Full ContentAI** | 5 minutes | 30 minutes |
+| **Full Autograph** | 5 minutes | 30 minutes |
 
 ---
 
 ## Scaling Architecture
 
-### Auto-Scaling ContentAI
+### Auto-Scaling Autograph
 
 ```mermaid
 flowchart TB
@@ -487,7 +487,7 @@ flowchart TB
 
 **Annual savings: ~$27,000** — That's 3 years of AI API costs!
 
-### ContentAI Operating Costs
+### Autograph Operating Costs
 
 | Cost Center | Monthly Budget | Notes |
 |-------------|----------------|-------|
@@ -518,20 +518,20 @@ flowchart TB
 
 ## Implementation Timeline
 
-| Week | Focus | ContentAI Milestone |
+| Week | Focus | Autograph Milestone |
 |------|-------|---------------------|
 | **Week 1** | Infrastructure | VMs provisioned, hardened |
-| **Week 2** | **ContentAI** | **Strapi + AI live!** |
-| **Week 3** | Automation | GitOps deploys ContentAI |
+| **Week 2** | **Autograph** | **Strapi + AI live!** |
+| **Week 3** | Automation | GitOps deploys Autograph |
 | **Week 4** | Production | Secured, monitored, documented |
 
 ---
 
 ## Related
 
-- [Product Vision](./01-Vision.md) — Why we're building ContentAI
+- [Product Vision](./01-Vision.md) — Why we're building Autograph
 - [Market Context](./02-Market-Context.md) — The opportunity
-- [Capabilities](./03-Capabilities.md) — What ContentAI does
+- [Capabilities](./03-Capabilities.md) — What Autograph does
 - [Architecture Overview](../02-Engineering/01-Architecture.md) — Deep dive
 
 ---

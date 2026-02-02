@@ -1,11 +1,11 @@
-# ContentAI Architecture
+# Autograph Architecture
 
 > *"The best architectures are those that allow you to defer decisions about details."*
 > — **Clean Architecture** (Robert C. Martin)
 
 ## Product-First Architecture
 
-ContentAI is an AI-powered content platform. The architecture serves one purpose: **enable users to create, manage, and distribute content faster with AI.**
+Autograph is an AI-powered content platform. The architecture serves one purpose: **enable users to create, manage, and distribute content faster with AI.**
 
 ---
 
@@ -59,7 +59,7 @@ flowchart TB
 
 ---
 
-## Product Layer: The Heart of ContentAI
+## Product Layer: The Heart of Autograph
 
 ### Content Flow
 
@@ -109,7 +109,7 @@ sequenceDiagram
 > *"Treat servers like cattle, not pets."*
 > — **Infrastructure as Code** (Kief Morris)
 
-The foundation that runs ContentAI:
+The foundation that runs Autograph:
 
 ```mermaid
 flowchart TB
@@ -124,9 +124,9 @@ flowchart TB
             end
 
             subgraph Agents["Workers"]
-                A1["Agent 1<br/>ContentAI workloads"]
-                A2["Agent 2<br/>ContentAI workloads"]
-                A3["Agent 3<br/>ContentAI workloads"]
+                A1["Agent 1<br/>Autograph workloads"]
+                A2["Agent 2<br/>Autograph workloads"]
+                A3["Agent 3<br/>Autograph workloads"]
             end
         end
 
@@ -166,7 +166,7 @@ infra/
 
 ### Layer 2: Container Orchestration (k3s)
 
-ContentAI runs on Kubernetes for:
+Autograph runs on Kubernetes for:
 - **High Availability**: Survives node failures
 - **Auto-scaling**: Handles traffic spikes
 - **Rolling Updates**: Zero-downtime deployments
@@ -177,7 +177,7 @@ ContentAI runs on Kubernetes for:
 | Node Type | Count | Purpose |
 |-----------|-------|---------|
 | **Servers** | 3 | Control plane, etcd, API server |
-| **Agents** | 3 | ContentAI workloads |
+| **Agents** | 3 | Autograph workloads |
 | **Total** | 6 | HA cluster |
 
 **Why k3s over full Kubernetes:**
@@ -192,7 +192,7 @@ ContentAI runs on Kubernetes for:
 
 ### Layer 3: Application Platform
 
-Platform services that ContentAI needs:
+Platform services that Autograph needs:
 
 ```mermaid
 flowchart TB
@@ -202,7 +202,7 @@ flowchart TB
     end
 
     subgraph DNS["DNS & ROUTING"]
-        D1["contentai.domain.com → Strapi"]
+        D1["autograph.domain.com → Strapi"]
         D2["api.domain.com → Strapi API"]
         D3["ai.domain.com → AI Service"]
     end
@@ -228,7 +228,7 @@ flowchart TB
 
 ### Layer 4: Delivery Pipeline (GitOps)
 
-How ContentAI gets deployed:
+How Autograph gets deployed:
 
 ```mermaid
 sequenceDiagram
@@ -250,30 +250,30 @@ sequenceDiagram
     end
 
     Argo->>Git: Detect change
-    Argo->>K8s: Deploy ContentAI
-    K8s-->>Dev: ContentAI updated!
+    Argo->>K8s: Deploy Autograph
+    K8s-->>Dev: Autograph updated!
 
     Note over Git,K8s: Git is the single source of truth
 ```
 
-**ArgoCD manages ContentAI:**
+**ArgoCD manages Autograph:**
 
 ```yaml
-# argocd/applications/contentai.yaml
+# argocd/applications/autograph.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: contentai
+  name: autograph
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://github.com/org/contentai-infra
+    repoURL: https://github.com/org/autograph-infra
     targetRevision: main
-    path: k8s/overlays/prod/contentai
+    path: k8s/overlays/prod/autograph
   destination:
     server: https://kubernetes.default.svc
-    namespace: contentai
+    namespace: autograph
   syncPolicy:
     automated:
       prune: true
@@ -282,7 +282,7 @@ spec:
 
 ### Layer 0: Observability (Cross-Cutting)
 
-See everything happening in ContentAI:
+See everything happening in Autograph:
 
 ```mermaid
 flowchart LR
@@ -310,7 +310,7 @@ flowchart LR
     Store --> Alert --> Slack
 ```
 
-**ContentAI-Specific Metrics:**
+**Autograph-Specific Metrics:**
 
 | Metric | Purpose | Alert Threshold |
 |--------|---------|-----------------|
@@ -321,12 +321,12 @@ flowchart LR
 
 ---
 
-## ContentAI Namespace Layout
+## Autograph Namespace Layout
 
 ```yaml
-# How ContentAI is organized in Kubernetes
+# How Autograph is organized in Kubernetes
 
-contentai/
+autograph/
 ├── strapi/
 │   ├── deployment.yaml        # 2 replicas
 │   ├── service.yaml           # ClusterIP
@@ -370,14 +370,14 @@ flowchart LR
 - 6 VMs provisioned and hardened
 - Ready for k3s installation
 
-### Week 2: ContentAI Core
+### Week 2: Autograph Core
 
 ```mermaid
 flowchart LR
     T5["k3s Cluster"] --> T6["Platform Services"]
     T6 --> T7["Strapi Deployment"]
     T7 --> T8["AI Integration"]
-    T8 --> T9["ContentAI LIVE!"]
+    T8 --> T9["Autograph LIVE!"]
 
     style T9 fill:#4CAF50
 ```
@@ -399,7 +399,7 @@ flowchart LR
 
 **Deliverables:**
 - GitOps automation
-- ContentAI dashboards
+- Autograph dashboards
 - Alerting for product metrics
 
 ### Week 4: Production Ready
@@ -414,7 +414,7 @@ flowchart LR
 **Deliverables:**
 - Network policies, RBAC
 - Backup and recovery tested
-- ContentAI ready for real users
+- Autograph ready for real users
 
 ---
 
@@ -458,7 +458,7 @@ flowchart TB
 
         subgraph RBAC["RBAC"]
             R1["Admin: Full access"]
-            R2["Developer: contentai namespace"]
+            R2["Developer: autograph namespace"]
             R3["CI: Deploy only"]
         end
 

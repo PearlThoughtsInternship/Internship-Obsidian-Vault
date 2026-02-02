@@ -1,4 +1,4 @@
-# Market Context: Why ContentAI Now
+# Market Context: Why Autograph Now
 
 > *"The biggest risk is not taking any risk. In a world that's changing really quickly, the only strategy that is guaranteed to fail is not taking risks."*
 > — **Mark Zuckerberg**
@@ -33,16 +33,16 @@ timeline
         AI Creates : Claude, GPT generate drafts
                    : Humans review and edit
                    : 10x content velocity
-                   : ContentAI moment is NOW
+                   : Autograph moment is NOW
 ```
 
 ---
 
-## The Problem ContentAI Solves
+## The Problem Autograph Solves
 
 ### For Content Creators
 
-| Pain Point | Current State | ContentAI Solution |
+| Pain Point | Current State | Autograph Solution |
 |------------|---------------|-------------------|
 | **Speed** | 4-8 hours per blog post | 30 minutes with AI draft |
 | **Cost** | $100-500 per piece | $5-10 in API costs |
@@ -52,7 +52,7 @@ timeline
 
 ### For Businesses
 
-| Challenge | Traditional CMS | ContentAI |
+| Challenge | Traditional CMS | Autograph |
 |-----------|----------------|-----------|
 | **Time to publish** | Hours (reviews, formatting) | Minutes (AI + workflow) |
 | **Multi-channel** | Manual copying | API-first distribution |
@@ -75,13 +75,13 @@ flowchart TB
         G["No integrated platform that is:<br/>✅ AI-native<br/>✅ Developer-friendly (API-first)<br/>✅ Cost-effective<br/>✅ Self-hostable"]
     end
 
-    subgraph ContentAI["ContentAI"]
+    subgraph Autograph["Autograph"]
         CA["Strapi + Claude + Platform<br/>Best of all worlds"]
     end
 
-    Current --> Gap --> ContentAI
+    Current --> Gap --> Autograph
 
-    style ContentAI fill:#4CAF50
+    style Autograph fill:#4CAF50
 ```
 
 ---
@@ -96,7 +96,7 @@ flowchart TB
 | **Contentful** | Basic AI | ❌ | $$$$ | ⭐⭐⭐⭐ |
 | **Sanity** | Sanity AI | ❌ | $$$ | ⭐⭐⭐⭐⭐ |
 | **Strapi** | None built-in | ✅ | Free + hosting | ⭐⭐⭐⭐ |
-| **ContentAI** | Native Claude/GPT | ✅ | $ (self-hosted) | ⭐⭐⭐⭐⭐ |
+| **Autograph** | Native Claude/GPT | ✅ | $ (self-hosted) | ⭐⭐⭐⭐⭐ |
 
 ### AI Writing Tools
 
@@ -106,7 +106,7 @@ flowchart TB
 | **Copy.ai** | None | ✅ | ❌ | ❌ |
 | **Writesonic** | None | ✅ | ❌ | ❌ |
 | **Claude API** | None (raw API) | ✅ | ❌ | ❌ |
-| **ContentAI** | Native (Strapi) | ✅ | ✅ | ✅ |
+| **Autograph** | Native (Strapi) | ✅ | ✅ | ✅ |
 
 ### Our Position
 
@@ -115,7 +115,7 @@ quadrantChart
     title Content Platforms Positioning
     x-axis Low AI Capability --> High AI Capability
     y-axis Expensive/Complex --> Cost-effective/Simple
-    quadrant-1 "ContentAI Target"
+    quadrant-1 "Autograph Target"
     quadrant-2 "Overpowered"
     quadrant-3 "Legacy"
     quadrant-4 "AI-only"
@@ -124,7 +124,7 @@ quadrantChart
     Jasper: [0.8, 0.3]
     Copy.ai: [0.7, 0.5]
     Strapi: [0.1, 0.7]
-    ContentAI: [0.85, 0.8]
+    Autograph: [0.85, 0.8]
 ```
 
 ---
@@ -133,7 +133,7 @@ quadrantChart
 
 ### Why Self-Hosted Matters
 
-| Factor | SaaS Platforms | ContentAI (Self-Hosted) |
+| Factor | SaaS Platforms | Autograph (Self-Hosted) |
 |--------|---------------|-------------------------|
 | **Monthly Cost** | $500-5,000 | $100-300 |
 | **Data Sovereignty** | Their servers | Your servers |
@@ -164,7 +164,7 @@ This savings funds your AI API costs for 3+ years!
 
 ```mermaid
 mindmap
-  root((ContentAI<br/>Customers))
+  root((Autograph<br/>Customers))
     Startups
       Fast-moving content teams
       Limited budget
@@ -186,7 +186,7 @@ mindmap
 
 ### Customer Value Proposition
 
-| Segment | Pain Point | ContentAI Value | ROI |
+| Segment | Pain Point | Autograph Value | ROI |
 |---------|------------|-----------------|-----|
 | **Startups** | Content is expensive | AI cuts costs 90% | Immediate |
 | **Agencies** | Managing multiple clients | Multi-tenant, API-first | 50% efficiency |
@@ -210,7 +210,7 @@ mindmap
 
 ```mermaid
 xychart-beta
-    title "ContentAI Customer Lifetime Value"
+    title "Autograph Customer Lifetime Value"
     x-axis ["Month 1", "Month 6", "Month 12", "Month 24"]
     y-axis "Cumulative Value ($)" 0 --> 5000
     bar [100, 600, 1200, 2400]
@@ -251,7 +251,7 @@ xychart-beta
 
 ### Skills You're Building
 
-| Skill | Market Demand | ContentAI Experience |
+| Skill | Market Demand | Autograph Experience |
 |-------|---------------|---------------------|
 | **AI Integration** | Exploding | Real API implementation |
 | **Platform Engineering** | Hot | Production deployment |
@@ -268,7 +268,7 @@ flowchart LR
         O3["Set up CI/CD"]
     end
 
-    subgraph You["ContentAI Intern"]
+    subgraph You["Autograph Intern"]
         Y1["Built AI product"]
         Y2["Integrated Claude API"]
         Y3["Production platform"]
@@ -285,7 +285,7 @@ flowchart LR
 
 ## Related
 
-- [Product Vision](./01-Vision.md) — What ContentAI is
+- [Product Vision](./01-Vision.md) — What Autograph is
 - [Platform Capabilities](./03-Capabilities.md) — Technical features
 - [Target Architecture](./04-Target-Architecture.md) — Full system design
 

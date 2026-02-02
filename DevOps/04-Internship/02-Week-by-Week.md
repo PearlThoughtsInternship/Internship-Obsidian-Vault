@@ -1,11 +1,11 @@
-# Week-by-Week: Building ContentAI
+# Week-by-Week: Building Autograph
 
 > *"The best startups seem to start from scratch. The founders just decided what they wanted to build, then built it."*
 > — **Paul Graham**, Y Combinator
 
 ## Your Mission (4 Weeks)
 
-> *Build ContentAI—an AI-powered content platform—from infrastructure to production.*
+> *Build Autograph—an AI-powered content platform—from infrastructure to production.*
 
 ---
 
@@ -25,7 +25,7 @@ flowchart TB
         W2A["Deploy k3s cluster"]
         W2B["Launch Strapi CMS"]
         W2C["Integrate AI services"]
-        W2D["ContentAI goes live!"]
+        W2D["Autograph goes live!"]
     end
 
     subgraph W3["WEEK 3: SCALE"]
@@ -51,7 +51,7 @@ flowchart TB
 
 ## Week 1: Foundation Phase
 
-### Goal: Cloud Infrastructure for ContentAI
+### Goal: Cloud Infrastructure for Autograph
 
 Before you can build the product, you need infrastructure. This week you lay the foundation.
 
@@ -61,7 +61,7 @@ Before you can build the product, you need infrastructure. This week you lay the
 |------|-------------|------|
 | Set up Hetzner account | API token generated | 1h |
 | Install local tools | OpenTofu, Ansible, kubectl | 2h |
-| Create `contentai-infra` repo | Repository with structure | 1h |
+| Create `autograph-infra` repo | Repository with structure | 1h |
 | First VM via OpenTofu | Single VM accessible | 4h |
 
 ### Day 3-4: Infrastructure-as-Code
@@ -70,7 +70,7 @@ Before you can build the product, you need infrastructure. This week you lay the
 |------|-------------|------|
 | VM module | Reusable `hetzner-server` | 4h |
 | Network setup | Private network for cluster | 2h |
-| Load balancer | LB for ContentAI traffic | 2h |
+| Load balancer | LB for Autograph traffic | 2h |
 | State management | Remote state in S3 | 2h |
 
 ### Day 5: Server Configuration
@@ -94,7 +94,7 @@ flowchart LR
         C6["✓ Can destroy & recreate in < 10 min"]
     end
 
-    Outcome["📦 Outcome:\nContentAI has infrastructure"]
+    Outcome["📦 Outcome:\nAutograph has infrastructure"]
 
     Success --> Outcome
 ```
@@ -103,7 +103,7 @@ flowchart LR
 
 ## Week 2: Product Phase
 
-### Goal: ContentAI Running on Kubernetes
+### Goal: Autograph Running on Kubernetes
 
 This is the heart of the internship—**launching the actual product**.
 
@@ -124,7 +124,7 @@ This is the heart of the internship—**launching the actual product**.
 | cert-manager | Let's Encrypt TLS | 3h |
 | Longhorn storage | Distributed block storage | 3h |
 
-### Day 4: ContentAI Deployment (The Product!)
+### Day 4: Autograph Deployment (The Product!)
 
 | Task | Deliverable | Time |
 |------|-------------|------|
@@ -140,23 +140,23 @@ This is the heart of the internship—**launching the actual product**.
 | **AI service deployment** | Content generation service | 3h |
 | **Claude/OpenAI integration** | API key configuration | 2h |
 | **Test AI generation** | End-to-end content creation | 2h |
-| **HTTPS endpoint** | ContentAI accessible | 1h |
+| **HTTPS endpoint** | Autograph accessible | 1h |
 
 ### Week 2 Checkpoint
 
 ```mermaid
 flowchart LR
-    subgraph Success["Week 2: ContentAI Live!"]
+    subgraph Success["Week 2: Autograph Live!"]
         C1["✓ k3s cluster operational"]
         C2["✓ Strapi CMS running"]
         C3["✓ PostgreSQL storing data"]
         C4["✓ AI content generation works"]
         C5["✓ Search returns results"]
-        C6["✓ HTTPS at contentai.domain.com"]
+        C6["✓ HTTPS at autograph.domain.com"]
         C7["✓ Survives node failure"]
     end
 
-    Outcome["🚀 Outcome:\nContentAI is LIVE"]
+    Outcome["🚀 Outcome:\nAutograph is LIVE"]
 
     Success --> Outcome
 
@@ -169,14 +169,14 @@ flowchart LR
 
 ### Goal: GitOps, CI/CD, and Observability
 
-Manual deployments don't scale. This week you automate everything so ContentAI can iterate fast.
+Manual deployments don't scale. This week you automate everything so Autograph can iterate fast.
 
 ### Day 1-2: GitOps
 
 | Task | Deliverable | Time |
 |------|-------------|------|
 | ArgoCD installation | GitOps operator running | 3h |
-| ContentAI app | GitOps-managed Strapi | 2h |
+| Autograph app | GitOps-managed Strapi | 2h |
 | App of Apps | All components managed | 3h |
 | Sync policies | Auto-sync, self-heal | 2h |
 
@@ -193,15 +193,15 @@ Manual deployments don't scale. This week you automate everything so ContentAI c
 | Task | Deliverable | Time |
 |------|-------------|------|
 | Prometheus | Metrics collection | 3h |
-| Grafana dashboards | ContentAI-specific metrics | 3h |
+| Grafana dashboards | Autograph-specific metrics | 3h |
 | Loki | Log aggregation | 2h |
 
-### Day 5: Alerting & ContentAI Metrics
+### Day 5: Alerting & Autograph Metrics
 
 | Task | Deliverable | Time |
 |------|-------------|------|
 | AlertManager | Critical alerts to Slack | 2h |
-| ContentAI dashboard | Product metrics (AI costs, content created) | 3h |
+| Autograph dashboard | Product metrics (AI costs, content created) | 3h |
 | Alert rules | API errors, AI failures, DB issues | 3h |
 
 ### Week 3 Checkpoint
@@ -209,7 +209,7 @@ Manual deployments don't scale. This week you automate everything so ContentAI c
 ```mermaid
 flowchart LR
     subgraph Success["Week 3: Automated"]
-        C1["✓ ArgoCD manages ContentAI"]
+        C1["✓ ArgoCD manages Autograph"]
         C2["✓ Git push triggers deploy"]
         C3["✓ Prometheus collecting metrics"]
         C4["✓ Grafana shows AI generation costs"]
@@ -217,7 +217,7 @@ flowchart LR
         C6["✓ Alerts fire to Slack"]
     end
 
-    Outcome["📦 Outcome:\nContentAI deploys itself"]
+    Outcome["📦 Outcome:\nAutograph deploys itself"]
 
     Success --> Outcome
 ```
@@ -244,14 +244,14 @@ A startup isn't ready to launch until it's secure, recoverable, and documented.
 | Task | Deliverable | Time |
 |------|-------------|------|
 | Backup verification | Longhorn + PostgreSQL backups | 2h |
-| Cluster restore test | Full ContentAI recovery | 4h |
+| Cluster restore test | Full Autograph recovery | 4h |
 | Runbook creation | Step-by-step recovery | 2h |
 
 ### Day 4: Documentation
 
 | Task | Deliverable | Time |
 |------|-------------|------|
-| Product documentation | ContentAI user guide, API docs | 3h |
+| Product documentation | Autograph user guide, API docs | 3h |
 | Architecture docs | System design, data flow | 3h |
 | Operational runbooks | Incident response | 2h |
 
@@ -260,7 +260,7 @@ A startup isn't ready to launch until it's secure, recoverable, and documented.
 | Task | Deliverable | Time |
 |------|-------------|------|
 | Demo preparation | Walkthrough script | 2h |
-| Demo recording | 15-min video of ContentAI | 3h |
+| Demo recording | 15-min video of Autograph | 3h |
 | Retrospective | Lessons learned | 2h |
 | Next steps | What would you build next? | 1h |
 
@@ -277,7 +277,7 @@ flowchart LR
         C6["✓ Demo video ready"]
     end
 
-    Outcome["🎉 Outcome:\nContentAI ready for users"]
+    Outcome["🎉 Outcome:\nAutograph ready for users"]
 
     Success --> Outcome
 
@@ -332,7 +332,7 @@ gantt
 
 ### Outstanding
 
-- [ ] **Full ContentAI product with all features**
+- [ ] **Full Autograph product with all features**
 - [ ] Multi-environment (dev/staging/prod)
 - [ ] **AI cost tracking dashboard**
 - [ ] Disaster recovery tested
@@ -353,7 +353,7 @@ Throughout these 4 weeks, think like a founder:
 | **Week 1** | "I'm learning Terraform" | "I'm building the foundation for my product" |
 | **Week 2** | "I'm deploying Kubernetes" | "My product is going live!" |
 | **Week 3** | "I'm setting up CI/CD" | "I'm enabling my team to ship 50x/day" |
-| **Week 4** | "I'm documenting" | "I'm making ContentAI ready for real users" |
+| **Week 4** | "I'm documenting" | "I'm making Autograph ready for real users" |
 
 ---
 

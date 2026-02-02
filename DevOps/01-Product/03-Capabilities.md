@@ -1,11 +1,11 @@
-# ContentAI Capabilities
+# Autograph Capabilities
 
 > *"Make something people want."*
 > — **Paul Graham**, Y Combinator
 
-## What ContentAI Does for Users
+## What Autograph Does for Users
 
-ContentAI solves one problem: **Creating quality content is slow and expensive.**
+Autograph solves one problem: **Creating quality content is slow and expensive.**
 
 ```mermaid
 flowchart TB
@@ -36,7 +36,7 @@ flowchart TB
 
 ### Capability 1: AI Content Generation
 
-**The core feature that makes ContentAI valuable.**
+**The core feature that makes Autograph valuable.**
 
 ```mermaid
 sequenceDiagram
@@ -149,7 +149,7 @@ flowchart LR
 
 ### Capability 4: Performance & Caching
 
-**Redis ensures ContentAI responds fast.**
+**Redis ensures Autograph responds fast.**
 
 ```mermaid
 flowchart TB
@@ -187,9 +187,9 @@ flowchart TB
 
 ---
 
-## Platform Capabilities (What Makes ContentAI Run)
+## Platform Capabilities (What Makes Autograph Run)
 
-The platform exists to serve ContentAI. Here's what it provides:
+The platform exists to serve Autograph. Here's what it provides:
 
 ### Deployment Pipeline
 
@@ -202,22 +202,22 @@ sequenceDiagram
     participant Argo as ArgoCD
     participant K8s as k3s Cluster
 
-    Dev->>Git: Push ContentAI code
+    Dev->>Git: Push Autograph code
     Git->>CI: Trigger workflow
     CI->>CI: Build & Test
     CI->>Reg: Push image
     CI->>Git: Update manifests
 
     Argo->>Git: Detect change
-    Argo->>K8s: Deploy ContentAI
-    K8s-->>Dev: ContentAI updated!
+    Argo->>K8s: Deploy Autograph
+    K8s-->>Dev: Autograph updated!
 
     Note over Dev,K8s: Push → Production: ~5 minutes
 ```
 
 ### Auto-Scaling
 
-ContentAI scales automatically based on demand:
+Autograph scales automatically based on demand:
 
 | Trigger | Action | Result |
 |---------|--------|--------|
@@ -228,7 +228,7 @@ ContentAI scales automatically based on demand:
 
 ### High Availability
 
-ContentAI never goes down (almost):
+Autograph never goes down (almost):
 
 ```mermaid
 flowchart TB
@@ -286,7 +286,7 @@ flowchart TB
 
 ---
 
-## ContentAI Dashboard Metrics
+## Autograph Dashboard Metrics
 
 What you'll see in Grafana:
 
@@ -351,7 +351,7 @@ flowchart TB
         CF["CloudFlare\n• WAF\n• DDoS\n• Rate Limiting"]
     end
 
-    subgraph ContentAI["ContentAI Cluster"]
+    subgraph Autograph["Autograph Cluster"]
         TLS["TLS Termination"]
         Auth["Authentication\n(JWT)"]
 
@@ -392,7 +392,7 @@ What content creators can do without help:
 
 ## Related
 
-- [Product Vision](./01-Vision.md) — Why we're building ContentAI
+- [Product Vision](./01-Vision.md) — Why we're building Autograph
 - [Market Context](./02-Market-Context.md) — The opportunity
 - [Target Architecture](./04-Target-Architecture.md) — Full system design
 - [Architecture Overview](../02-Engineering/01-Architecture.md) — Technical details

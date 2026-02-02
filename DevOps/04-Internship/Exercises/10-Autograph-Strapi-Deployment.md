@@ -1,11 +1,11 @@
-# Exercise 10: ContentAI — Strapi CMS Deployment
+# Exercise 10: Autograph — Strapi CMS Deployment
 
 > *"The best startups seem to start from scratch. The founders just decided what they wanted to build, then built it."*
 > — **Paul Graham**, Y Combinator
 
 ## Objective
 
-Deploy Strapi CMS—the core of ContentAI—on your Kubernetes cluster with PostgreSQL and Redis.
+Deploy Strapi CMS—the core of Autograph—on your Kubernetes cluster with PostgreSQL and Redis.
 
 **This is where your product comes to life.**
 
@@ -27,7 +27,7 @@ By the end of this exercise, you will:
 - Configure persistent storage for content
 - Set up PostgreSQL with high availability
 - Implement Redis caching for performance
-- Understand how ContentAI serves users
+- Understand how Autograph serves users
 
 ---
 
@@ -44,7 +44,7 @@ Strapi needs a database. PostgreSQL is:
 ### Create the Namespace
 
 ```bash
-kubectl create namespace contentai
+kubectl create namespace autograph
 ```
 
 ### PostgreSQL Deployment with StatefulSet
@@ -55,7 +55,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgresql
-  namespace: contentai
+  namespace: autograph
 spec:
   serviceName: postgresql
   replicas: 1
@@ -133,7 +133,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgresql
-  namespace: contentai
+  namespace: autograph
 spec:
   type: ClusterIP
   ports:
@@ -148,7 +148,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgresql-headless
-  namespace: contentai
+  namespace: autograph
 spec:
   type: ClusterIP
   clusterIP: None
@@ -167,7 +167,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: postgresql-secret
-  namespace: contentai
+  namespace: autograph
 type: Opaque
 stringData:
   username: strapi
@@ -185,14 +185,14 @@ kubectl apply -f postgresql/service.yaml
 kubectl apply -f postgresql/statefulset.yaml
 
 # Wait for PostgreSQL to be ready
-kubectl wait --for=condition=ready pod/postgresql-0 -n contentai --timeout=120s
+kubectl wait --for=condition=ready pod/postgresql-0 -n autograph --timeout=120s
 ```
 
 ### Verify Database
 
 ```bash
 # Connect to PostgreSQL pod
-kubectl exec -it postgresql-0 -n contentai -- psql -U strapi -d strapi
+kubectl exec -it postgresql-0 -n autograph -- psql -U strapi -d strapi
 
 # In psql, verify connection
 \conninfo
@@ -206,7 +206,7 @@ kubectl exec -it postgresql-0 -n contentai -- psql -U strapi -d strapi
 
 ### Why Redis?
 
-ContentAI needs fast responses:
+Autograph needs fast responses:
 - Cache API responses (< 10ms)
 - Session storage for admin users
 - Rate limiting for AI API calls
@@ -219,7 +219,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis
-  namespace: contentai
+  namespace: autograph
 spec:
   replicas: 1
   selector:
@@ -277,7 +277,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: redis-data
-  namespace: contentai
+  namespace: autograph
 spec:
   accessModes:
     - ReadWriteOnce
@@ -295,7 +295,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis
-  namespace: contentai
+  namespace: autograph
 spec:
   type: ClusterIP
   ports:
@@ -310,14 +310,14 @@ spec:
 
 ```bash
 kubectl apply -f redis/
-kubectl wait --for=condition=ready pod -l app=redis -n contentai --timeout=60s
+kubectl wait --for=condition=ready pod -l app=redis -n autograph --timeout=60s
 ```
 
 ---
 
 ## Part 3: Strapi CMS
 
-### The Heart of ContentAI
+### The Heart of Autograph
 
 Strapi is your headless CMS:
 - Admin panel for content creators
@@ -333,7 +333,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: strapi-config
-  namespace: contentai
+  namespace: autograph
 data:
   # Database configuration
   DATABASE_CLIENT: postgres
@@ -352,7 +352,7 @@ data:
   NODE_ENV: production
 
   # App configuration
-  APP_NAME: ContentAI
+  APP_NAME: Autograph
   ADMIN_PATH: /admin
 ```
 
@@ -364,7 +364,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: strapi-secret
-  namespace: contentai
+  namespace: autograph
 type: Opaque
 stringData:
   # Database credentials
@@ -387,10 +387,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: strapi
-  namespace: contentai
+  namespace: autograph
   labels:
     app: strapi
-    product: contentai
+    product: autograph
 spec:
   replicas: 2
   strategy:
@@ -405,7 +405,7 @@ spec:
     metadata:
       labels:
         app: strapi
-        product: contentai
+        product: autograph
     spec:
       initContainers:
         # Wait for PostgreSQL to be ready
@@ -464,7 +464,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: strapi-uploads
-  namespace: contentai
+  namespace: autograph
 spec:
   accessModes:
     - ReadWriteMany  # Needed for multiple replicas
@@ -482,10 +482,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: strapi
-  namespace: contentai
+  namespace: autograph
   labels:
     app: strapi
-    product: contentai
+    product: autograph
 spec:
   type: ClusterIP
   ports:
@@ -504,7 +504,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: strapi
-  namespace: contentai
+  namespace: autograph
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/proxy-body-size: "50m"  # For file uploads
@@ -513,10 +513,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - contentai.yourdomain.com
+        - autograph.yourdomain.com
       secretName: strapi-tls
   rules:
-    - host: contentai.yourdomain.com
+    - host: autograph.yourdomain.com
       http:
         paths:
           - path: /
@@ -534,10 +534,10 @@ spec:
 kubectl apply -f strapi/
 
 # Watch deployment
-kubectl get pods -n contentai -w
+kubectl get pods -n autograph -w
 
 # Wait for readiness
-kubectl wait --for=condition=ready pod -l app=strapi -n contentai --timeout=180s
+kubectl wait --for=condition=ready pod -l app=strapi -n autograph --timeout=180s
 ```
 
 ---
@@ -552,7 +552,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: strapi
-  namespace: contentai
+  namespace: autograph
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -583,31 +583,31 @@ spec:
 
 ```bash
 # All pods running?
-kubectl get pods -n contentai
+kubectl get pods -n autograph
 
 # All services accessible?
-kubectl get svc -n contentai
+kubectl get svc -n autograph
 
 # Ingress configured?
-kubectl get ingress -n contentai
+kubectl get ingress -n autograph
 
 # TLS certificate issued?
-kubectl get certificate -n contentai
+kubectl get certificate -n autograph
 ```
 
 ### Test Strapi
 
 ```bash
 # Health check
-curl -s https://contentai.yourdomain.com/_health | jq .
+curl -s https://autograph.yourdomain.com/_health | jq .
 
 # Admin panel
-echo "Open: https://contentai.yourdomain.com/admin"
+echo "Open: https://autograph.yourdomain.com/admin"
 ```
 
 ### Create First Admin User
 
-1. Navigate to `https://contentai.yourdomain.com/admin`
+1. Navigate to `https://autograph.yourdomain.com/admin`
 2. Create admin account
 3. Explore the admin panel
 4. Create a test content type
@@ -628,7 +628,7 @@ flowchart TB
             TLS["TLS Certificate"]
         end
 
-        subgraph ContentAI["ContentAI Namespace"]
+        subgraph Autograph["Autograph Namespace"]
             subgraph App["Application"]
                 S1["Strapi Pod 1"]
                 S2["Strapi Pod 2"]
@@ -663,10 +663,10 @@ flowchart TB
 
 | Criteria | Check |
 |----------|-------|
-| PostgreSQL running with persistent storage | `kubectl get pvc -n contentai` |
-| Redis caching operational | `kubectl exec -n contentai deploy/redis -- redis-cli ping` |
-| Strapi pods healthy (2 replicas) | `kubectl get pods -n contentai -l app=strapi` |
-| HTTPS endpoint working | `curl -I https://contentai.yourdomain.com` |
+| PostgreSQL running with persistent storage | `kubectl get pvc -n autograph` |
+| Redis caching operational | `kubectl exec -n autograph deploy/redis -- redis-cli ping` |
+| Strapi pods healthy (2 replicas) | `kubectl get pods -n autograph -l app=strapi` |
+| HTTPS endpoint working | `curl -I https://autograph.yourdomain.com` |
 | Admin panel accessible | Browser test |
 | Can create content types | Create a "BlogPost" type |
 
@@ -674,7 +674,7 @@ flowchart TB
 
 ## What You've Built
 
-Congratulations! You've deployed the core of ContentAI:
+Congratulations! You've deployed the core of Autograph:
 
 | Component | Purpose | Status |
 |-----------|---------|--------|
@@ -684,13 +684,13 @@ Congratulations! You've deployed the core of ContentAI:
 | **Ingress + TLS** | Secure access | ✅ Configured |
 | **HPA** | Auto-scaling | ✅ Ready |
 
-**ContentAI is live!** 🚀
+**Autograph is live!** 🚀
 
 ---
 
 ## Next Steps
 
-- [[11-ContentAI-AI-Service-Integration]] — Add AI content generation
+- [[11-Autograph-AI-Service-Integration]] — Add AI content generation
 - [[06-GitOps-ArgoCD]] — Manage with GitOps
 - [[07-Observability-Stack]] — Add monitoring
 
@@ -702,7 +702,7 @@ Congratulations! You've deployed the core of ContentAI:
 
 ```bash
 # Check logs
-kubectl logs -n contentai deploy/strapi
+kubectl logs -n autograph deploy/strapi
 
 # Common causes:
 # - Database connection failed (check PostgreSQL)
@@ -714,10 +714,10 @@ kubectl logs -n contentai deploy/strapi
 
 ```bash
 # Test PostgreSQL connectivity
-kubectl exec -n contentai deploy/strapi -- nc -zv postgresql 5432
+kubectl exec -n autograph deploy/strapi -- nc -zv postgresql 5432
 
 # Check PostgreSQL logs
-kubectl logs -n contentai postgresql-0
+kubectl logs -n autograph postgresql-0
 ```
 
 ### Ingress Not Working
@@ -727,14 +727,14 @@ kubectl logs -n contentai postgresql-0
 kubectl get pods -n ingress-nginx
 
 # Check ingress events
-kubectl describe ingress strapi -n contentai
+kubectl describe ingress strapi -n autograph
 ```
 
 ---
 
 ## Related
 
-- [Vision](../../01-Product/01-Vision.md) — Why we're building ContentAI
+- [Vision](../../01-Product/01-Vision.md) — Why we're building Autograph
 - [Architecture](../../02-Engineering/01-Architecture.md) — System design
 - [Week-by-Week](../02-Week-by-Week.md) — Where this fits
 

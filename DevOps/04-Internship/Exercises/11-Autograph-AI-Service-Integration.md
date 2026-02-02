@@ -1,13 +1,13 @@
-# Exercise 11: ContentAI — AI Service Integration
+# Exercise 11: Autograph — AI Service Integration
 
 > *"AI is not going to replace managers, but managers who use AI will replace managers who don't."*
 > — Adapted from business wisdom
 
 ## Objective
 
-Integrate AI content generation into ContentAI using Claude/OpenAI APIs, turning Strapi into a true AI-powered content platform.
+Integrate AI content generation into Autograph using Claude/OpenAI APIs, turning Strapi into a true AI-powered content platform.
 
-**This is what makes ContentAI special.**
+**This is what makes Autograph special.**
 
 ---
 
@@ -33,11 +33,11 @@ By the end of this exercise, you will:
 
 ## Part 1: AI Service Architecture
 
-### How ContentAI Uses AI
+### How Autograph Uses AI
 
 ```mermaid
 flowchart LR
-    subgraph ContentAI["ContentAI Platform"]
+    subgraph Autograph["Autograph Platform"]
         Strapi["Strapi CMS"]
         AI["AI Service"]
     end
@@ -81,7 +81,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: ai-service-secret
-  namespace: contentai
+  namespace: autograph
 type: Opaque
 stringData:
   # Claude API (Primary)
@@ -102,7 +102,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ai-service-config
-  namespace: contentai
+  namespace: autograph
 data:
   # Server config
   PORT: "3001"
@@ -137,10 +137,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ai-service
-  namespace: contentai
+  namespace: autograph
   labels:
     app: ai-service
-    product: contentai
+    product: autograph
 spec:
   replicas: 2
   selector:
@@ -150,7 +150,7 @@ spec:
     metadata:
       labels:
         app: ai-service
-        product: contentai
+        product: autograph
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "3001"
@@ -206,7 +206,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ai-service-code
-  namespace: contentai
+  namespace: autograph
 data:
   server.js: |
     const http = require('http');
@@ -486,7 +486,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ai-service
-  namespace: contentai
+  namespace: autograph
   labels:
     app: ai-service
 spec:
@@ -505,7 +505,7 @@ spec:
 kubectl apply -f ai-service/
 
 # Wait for deployment
-kubectl wait --for=condition=ready pod -l app=ai-service -n contentai --timeout=60s
+kubectl wait --for=condition=ready pod -l app=ai-service -n autograph --timeout=60s
 ```
 
 ---
@@ -516,14 +516,14 @@ kubectl wait --for=condition=ready pod -l app=ai-service -n contentai --timeout=
 
 ```bash
 # Get AI service pod name
-AI_POD=$(kubectl get pod -n contentai -l app=ai-service -o jsonpath='{.items[0].metadata.name}')
+AI_POD=$(kubectl get pod -n autograph -l app=ai-service -o jsonpath='{.items[0].metadata.name}')
 
 # Test health
-kubectl exec -n contentai $AI_POD -- curl -s http://localhost:3001/health | jq .
+kubectl exec -n autograph $AI_POD -- curl -s http://localhost:3001/health | jq .
 
 # Test generation (from within cluster)
 kubectl run test-curl --rm -it --restart=Never --image=curlimages/curl -- \
-  curl -X POST http://ai-service.contentai:3001/api/generate \
+  curl -X POST http://ai-service.autograph:3001/api/generate \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer your-internal-api-secret" \
   -d '{"prompt": "Write a paragraph about Kubernetes", "type": "blog"}'
@@ -532,7 +532,7 @@ kubectl run test-curl --rm -it --restart=Never --image=curlimages/curl -- \
 ### Test Metrics
 
 ```bash
-kubectl exec -n contentai $AI_POD -- curl -s http://localhost:3001/metrics
+kubectl exec -n autograph $AI_POD -- curl -s http://localhost:3001/metrics
 ```
 
 ---
@@ -601,7 +601,7 @@ metadata:
 data:
   ai-service.json: |
     {
-      "title": "ContentAI - AI Service",
+      "title": "Autograph - AI Service",
       "panels": [
         {
           "title": "Requests per Minute",
@@ -676,8 +676,8 @@ Monitor with: `ai_tokens_total` metric × cost per token
 
 | Criteria | Check |
 |----------|-------|
-| AI service running (2 replicas) | `kubectl get pods -n contentai -l app=ai-service` |
-| Health endpoint responding | `curl http://ai-service.contentai:3001/health` |
+| AI service running (2 replicas) | `kubectl get pods -n autograph -l app=ai-service` |
+| Health endpoint responding | `curl http://ai-service.autograph:3001/health` |
 | Content generation working | POST to `/api/generate` returns content |
 | Metrics exposed | `/metrics` returns Prometheus format |
 | Fallback working | Claude failure triggers OpenAI |
@@ -689,7 +689,7 @@ Monitor with: `ai_tokens_total` metric × cost per token
 
 ```mermaid
 flowchart TB
-    subgraph ContentAI["ContentAI Platform - Now with AI!"]
+    subgraph Autograph["Autograph Platform - Now with AI!"]
         Strapi["Strapi CMS"]
         AI["AI Service"]
         PG["PostgreSQL"]
@@ -710,7 +710,7 @@ flowchart TB
     style Claude fill:#2196F3
 ```
 
-**ContentAI now generates content with AI!** 🚀
+**Autograph now generates content with AI!** 🚀
 
 ---
 
@@ -753,7 +753,7 @@ sequenceDiagram
 
 ```bash
 # Check if secret is mounted
-kubectl exec -n contentai deploy/ai-service -- env | grep API_KEY
+kubectl exec -n autograph deploy/ai-service -- env | grep API_KEY
 
 # Verify Claude API works
 curl https://api.anthropic.com/v1/messages \
@@ -767,7 +767,7 @@ curl https://api.anthropic.com/v1/messages \
 
 ```bash
 # Check current rate limit status
-kubectl exec -n contentai deploy/ai-service -- curl -s http://localhost:3001/metrics | grep rate
+kubectl exec -n autograph deploy/ai-service -- curl -s http://localhost:3001/metrics | grep rate
 ```
 
 ### Fallback Not Working
@@ -775,8 +775,8 @@ kubectl exec -n contentai deploy/ai-service -- curl -s http://localhost:3001/met
 Check both API keys are configured and valid:
 
 ```bash
-kubectl get secret ai-service-secret -n contentai -o jsonpath='{.data.ANTHROPIC_API_KEY}' | base64 -d
-kubectl get secret ai-service-secret -n contentai -o jsonpath='{.data.OPENAI_API_KEY}' | base64 -d
+kubectl get secret ai-service-secret -n autograph -o jsonpath='{.data.ANTHROPIC_API_KEY}' | base64 -d
+kubectl get secret ai-service-secret -n autograph -o jsonpath='{.data.OPENAI_API_KEY}' | base64 -d
 ```
 
 ---

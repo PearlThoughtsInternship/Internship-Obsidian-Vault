@@ -5,7 +5,7 @@
 
 ## What You Are (and What You're Not)
 
-You're not a "DevOps intern." **You're a founding engineer building ContentAI.**
+You're not a "DevOps intern." **You're a founding engineer building Autograph.**
 
 ---
 
@@ -88,7 +88,7 @@ mindmap
 
 ## What You Own During This Internship
 
-### The ContentAI Stack (All of It)
+### The Autograph Stack (All of It)
 
 ```mermaid
 flowchart TB
@@ -138,7 +138,7 @@ flowchart TB
 ```mermaid
 flowchart LR
     subgraph Morning["Morning"]
-        M1["Check: Is ContentAI healthy?"]
+        M1["Check: Is Autograph healthy?"]
         M2["Review any alerts"]
         M3["Plan today's build work"]
     end
@@ -182,7 +182,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    A["Have an idea"] --> B{"Does it serve<br/>ContentAI users?"}
+    A["Have an idea"] --> B{"Does it serve<br/>Autograph users?"}
     B -->|"No"| C["Reconsider priority"]
     B -->|"Yes"| D{"Exists already?"}
     D -->|"Yes"| E["Use/extend existing"]
@@ -197,7 +197,7 @@ flowchart TD
 
 - [ ] **Problem documented** — What user problem does this solve?
 - [ ] **Alternatives evaluated** — Is there an existing solution?
-- [ ] **Design reviewed** — Does this fit ContentAI's architecture?
+- [ ] **Design reviewed** — Does this fit Autograph's architecture?
 - [ ] **Tests written** — How will I know it works?
 - [ ] **Documentation updated** — Can someone else understand this?
 - [ ] **Monitoring added** — How will I know if it breaks?
@@ -252,10 +252,10 @@ flowchart TB
 
 | Week | You Start As | You End As |
 |------|--------------|------------|
-| **Week 1** | "I can run Terraform" | "I provision infrastructure for ContentAI" |
+| **Week 1** | "I can run Terraform" | "I provision infrastructure for Autograph" |
 | **Week 2** | "I can use Kubernetes" | "I run a production CMS with AI" |
-| **Week 3** | "I deploy manually" | "ContentAI deploys itself via GitOps" |
-| **Week 4** | "I hope it works" | "ContentAI is monitored, secure, and documented" |
+| **Week 3** | "I deploy manually" | "Autograph deploys itself via GitOps" |
+| **Week 4** | "I hope it works" | "Autograph is monitored, secure, and documented" |
 
 ---
 
@@ -285,7 +285,7 @@ flowchart TD
 
 ```markdown
 ## Context
-I'm working on [ContentAI feature] in [week/exercise].
+I'm working on [Autograph feature] in [week/exercise].
 
 ## Goal
 I'm trying to [specific goal].
@@ -336,7 +336,7 @@ flowchart LR
 
 | Achievement | What It Demonstrates |
 |-------------|---------------------|
-| **Built ContentAI end-to-end** | Full-stack ownership |
+| **Built Autograph end-to-end** | Full-stack ownership |
 | **Integrated AI services** | Modern tech adoption |
 | **GitOps automation** | Infrastructure maturity |
 | **Production-ready security** | Security mindset |
@@ -351,7 +351,7 @@ flowchart LR
 
 | Metric | Target | How |
 |--------|--------|-----|
-| **ContentAI running** | Week 2 | Product deployed |
+| **Autograph running** | Week 2 | Product deployed |
 | **AI integration** | Week 2 | Content generation works |
 | **GitOps coverage** | Week 3 | 100% managed by ArgoCD |
 | **Documentation** | Week 4 | Complete and accurate |
@@ -361,7 +361,7 @@ flowchart LR
 
 | Metric | Sign of Success |
 |--------|-----------------|
-| **Portfolio** | Can demo ContentAI live |
+| **Portfolio** | Can demo Autograph live |
 | **Knowledge** | Can explain any architectural decision |
 | **Network** | Have references from PearlThoughts |
 | **Skills** | Can interview for founding engineer roles |
@@ -378,7 +378,7 @@ flowchart LR
         O3["Set up CI/CD"]
     end
 
-    subgraph You["ContentAI Internship"]
+    subgraph You["Autograph Internship"]
         Y1["Built an AI content platform"]
         Y2["Full-stack from infra to AI"]
         Y3["Production-ready in 4 weeks"]
@@ -394,7 +394,7 @@ flowchart LR
 
 ## Related
 
-- [Vision](../01-Product/01-Vision.md) — What ContentAI is
+- [Vision](../01-Product/01-Vision.md) — What Autograph is
 - [Week by Week](./02-Week-by-Week.md) — Your timeline
 - [What You Build](./03-What-You-Build.md) — Technical deliverables
 - [Architecture](../02-Engineering/01-Architecture.md) — How it all fits together
