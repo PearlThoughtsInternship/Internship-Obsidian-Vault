@@ -1,5 +1,8 @@
 # Before You Begin
 
+> *"The most dangerous phrase in the language is, 'We've always done it this way.'"*
+> — **Rear Admiral Grace Hopper**
+
 > **Read this first.** It sets the context for everything that follows.
 
 ---
@@ -183,6 +186,9 @@ If you demonstrate exceptional initiative:
 ---
 
 ## The Builder's Manifesto
+
+> *"If it hurts, do it more frequently, and bring the pain forward."*
+> — **Continuous Delivery** (Humble & Farley)
 
 ```mermaid
 mindmap

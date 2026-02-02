@@ -1,5 +1,8 @@
 # Custom Tooling
 
+> *"Encode repeatable tasks in programs, not instructions. Computers are better at executing than people are at remembering."*
+> — **The Pragmatic Programmer** (Thomas & Hunt)
+
 ## Platform CLI Philosophy
 
 > *The best infrastructure is invisible to developers. Custom tools encode operational knowledge into reusable commands, turning tribal knowledge into self-service capabilities.*

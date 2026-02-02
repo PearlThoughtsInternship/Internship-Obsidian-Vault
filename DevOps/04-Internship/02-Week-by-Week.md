@@ -1,5 +1,8 @@
 # Week-by-Week Guide
 
+> *"Small batches, short iterations, fast feedback. The shorter the cycle, the faster the learning."*
+> — **Lean Startup** (Eric Ries)
+
 ## Your Mission (4 Weeks)
 
 > *Design, build, deploy, and operate a production-grade infrastructure platform for an AI-native startup.*

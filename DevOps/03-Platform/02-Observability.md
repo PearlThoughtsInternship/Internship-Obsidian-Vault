@@ -1,5 +1,8 @@
 # Observability
 
+> *"Monitoring tells you whether a system is working. Observability lets you ask why it's not."*
+> — **Distributed Systems Observability** (Cindy Sridharan)
+
 ## The Three Pillars
 
 > *You can't fix what you can't see. Observability transforms "the system is broken" into "the API latency increased at 14:32 when the database connection pool exhausted."*

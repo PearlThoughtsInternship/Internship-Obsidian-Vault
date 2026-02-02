@@ -1,5 +1,8 @@
 # Product Vision: Startup Infrastructure Platform
 
+> *"High performers deploy 208 times more frequently than low performers, with 106 times faster lead times."*
+> — **Accelerate** (Forsgren, Humble, Kim)
+
 ## The Problem
 
 Every startup needs infrastructure. But building production-grade infrastructure is **expensive, complex, and time-consuming**.
@@ -48,6 +51,9 @@ flowchart TB
 | Failed deployments due to manual processes | 45% | DORA Report 2025 |
 
 ### Why Now?
+
+> *"The goal of platform engineering is to reduce the cognitive load on stream-aligned teams."*
+> — **Team Topologies** (Skelton & Pais)
 
 1. **Platform engineering has matured** — Golden paths, internal developer platforms
 2. **Kubernetes is production-ready** — k3s brings enterprise orchestration to small teams
@@ -145,6 +151,9 @@ flowchart TB
 ---
 
 ## Success Criteria
+
+> *"The Four Key Metrics: Deployment Frequency, Lead Time for Changes, Mean Time to Restore, Change Failure Rate."*
+> — **Accelerate** (The DORA Metrics)
 
 The platform succeeds when:
 

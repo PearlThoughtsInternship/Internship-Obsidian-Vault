@@ -1,5 +1,8 @@
 # Platform Security
 
+> *"Security is always excessive until it's not enough."*
+> — **Robbie Sinclair**
+
 ## Security-First Mindset
 
 > *Security isn't a feature you add later. It's a design constraint that shapes every decision. A breach can end a startup overnight.*

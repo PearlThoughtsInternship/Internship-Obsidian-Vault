@@ -1,5 +1,8 @@
 # Platform Architecture
 
+> *"Design for failure. Anticipate and mitigate cascading failures. Build systems that fail fast and recover gracefully."*
+> — **Release It!** (Michael Nygard)
+
 ## Beyond Traditional Infrastructure
 
 > *Modern platform engineering is about building systems that enable developers to ship faster while maintaining enterprise-grade reliability.*
@@ -66,6 +69,9 @@ flowchart TB
 ---
 
 ## Layer 1: Infrastructure (OpenTofu)
+
+> *"Treat servers like cattle, not pets. If a server is misbehaving, shoot it in the head and create a new one."*
+> — **Infrastructure as Code** (Kief Morris)
 
 ### Infrastructure-as-Code Philosophy
 
@@ -367,6 +373,9 @@ spec:
 ---
 
 ## Layer 0: Observability
+
+> *"Hope is not a strategy. Without visibility into your systems, you're flying blind."*
+> — **Site Reliability Engineering** (Google)
 
 ### Metrics Pipeline
 
