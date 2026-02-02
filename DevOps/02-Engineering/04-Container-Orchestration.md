@@ -1,46 +1,43 @@
-# Container Orchestration with k3s
+# Container Orchestration: Where ContentAI Lives
 
-## Why Kubernetes?
+> *"The castle is built, the walls are strong. Now we need rooms, halls, and the magic that brings it all to life."*
 
-> *Containers are the unit of deployment. Kubernetes is the operating system for the cloud.*
+## The Purpose: A Home for ContentAI
 
----
+**Why are we doing this?** To give ContentAI a place to live and grow.
 
-## The Container Evolution
+Ansible gave us a k3s cluster. Now we need to understand how Kubernetes organizes and runs ContentAI—Strapi, AI services, databases, and everything that makes the magic happen.
 
 ```mermaid
-flowchart LR
-    subgraph Era1["Era 1: Physical"]
-        P1["Physical Server 1"]
-        P2["Physical Server 2"]
+flowchart TB
+    subgraph Before["📦 RAW CLUSTER"]
+        K1["k3s running"]
+        K2["Empty namespaces"]
+        K3["No workloads"]
     end
 
-    subgraph Era2["Era 2: Virtual"]
-        V1["VM 1"]
-        V2["VM 2"]
-        V3["VM 3"]
+    subgraph After["🏰 CONTENTAI RUNNING"]
+        S["Strapi CMS"]
+        AI["AI Service"]
+        PG["PostgreSQL"]
+        R["Redis"]
+        M["Meilisearch"]
     end
 
-    subgraph Era3["Era 3: Containers"]
-        C1["Container 1"]
-        C2["Container 2"]
-        C3["Container 3"]
-        C4["Container 4"]
+    subgraph Users["👥 CONTENT CREATORS"]
+        U1["Writers"]
+        U2["Marketers"]
     end
 
-    subgraph Era4["Era 4: Orchestration"]
-        K8S["Kubernetes"]
-        K8S --> Pod1["Pod"]
-        K8S --> Pod2["Pod"]
-        K8S --> Pod3["Pod"]
-    end
+    Before --> After
+    Users --> After
 
-    Era1 --> Era2 --> Era3 --> Era4
+    style After fill:#4CAF50
 ```
 
 ---
 
-## Why k3s?
+## Why k3s for ContentAI?
 
 | Feature | k3s | Full Kubernetes |
 |---------|-----|-----------------|
@@ -52,18 +49,18 @@ flowchart LR
 | **CNCF certified** | Yes | Yes |
 | **Built-in components** | SQLite, Traefik, CoreDNS | External deps |
 
-**For this project:** k3s provides full Kubernetes API compatibility with 90% less overhead—perfect for cost-optimized Hetzner infrastructure.
+**For ContentAI:** k3s provides full Kubernetes API compatibility with 90% less overhead—perfect for our cost-optimized Hetzner infrastructure. *The castle doesn't need a massive foundation when the walls are already strong.*
 
 ---
 
-## k3s Architecture
+## ContentAI Cluster Architecture
 
 ```mermaid
 flowchart TB
     subgraph CP["Control Plane (HA)"]
-        S1["Server 1\n• API Server\n• Scheduler\n• Controller"]
-        S2["Server 2\n• API Server\n• Scheduler\n• Controller"]
-        S3["Server 3\n• API Server\n• Scheduler\n• Controller"]
+        S1["contentai-server-1\n• API Server\n• Scheduler\n• Controller"]
+        S2["contentai-server-2\n• API Server\n• Scheduler\n• Controller"]
+        S3["contentai-server-3\n• API Server\n• Scheduler\n• Controller"]
 
         S1 <--> S2 <--> S3
         S1 <--> S3
@@ -75,10 +72,10 @@ flowchart TB
         E3["etcd"]
     end
 
-    subgraph Workers["Worker Nodes"]
-        A1["Agent 1\n• kubelet\n• containerd"]
-        A2["Agent 2\n• kubelet\n• containerd"]
-        A3["Agent 3\n• kubelet\n• containerd"]
+    subgraph Workers["Worker Nodes (ContentAI runs here)"]
+        A1["contentai-agent-1\n• Strapi pods\n• AI service pods"]
+        A2["contentai-agent-2\n• PostgreSQL\n• Redis"]
+        A3["contentai-agent-3\n• Meilisearch\n• Overflow"]
     end
 
     LB["Load Balancer\n(API: 6443)"]
@@ -94,20 +91,24 @@ flowchart TB
     A1 --> LB
     A2 --> LB
     A3 --> LB
+
+    style Workers fill:#4CAF50
 ```
 
 ---
 
-## Core Concepts
+## Core Concepts (Through ContentAI's Eyes)
 
-### Pods
+### Pods: The Smallest Unit
+
+Every ContentAI component runs in a pod—Strapi, AI service, databases. A pod is like a room in our castle.
 
 ```mermaid
 flowchart TB
-    subgraph Pod["Pod: web-app"]
-        C1["Container: nginx"]
+    subgraph Pod["Pod: strapi-cms"]
+        C1["Container: Strapi"]
         C2["Container: log-shipper"]
-        Vol["Shared Volume"]
+        Vol["Shared Volume\n(uploaded media)"]
         Net["Shared Network\n(localhost)"]
 
         C1 --> Vol
@@ -115,49 +116,63 @@ flowchart TB
         C1 --> Net
         C2 --> Net
     end
+
+    style Pod fill:#4CAF50
 ```
 
 ```yaml
-# Pod definition
+# Pod definition for Strapi
 apiVersion: v1
 kind: Pod
 metadata:
-  name: web-app
+  name: strapi-cms
+  namespace: contentai
   labels:
-    app: web
+    app: strapi
+    product: contentai
 spec:
   containers:
-    - name: nginx
-      image: nginx:1.25
+    - name: strapi
+      image: ghcr.io/pearlthoughts/contentai-strapi:v1.0.0
       ports:
-        - containerPort: 80
+        - containerPort: 1337
+      env:
+        - name: DATABASE_HOST
+          value: postgres-headless.contentai.svc.cluster.local
+        - name: REDIS_HOST
+          value: redis.contentai.svc.cluster.local
       volumeMounts:
-        - name: shared-logs
-          mountPath: /var/log/nginx
+        - name: uploads
+          mountPath: /app/public/uploads
 
     - name: log-shipper
       image: fluent/fluent-bit:2.1
       volumeMounts:
-        - name: shared-logs
+        - name: logs
           mountPath: /logs
           readOnly: true
 
   volumes:
-    - name: shared-logs
+    - name: uploads
+      persistentVolumeClaim:
+        claimName: strapi-uploads
+    - name: logs
       emptyDir: {}
 ```
 
-### Deployments
+### Deployments: Managing ContentAI Replicas
+
+Deployments manage multiple copies of our ContentAI components, ensuring they stay running and update gracefully.
 
 ```mermaid
 flowchart TB
-    subgraph Deployment["Deployment: web-app"]
-        RS["ReplicaSet\n(manages replicas)"]
+    subgraph Deployment["Deployment: strapi"]
+        RS["ReplicaSet\n(manages 3 replicas)"]
 
-        subgraph Pods["Pods (replicas=3)"]
-            P1["Pod 1"]
-            P2["Pod 2"]
-            P3["Pod 3"]
+        subgraph Pods["Strapi Pods (replicas=3)"]
+            P1["strapi-1"]
+            P2["strapi-2"]
+            P3["strapi-3"]
         end
 
         RS --> P1
@@ -166,24 +181,27 @@ flowchart TB
     end
 
     subgraph RollingUpdate["Rolling Update"]
-        Old["v1.0"]
-        New["v1.1"]
+        Old["v1.0.0"]
+        New["v1.1.0"]
         Old -->|"gradual replacement"| New
     end
+
+    style Pods fill:#4CAF50
 ```
 
 ```yaml
-# Deployment definition
+# Strapi Deployment for ContentAI
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-app
-  namespace: production
+  name: strapi
+  namespace: contentai
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: web
+      app: strapi
+      product: contentai
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -192,169 +210,217 @@ spec:
   template:
     metadata:
       labels:
-        app: web
+        app: strapi
+        product: contentai
         version: v1.0.0
     spec:
       containers:
-        - name: web
-          image: ghcr.io/company/web-app:v1.0.0
+        - name: strapi
+          image: ghcr.io/pearlthoughts/contentai-strapi:v1.0.0
           ports:
-            - containerPort: 8080
+            - containerPort: 1337
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 500m
+              cpu: 200m
               memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          env:
+            - name: DATABASE_HOST
+              value: postgres-headless
+            - name: REDIS_HOST
+              value: redis
+            - name: MEILISEARCH_HOST
+              value: meilisearch
           livenessProbe:
             httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 10
-            periodSeconds: 5
+              path: /_health
+              port: 1337
+            initialDelaySeconds: 30
+            periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /ready
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 3
+              path: /_health
+              port: 1337
+            initialDelaySeconds: 10
+            periodSeconds: 5
 ```
 
-### Services
+### Services: How ContentAI Components Talk
+
+Services provide stable network addresses. Strapi talks to PostgreSQL through a service, not a specific pod IP.
 
 ```mermaid
 flowchart LR
-    subgraph External["External Traffic"]
+    subgraph External["Content Creators"]
         User["User"]
     end
 
-    subgraph Services["Service Types"]
-        CIP["ClusterIP\n(internal only)"]
-        NP["NodePort\n(port on node)"]
-        LBSvc["LoadBalancer\n(cloud LB)"]
+    subgraph Services["ContentAI Services"]
+        ING["Ingress\n(contentai.example.com)"]
+        STRAPI["strapi-service\n(ClusterIP)"]
+        PG["postgres-headless\n(Headless)"]
+        REDIS["redis-service\n(ClusterIP)"]
     end
 
-    subgraph Pods["Backend Pods"]
-        P1["Pod 1\n10.42.0.5"]
-        P2["Pod 2\n10.42.0.6"]
-        P3["Pod 3\n10.42.0.7"]
+    subgraph Pods["ContentAI Pods"]
+        SP1["Strapi 1"]
+        SP2["Strapi 2"]
+        PGP["PostgreSQL"]
+        RP["Redis"]
     end
 
-    User --> LBSvc --> CIP
-    CIP --> P1
-    CIP --> P2
-    CIP --> P3
+    User --> ING --> STRAPI
+    STRAPI --> SP1
+    STRAPI --> SP2
+    SP1 --> PG --> PGP
+    SP1 --> REDIS --> RP
+
+    style Services fill:#4CAF50
 ```
 
 ```yaml
-# Service definition
+# Strapi Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: web-app
-  namespace: production
+  name: strapi
+  namespace: contentai
 spec:
   type: ClusterIP
   selector:
-    app: web
+    app: strapi
+    product: contentai
   ports:
     - name: http
-      port: 80
-      targetPort: 8080
+      port: 1337
+      targetPort: 1337
 ---
-# Headless service for StatefulSets
+# PostgreSQL Headless Service (for StatefulSet)
 apiVersion: v1
 kind: Service
 metadata:
-  name: database
-  namespace: production
+  name: postgres-headless
+  namespace: contentai
 spec:
   clusterIP: None
   selector:
     app: postgres
+    product: contentai
   ports:
     - port: 5432
+---
+# AI Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-service
+  namespace: contentai
+spec:
+  type: ClusterIP
+  selector:
+    app: ai-service
+    product: contentai
+  ports:
+    - name: http
+      port: 3001
+      targetPort: 3001
 ```
 
-### Ingress
+### Ingress: The Castle Gates
+
+Ingress routes external traffic to ContentAI. This is how users reach Strapi.
 
 ```mermaid
 flowchart LR
     subgraph Internet["Internet"]
-        User["User"]
+        Creator["Content Creator"]
     end
 
     subgraph Edge["Edge"]
-        LB["Load Balancer"]
+        LB["Hetzner LB"]
     end
 
-    subgraph Cluster["Cluster"]
-        ING["Ingress Controller\n(Traefik)"]
+    subgraph Cluster["ContentAI Cluster"]
+        ING["NGINX Ingress"]
 
-        subgraph Rules["Routing Rules"]
-            R1["api.example.com"]
-            R2["app.example.com"]
-            R3["admin.example.com"]
+        subgraph Routes["Routing Rules"]
+            R1["cms.contentai.io"]
+            R2["api.contentai.io"]
+            R3["search.contentai.io"]
         end
 
         subgraph Services["Services"]
-            API["api-service"]
-            APP["app-service"]
-            ADMIN["admin-service"]
+            STRAPI["Strapi"]
+            AI["AI Service"]
+            MEILI["Meilisearch"]
         end
     end
 
-    User --> LB --> ING
-    ING --> R1 --> API
-    ING --> R2 --> APP
-    ING --> R3 --> ADMIN
+    Creator --> LB --> ING
+    ING --> R1 --> STRAPI
+    ING --> R2 --> AI
+    ING --> R3 --> MEILI
+
+    style Services fill:#4CAF50
 ```
 
 ```yaml
-# Ingress definition
+# ContentAI Ingress
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: web-app
-  namespace: production
+  name: contentai
+  namespace: contentai
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    traefik.ingress.kubernetes.io/router.middlewares: production-redirect-https@kubernetescrd
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   tls:
     - hosts:
-        - app.example.com
-      secretName: app-tls
+        - cms.contentai.io
+        - api.contentai.io
+      secretName: contentai-tls
   rules:
-    - host: app.example.com
+    - host: cms.contentai.io
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: web-app
+                name: strapi
                 port:
-                  number: 80
+                  number: 1337
+    - host: api.contentai.io
+      http:
+        paths:
+          - path: /ai
+            pathType: Prefix
+            backend:
+              service:
+                name: ai-service
+                port:
+                  number: 3001
 ```
 
 ---
 
-## Namespace Organization
+## ContentAI Namespace Organization
 
 ```mermaid
 flowchart TB
     subgraph Cluster["k3s Cluster"]
         subgraph System["kube-system"]
             DNS["CoreDNS"]
-            CNI["Flannel/Cilium"]
+            CNI["Flannel"]
             Metrics["Metrics Server"]
         end
 
         subgraph Platform["platform"]
-            ING["Traefik"]
+            ING["NGINX Ingress"]
             CERT["cert-manager"]
             ARGO["ArgoCD"]
         end
@@ -369,88 +435,170 @@ flowchart TB
             LH["Longhorn"]
         end
 
-        subgraph Production["production"]
-            App1["App 1"]
-            App2["App 2"]
-            DB["Database"]
-        end
-
-        subgraph Staging["staging"]
-            SApp1["App 1"]
-            SApp2["App 2"]
+        subgraph ContentAI["contentai (YOUR PRODUCT)"]
+            Strapi["Strapi CMS"]
+            AIService["AI Service"]
+            Postgres["PostgreSQL"]
+            Redis["Redis"]
+            Meili["Meilisearch"]
         end
     end
+
+    style ContentAI fill:#4CAF50
 ```
 
 ```yaml
-# Namespace definitions
----
+# ContentAI Namespace
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: production
+  name: contentai
   labels:
+    product: contentai
     environment: production
-    istio-injection: enabled
 ---
+# Resource Quota for ContentAI
 apiVersion: v1
-kind: Namespace
+kind: ResourceQuota
 metadata:
-  name: staging
-  labels:
-    environment: staging
+  name: contentai-quota
+  namespace: contentai
+spec:
+  hard:
+    requests.cpu: "8"
+    requests.memory: 16Gi
+    limits.cpu: "16"
+    limits.memory: 32Gi
+    persistentvolumeclaims: "10"
+```
+
 ---
-apiVersion: v1
-kind: Namespace
+
+## StatefulSets: ContentAI's Treasury
+
+PostgreSQL needs stable identity and persistent storage—it's the treasury where all content lives.
+
+```mermaid
+flowchart TB
+    subgraph StatefulSet["StatefulSet: postgres"]
+        subgraph Pod0["postgres-0 (Primary)"]
+            C0["PostgreSQL"]
+            PVC0["PVC: postgres-data-0\n10Gi"]
+        end
+
+        subgraph Pod1["postgres-1 (Replica)"]
+            C1["PostgreSQL"]
+            PVC1["PVC: postgres-data-1\n10Gi"]
+        end
+    end
+
+    subgraph Longhorn["Longhorn Storage"]
+        V0["Volume 0\n(3 replicas)"]
+        V1["Volume 1\n(3 replicas)"]
+    end
+
+    PVC0 --> V0
+    PVC1 --> V1
+
+    style StatefulSet fill:#4CAF50
+```
+
+```yaml
+# PostgreSQL StatefulSet for ContentAI
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
-  name: platform
-  labels:
-    purpose: platform-services
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: monitoring
-  labels:
-    purpose: observability
+  name: postgres
+  namespace: contentai
+spec:
+  serviceName: postgres-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+      product: contentai
+  template:
+    metadata:
+      labels:
+        app: postgres
+        product: contentai
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: contentai
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: longhorn
+        resources:
+          requests:
+            storage: 10Gi
 ```
 
 ---
 
 ## Storage with Longhorn
 
+Longhorn replicates ContentAI's data across nodes—so even if a server fails, no content is lost.
+
 ```mermaid
 flowchart TB
-    subgraph App["Application"]
-        Pod["Pod"]
-        PVC["PersistentVolumeClaim\n(10Gi)"]
-        Pod --> PVC
+    subgraph ContentAI["ContentAI Workloads"]
+        Strapi["Strapi\n(uploads)"]
+        Postgres["PostgreSQL\n(content data)"]
+        Meili["Meilisearch\n(search index)"]
     end
 
-    subgraph Longhorn["Longhorn"]
-        PV["PersistentVolume"]
-        Vol["Longhorn Volume"]
-        PVC --> PV --> Vol
+    subgraph Claims["PersistentVolumeClaims"]
+        PVC1["strapi-uploads\n5Gi"]
+        PVC2["postgres-data\n10Gi"]
+        PVC3["meili-data\n5Gi"]
+    end
 
-        subgraph Replicas["Replicas (3x)"]
-            R1["Replica 1\n(Node 1)"]
-            R2["Replica 2\n(Node 2)"]
-            R3["Replica 3\n(Node 3)"]
+    subgraph Longhorn["Longhorn Volumes"]
+        subgraph V1["strapi-uploads"]
+            R1A["Replica (Node 1)"]
+            R1B["Replica (Node 2)"]
+            R1C["Replica (Node 3)"]
         end
-
-        Vol --> R1
-        Vol --> R2
-        Vol --> R3
     end
 
-    subgraph Backup["Backup"]
-        S3["S3-Compatible\nObject Storage"]
-        R1 -.-> S3
-    end
+    Strapi --> PVC1 --> V1
+    Postgres --> PVC2
+    Meili --> PVC3
+
+    style ContentAI fill:#4CAF50
 ```
 
 ```yaml
-# StorageClass
+# StorageClass for ContentAI
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -458,65 +606,66 @@ metadata:
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
 reclaimPolicy: Delete
-volumeBindingMode: Immediate
 parameters:
   numberOfReplicas: "3"
   staleReplicaTimeout: "2880"
-  fromBackup: ""
   fsType: ext4
 ---
-# PersistentVolumeClaim
+# Strapi Uploads PVC
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-data
-  namespace: production
+  name: strapi-uploads
+  namespace: contentai
 spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: longhorn
   resources:
     requests:
-      storage: 10Gi
+      storage: 5Gi
 ```
 
 ---
 
-## High Availability
+## High Availability for ContentAI
+
+ContentAI pods spread across nodes—if one server fails, the platform keeps running.
 
 ```mermaid
 flowchart TB
     subgraph HA["High Availability Design"]
         subgraph AntiAffinity["Pod Anti-Affinity"]
-            N1["Node 1"]
-            N2["Node 2"]
-            N3["Node 3"]
+            N1["contentai-agent-1"]
+            N2["contentai-agent-2"]
+            N3["contentai-agent-3"]
 
-            P1["Pod 1"] --> N1
-            P2["Pod 2"] --> N2
-            P3["Pod 3"] --> N3
+            SP1["Strapi 1"] --> N1
+            SP2["Strapi 2"] --> N2
+            SP3["Strapi 3"] --> N3
         end
 
         subgraph PDB["Pod Disruption Budget"]
             MIN["minAvailable: 2"]
-            PODS["3 Pods Running"]
-            MIN --> PODS
+            PODS["3 Strapi Pods"]
         end
 
-        subgraph HPA["Horizontal Pod Autoscaler"]
+        subgraph HPA["Auto-Scaling"]
             METRIC["CPU > 70%"]
             SCALE["Scale 3 → 5"]
-            METRIC --> SCALE
         end
     end
+
+    style AntiAffinity fill:#4CAF50
 ```
 
 ```yaml
-# Deployment with HA features
+# Strapi Deployment with HA features
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: critical-app
+  name: strapi
+  namespace: contentai
 spec:
   replicas: 3
   template:
@@ -526,38 +675,34 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
-                  app: critical-app
+                  app: strapi
+                  product: contentai
               topologyKey: kubernetes.io/hostname
-
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: topology.kubernetes.io/zone
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app: critical-app
 ---
 # Pod Disruption Budget
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: critical-app-pdb
+  name: strapi-pdb
+  namespace: contentai
 spec:
   minAvailable: 2
   selector:
     matchLabels:
-      app: critical-app
+      app: strapi
+      product: contentai
 ---
 # Horizontal Pod Autoscaler
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: critical-app-hpa
+  name: strapi-hpa
+  namespace: contentai
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: critical-app
+    name: strapi
   minReplicas: 3
   maxReplicas: 10
   metrics:
@@ -567,151 +712,139 @@ spec:
         target:
           type: Utilization
           averageUtilization: 70
-    - type: Resource
-      resource:
-        name: memory
-        target:
-          type: Utilization
-          averageUtilization: 80
 ```
 
 ---
 
-## Health Checks
+## Health Checks: Is ContentAI Alive?
 
 ```mermaid
 sequenceDiagram
     participant K as Kubelet
-    participant C as Container
-    participant S as Service
+    participant S as Strapi Container
+    participant SVC as Service
 
-    Note over K,S: Startup Phase
-    loop Every 5s until success
-        K->>C: Startup Probe
-        C-->>K: Still starting...
+    Note over K,SVC: Startup Phase
+    loop Every 5s until ready
+        K->>S: Startup Probe (/startup)
+        S-->>K: Loading plugins...
     end
-    C-->>K: Ready!
+    S-->>K: Ready!
 
-    Note over K,S: Running Phase
+    Note over K,SVC: Running Phase
     loop Every 10s
-        K->>C: Liveness Probe
-        C-->>K: I'm alive
+        K->>S: Liveness Probe (/_health)
+        S-->>K: I'm alive
     end
 
     loop Every 5s
-        K->>C: Readiness Probe
-        alt Ready
-            C-->>K: Ready
-            K->>S: Add to endpoints
-        else Not Ready
-            C-->>K: Not ready
-            K->>S: Remove from endpoints
+        K->>S: Readiness Probe (/_health)
+        alt Database connected
+            S-->>K: Ready to serve
+            K->>SVC: Add to endpoints
+        else Database down
+            S-->>K: Not ready
+            K->>SVC: Remove from endpoints
         end
     end
-
-    Note over K,S: Failure Scenario
-    K->>C: Liveness Probe
-    C--xK: No response
-    K->>C: Restart container
 ```
 
 ```yaml
-# Probe configurations
+# ContentAI Health Probes
 spec:
   containers:
-    - name: app
-      # Startup probe: for slow-starting apps
+    - name: strapi
+      # Startup: for slow-starting Strapi
       startupProbe:
         httpGet:
-          path: /startup
-          port: 8080
+          path: /_health
+          port: 1337
         failureThreshold: 30
         periodSeconds: 10
 
-      # Liveness probe: is the app alive?
+      # Liveness: is Strapi process alive?
       livenessProbe:
         httpGet:
-          path: /health
-          port: 8080
-        initialDelaySeconds: 10
+          path: /_health
+          port: 1337
+        initialDelaySeconds: 30
         periodSeconds: 10
         timeoutSeconds: 5
         failureThreshold: 3
 
-      # Readiness probe: can the app serve traffic?
+      # Readiness: can Strapi serve content?
       readinessProbe:
         httpGet:
-          path: /ready
-          port: 8080
-        initialDelaySeconds: 5
+          path: /_health
+          port: 1337
+        initialDelaySeconds: 10
         periodSeconds: 5
         timeoutSeconds: 3
-        successThreshold: 1
         failureThreshold: 3
 ```
 
 ---
 
-## kubectl Essentials
+## kubectl Essentials for ContentAI
 
 ```bash
-# Cluster info
+# Check ContentAI cluster status
 kubectl cluster-info
 kubectl get nodes -o wide
 kubectl top nodes
 
-# Namespaces
-kubectl get namespaces
-kubectl config set-context --current --namespace=production
+# ContentAI namespace operations
+kubectl config set-context --current --namespace=contentai
+kubectl get pods
+kubectl get pods -o wide  # See which node each pod runs on
 
-# Pods
-kubectl get pods -A                     # All namespaces
-kubectl get pods -o wide                # With node info
-kubectl describe pod <name>             # Detailed info
-kubectl logs <pod> -f                   # Stream logs
-kubectl logs <pod> -c <container>       # Specific container
-kubectl exec -it <pod> -- /bin/sh       # Shell access
+# Check Strapi
+kubectl get pods -l app=strapi
+kubectl logs -l app=strapi -f
+kubectl describe pod -l app=strapi
 
-# Deployments
-kubectl get deployments
-kubectl rollout status deployment/<name>
-kubectl rollout history deployment/<name>
-kubectl rollout undo deployment/<name>
-kubectl scale deployment/<name> --replicas=5
+# Check databases
+kubectl get pods -l app=postgres
+kubectl get pvc  # Persistent volumes
 
-# Services & Ingress
-kubectl get svc,ing
-kubectl port-forward svc/<name> 8080:80
-
-# Debug
+# Debug ContentAI issues
 kubectl get events --sort-by='.lastTimestamp'
-kubectl describe node <name>
 kubectl top pods --sort-by=memory
+
+# Shell into Strapi for debugging
+kubectl exec -it deployment/strapi -- /bin/sh
+
+# Port-forward to access locally
+kubectl port-forward svc/strapi 1337:1337
+kubectl port-forward svc/ai-service 3001:3001
 ```
 
 ---
 
-## k9s: Terminal UI
+## k9s: Your ContentAI Dashboard
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│ k9s - Kubernetes CLI To Manage Your Clusters                 │
+│ k9s - Kubernetes CLI To Manage ContentAI                     │
 ├──────────────────────────────────────────────────────────────┤
 │                                                              │
-│  Navigation:                                                 │
-│  :pod      - View pods                                       │
-│  :deploy   - View deployments                                │
+│  Quick Access:                                               │
+│  :pod      - View ContentAI pods                             │
+│  :deploy   - View Strapi, AI service deployments             │
 │  :svc      - View services                                   │
-│  :ns       - View namespaces                                 │
-│  :node     - View nodes                                      │
+│  :pvc      - View storage claims (PostgreSQL, uploads)       │
+│  :ing      - View ingress (contentai.io routes)              │
 │                                                              │
 │  Actions:                                                    │
-│  l         - View logs                                       │
+│  l         - View Strapi logs                                │
 │  s         - Shell into container                            │
 │  d         - Describe resource                               │
 │  y         - View YAML                                       │
-│  ctrl-d    - Delete resource                                 │
-│  /         - Filter resources                                │
+│  /         - Filter (try: /strapi, /postgres)                │
+│                                                              │
+│  Namespaces:                                                 │
+│  0         - All namespaces                                  │
+│  1-9       - Quick switch (contentai = 1)                    │
 │                                                              │
 │  Install: brew install k9s                                   │
 │                                                              │
@@ -720,11 +853,21 @@ kubectl top pods --sort-by=memory
 
 ---
 
+## What's Next
+
+Once you understand how ContentAI runs in Kubernetes:
+
+1. **Deploy ContentAI** — [Exercise 10: Strapi Deployment](../04-Internship/Exercises/10-ContentAI-Strapi-Deployment.md)
+2. **GitOps** — [05-GitOps.md](./05-GitOps.md) for automated deployments
+3. **Observability** — [Observability Stack](../03-Platform/02-Observability.md) to watch ContentAI
+
+---
+
 ## Related
 
-- [Infrastructure-as-Code](./02-Infrastructure-as-Code.md)
-- [Configuration Management](./03-Configuration-Management.md)
-- [GitOps](./05-GitOps.md)
+- [Infrastructure-as-Code](./02-Infrastructure-as-Code.md) — Create the VMs
+- [Configuration Management](./03-Configuration-Management.md) — Install k3s
+- [GitOps](./05-GitOps.md) — Automated ContentAI deployments
 
 ---
 
