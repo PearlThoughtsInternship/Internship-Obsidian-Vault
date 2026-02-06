@@ -270,6 +270,7 @@ flowchart LR
 | [Security](./03-Platform/03-Security.md) | Zero-trust, secrets |
 | [Networking](./03-Platform/04-Networking.md) | Ingress, DNS, service mesh |
 | [Custom Tooling](./03-Platform/05-Custom-Tooling.md) | Python automation |
+| [Intern DNS Isolation](./03-Platform/06-Intern-DNS-Isolation.md) | Per-intern subdomain strategy |
 
 ### 04-Internship — Your Journey
 
