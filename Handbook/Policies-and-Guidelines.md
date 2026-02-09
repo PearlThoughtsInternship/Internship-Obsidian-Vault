@@ -3,12 +3,12 @@
 ## Training and Attendance
 
 ### Training Sessions
-- **Schedule**: Every weekday at 10:00 AM (Backend/AI) or 10:30 AM (Full Stack)
+- **Schedule**: Every weekday at 10:00 AM (Backend/AI/DevOps/HR) or 10:30 AM (PM)
 - **Attendance**: MANDATORY - Missing sessions affects your evaluation
 - **Duration**: Full attention required during training hours
 
 ### Working Hours
-- **Availability**: 10 AM to 6 PM on all working days
+- **Availability**: 9 AM to 7 PM on all working days
 - **Active Participation**: Required in all team activities and discussions
 
 ## Daily Requirements
