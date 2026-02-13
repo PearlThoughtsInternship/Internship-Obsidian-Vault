@@ -1,28 +1,28 @@
 # Daily Standup Template
 
-## Date: YYYY-MM-DD
+## Date: 2026-02-04
 
-### Intern Name: [Your Name]
-### Team: [Team Name]
-### Program: [Backend/Full Stack/AI]
+### Intern Name: [Dhiraj Roy]
+### Team: [General]
+### Program: [Project Manager Intern]
 
 ---
 
 ## 🌅 Yesterday's Accomplishments
 
 ### Completed Tasks
-- [ ] Task 1: [Description]
-  - PR Link: [#PR-Number](link)
+- [ ] Task 1: Explored Internship Obsidian Vault repository and understood contribution guidelines.
+  - PR Link: N/A ( first contribution)
   - Status: ✅ Completed
   
-- [ ] Task 2: [Description]
-  - PR Link: [#PR-Number](link)
+- [ ] Task 2: Learned how to fork repository and create Pull Request using GitHub
+  - PR Link: N/A
   - Status: ✅ Completed
 
 ### Learning Highlights
-- Concept learned: [What you learned]
-- Resource used: [Link/Reference]
-- Application: [How you applied it]
+- Concept learned: GitHub workflow (Fork - Edit - Commit - Pull Request)
+- Resource used: Internship Obsidian Vault documentation
+- Application: Prepared first daily standup update and PR process
 
 ---
 
