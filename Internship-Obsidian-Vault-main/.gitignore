@@ -1,0 +1,74 @@
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE Files
+.vscode/
+.idea/
+*.sublime-*
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.*.swp
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# Dependencies
+node_modules/
+vendor/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+credentials/
+secrets/
+
+# IMPORTANT: Exclude all financial data
+**/Finance/
+**/Accounting/
+**/financial*
+**/Financial*
+**/revenue*
+**/Revenue*
+**/balance*
+**/Balance*
+**/income*
+**/Income*
+*.beancount
+*.xlsx
+*.xls
+*.csv
+*transaction*
+*payment*
+*invoice*
+*salary*
+
+# Exclude other sensitive directories
+**/personal/
+**/private/
+**/confidential/
+**/admin/
+**/hr/
+**/HR/
+
+# Build outputs
+dist/
+build/
+out/
+
+# Backups
+*.backup
+*.bak
+backup/
+
+# Obsidian config (optional - remove if you want to track settings)
+# .obsidian/
