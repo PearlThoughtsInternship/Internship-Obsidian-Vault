@@ -1,7 +1,0 @@
-Here's the **complete Day 10 content** with all Mermaid diagrams fixed for Obsidian compatibility:
-
-text
-
-`--- title: "Day 10: Change Management & Scope Control" date: 2026-02-19 tags:    - project-management  - change-control  - scope-management  - schedula session: 10 week: 2 duration: 60min --- # Day 10: Change Management & Scope Control **Project Management Internship – PearlThoughts**   **Date:** February 19, 2026   **Duration:** 60 minutes   **Presenter:** [Your Name]   **Focus:** Managing Change Requests & Preventing Scope Creep --- ## 📋 Session Overview > [!info] Today's Learning Objectives > - Understand what scope creep is and how it silently destroys projects > - Master the 5-step change control process used by professional PMs > - Learn to present trade-offs using the Iron Triangle framework > - Practice saying "No" professionally using data and options > - Apply change management to real Schedula scenarios **Why This Matters:** Uncontrolled scope creep is the **#2 reason projects fail** (after poor estimation). This session teaches you how to protect project scope while keeping stakeholders happy[1][2]. --- ## 🎯 Part 1: Understanding Scope Creep (10 minutes) ### What is Scope Creep? **Definition:** The uncontrolled expansion of project scope without adjustments to time, cost, or resources. ```mermaid graph LR   A[Original Scope 10 features] --> B[11 features]  B --> C[13 features]  C --> D[16 features]  D --> E[Project Fails]`
-
-

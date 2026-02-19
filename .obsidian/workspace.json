@@ -36,20 +36,6 @@
             }
           },
           {
-            "id": "ef8fc4dd7c48ff49",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Untitled 1.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Untitled 1"
-            }
-          },
-          {
             "id": "e7255a933d16d765",
             "type": "leaf",
             "state": {
@@ -64,7 +50,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -225,10 +211,10 @@
   },
   "active": "e7255a933d16d765",
   "lastOpenFiles": [
-    "Untitled 1.md",
     "Untitled 2.md",
-    "Untitled.base",
     "PM Internship/19 Feb 2026.md",
+    "Untitled 1.md",
+    "Untitled.base",
     "CONTRIBUTING.md",
     "PM Internship/Session Guides",
     "Untitled.md",
