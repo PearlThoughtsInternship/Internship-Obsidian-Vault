@@ -27,7 +27,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "PM Internship/19 Feb 2026.md",
+                "file": "PM Internship/Session Guides/19 Feb 2026.md",
                 "mode": "source",
                 "source": false
               },
@@ -41,7 +41,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "PM Internship/19 Feb 2026.md",
+                "file": "PM Internship/Session Guides/19 Feb 2026.md",
                 "mode": "source",
                 "source": false
               },
@@ -209,10 +209,19 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "e7255a933d16d765",
+  "active": "2fb1cacb71163407",
   "lastOpenFiles": [
+    "PMIntern_Bhavna/Day 10- Change Management & Scope Control.md",
+    "PMIntern_Bhavna",
+    "PM-Intern-Deepika/Day 10,Change Management & Scope Control.md",
+    "PM-Intern-Deepika",
+    "PM Intern Dhiraj Roy/Readme.md",
+    "PM Intern Dhiraj Roy/Day-10-WhatsApp-Change-Request.md",
+    "PM Intern Dhiraj Roy",
+    "PM Internship/Session Guides/20 Feb 2026.md",
+    "PM Internship/Session Guides/Untitled.md",
+    "PM Internship/Session Guides/19 Feb 2026.md",
     "Untitled 2.md",
-    "PM Internship/19 Feb 2026.md",
     "Untitled 1.md",
     "Untitled.base",
     "CONTRIBUTING.md",
@@ -234,18 +243,10 @@
     "AI-Internship/01-Product/Target-Codebases/README.md",
     "How-We-Communicate/04-Tools-and-Workflows.md",
     "How-We-Communicate/03-Live-Sessions.md",
-    "AI-Internship/05-Contributions/README.md",
-    "AI-Internship/04-Internship/README.md",
-    "AI-Internship/03-AI-Platform/README.md",
-    "AI-Internship/02-Engineering/README.md",
-    "How-We-Communicate/02-Communication-Protocol.md",
     "How-We-Communicate/assets/teams-interface-annotated.png",
     "How-We-Communicate/assets",
     "How-We-Communicate",
     "AI-Internship/05-Contributions/Reviews",
-    "AI-Internship/05-Contributions/Experiments",
-    "AI-Internship/05-Contributions",
-    "AI-Internship/04-Internship/Exercises",
-    "AI-Internship/04-Internship/Background"
+    "AI-Internship/05-Contributions/Experiments"
   ]
 }
