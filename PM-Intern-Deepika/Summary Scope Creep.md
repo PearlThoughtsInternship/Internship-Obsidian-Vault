@@ -201,6 +201,6 @@ a PM **facilitates a decision**.
 - What was asked is completed?
 - All issues addressed?
 
-![](../../attachment/Pasted%20image%2020260220115727.png)
+![](attachment/Pasted%20image%2020260220115727.png)
 
 
