@@ -1,4 +1,4 @@
-**Date:** February 24, 2026  
+Date: February 24, 2026  
 **Level:** Advanced Client & Facilitation Skills
 
 # 1. Session Objective
