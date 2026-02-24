@@ -48,9 +48,23 @@
               "icon": "lucide-file",
               "title": "Risk & Compliance in Real Projects"
             }
+          },
+          {
+            "id": "27932822cd689c4b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Client Mastery & Meeting Facilitation.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Client Mastery & Meeting Facilitation"
+            }
           }
         ],
-        "currentTab": 2
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -223,10 +237,11 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "ed90ba31ef033220",
+  "active": "27932822cd689c4b",
   "lastOpenFiles": [
-    "Day 11 Daily Standups & Sprint Ceremonies.md",
     "Risk & Compliance in Real Projects.md",
+    "Client Mastery & Meeting Facilitation.md",
+    "Day 11 Daily Standups & Sprint Ceremonies.md",
     "Day 10- Change Management & Scope Control.md"
   ]
 }
