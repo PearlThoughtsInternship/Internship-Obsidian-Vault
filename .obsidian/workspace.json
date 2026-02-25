@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "PM Internship/Session Guides/24 Feb 2026.md",
+                "file": "PM Internship/Session Guides/Feb 25.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "24 Feb 2026"
+              "title": "Feb 25"
             }
           }
         ],
@@ -211,8 +211,9 @@
   },
   "active": "e7255a933d16d765",
   "lastOpenFiles": [
-    "PM Internship/Session Guides/23 Feb 2026.md",
     "PM Internship/Session Guides/24 Feb 2026.md",
+    "PM Internship/Session Guides/Feb 25.md",
+    "PM Internship/Session Guides/23 Feb 2026.md",
     "PM Internship/Session Guides/Untitled.md",
     "PMIntern_Bhavna/Risk & Compliance in Real Projects.md",
     "PM-Intern-Deepika/Day-12 JIRA Issue Tracking.md",
@@ -246,7 +247,6 @@
     "PM Internship",
     "How-We-Communicate/assets/README.md",
     "Requirements/README.md",
-    "DevOps/README.md",
     "How-We-Communicate/assets/teams-interface-annotated.png",
     "How-We-Communicate/assets"
   ]
