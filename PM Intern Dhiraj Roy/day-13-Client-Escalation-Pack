@@ -1,0 +1,104 @@
+Client Escalation Pack – Assignment
+
+Project: Schedula
+Intern: Dhiraj Roy
+Scenario Chosen: The Demander (Urgent Feature Request)
+
+1. Escalation Email to PM Lead
+
+SUBJECT: Salon Owner Escalation – WhatsApp Integration Request
+
+BACKGROUND:
+The client has requested WhatsApp booking integration to be added before the scheduled product launch. The launch date is 6 days away, 
+and the client has expressed concern about continuing with the vendor if the feature is not included.
+
+IMPACT:
+
+Development effort: ~10 days
+
+Testing effort: ~3 days
+
+Total impact: Approx. 2-week delay in launch timeline
+
+Alternative impact: Additional estimated cost of ₹1.5L or removal of existing planned features.
+
+WHAT I’VE DONE:
+
+Acknowledged the client’s urgency and business need.
+
+Explained the development and timeline impact.
+
+Presented three possible options:
+
+Delay launch and include WhatsApp integration.
+
+Launch on time and include WhatsApp in Phase 2.
+
+Add WhatsApp now by removing a lower-priority feature.
+
+The client is currently insisting on immediate implementation without timeline change.
+
+NEXT STEPS NEEDED:
+Requesting leadership guidance on commercial priority and approval on whether timeline adjustment or scope trade-off should be proposed formally to the client.
+
+2. De-escalation Script (Client Conversation)
+
+“Thank you for sharing this directly — I completely understand that WhatsApp booking is important for your business and customer experience.
+
+Let me quickly walk you through the impact so we can make the best decision together. Based on our assessment, adding this feature immediately would require
+additional development and testing time.
+
+To support your goals, here are three possible options we can consider:
+
+Launch with WhatsApp integration and adjust the timeline,
+
+Launch as planned and add WhatsApp in Phase 2,
+
+Or include WhatsApp now by replacing another feature.
+
+Which option best aligns with your launch priorities? I will also review this internally and get back to you today with confirmation.”
+
+3. Follow-Up Meeting Agenda (7-Minute Framework)
+
+Meeting Title: WhatsApp Feature Decision Discussion
+Objective: Finalize decision on WhatsApp integration approach before launch.
+
+1 Minute – Agenda & Objective
+
+Confirm business priority.
+
+Decide implementation approach.
+
+2 Minutes – Discussion
+
+Client explains urgency and expected outcome.
+
+Team confirms technical impact and risks.
+
+2 Minutes – Options Review
+
+Option A: Delay launch and include feature.
+
+Option B: Phase 2 implementation.
+
+Option C: Feature swap within current scope.
+
+2 Minutes – Decision
+
+Final decision recorded.
+
+Owner assigned for next steps.
+
+Timeline confirmation shared.
+
+✅ Outcome
+
+This approach ensures:
+
+Client concerns are acknowledged professionally.
+
+Scope, timeline, and cost impacts remain transparent.
+
+Leadership is involved at the correct escalation level.
+
+Clear decision-making without unnecessary meetings.
