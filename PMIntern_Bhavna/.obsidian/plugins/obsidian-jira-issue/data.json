@@ -1,0 +1,78 @@
+{
+  "accounts": [
+    {
+      "alias": "Default",
+      "host": "https://mycompany.atlassian.net",
+      "authenticationType": "OPEN",
+      "password": "",
+      "priority": 1,
+      "color": "#000000",
+      "use2025Api": false,
+      "cache": {
+        "statusColor": {},
+        "customFieldsIdToName": {},
+        "customFieldsNameToId": {},
+        "customFieldsType": {},
+        "jqlAutocomplete": {
+          "fields": [],
+          "functions": {}
+        }
+      }
+    }
+  ],
+  "apiBasePath": "/rest/api/latest",
+  "cacheTime": "15m",
+  "searchResultsLimit": 10,
+  "cache": {
+    "columns": []
+  },
+  "colorSchema": "FOLLOW_OBSIDIAN",
+  "inlineIssueUrlToTag": true,
+  "inlineIssuePrefix": "JIRA:",
+  "showColorBand": true,
+  "showJiraLink": true,
+  "searchColumns": [
+    {
+      "type": "KEY",
+      "compact": false
+    },
+    {
+      "type": "SUMMARY",
+      "compact": false
+    },
+    {
+      "type": "TYPE",
+      "compact": true
+    },
+    {
+      "type": "CREATED",
+      "compact": false
+    },
+    {
+      "type": "UPDATED",
+      "compact": false
+    },
+    {
+      "type": "REPORTER",
+      "compact": false
+    },
+    {
+      "type": "ASSIGNEE",
+      "compact": false
+    },
+    {
+      "type": "PRIORITY",
+      "compact": true
+    },
+    {
+      "type": "STATUS",
+      "compact": false
+    }
+  ],
+  "logRequestsResponses": false,
+  "logImagesFetch": false,
+  "jqlAutocomplete": null,
+  "customFieldsIdToName": null,
+  "customFieldsNameToId": null,
+  "statusColorCache": null
+}
