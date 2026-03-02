@@ -1,0 +1,49 @@
+Day 11 Assignment – Mini Sprint Retrospective
+
+Project: Schedula
+Intern: Trisha H R
+
+Sprint 2 Retrospective Summary
+
+At the end of Sprint 2, the team conducted a retrospective meeting to evaluate our performance, identify challenges, and recognize practices that worked well. The objective of this session was to reflect on our workflow and introduce improvements for the upcoming sprint.
+
+The discussion was structured into three sections: Start, Stop, and Continue.
+
+START – Practices to Introduce
+
+Define acceptance criteria before development begins
+Every user story should have clearly documented acceptance criteria before it is moved to development. This ensures shared understanding among the team and reduces ambiguity.
+
+Report blockers immediately
+Any obstacle affecting task progress should be communicated instantly through the team’s communication channel instead of waiting for the daily standup. Early reporting allows faster resolution and prevents delays.
+
+STOP – Practices to Avoid
+
+Starting tasks without full requirement clarity
+Beginning development without properly understanding requirements led to confusion and rework. Moving forward, tasks should only be picked up after clarification.
+
+Delays in communication between Development and QA
+Late involvement of QA caused testing bottlenecks. Early collaboration is necessary to maintain sprint momentum.
+
+CONTINUE – Practices That Worked Well
+
+Consistent daily standups
+Conducting standups at the same scheduled time helped maintain alignment and track sprint progress effectively.
+
+Early sharing of design updates
+Sharing UI/UX designs in advance allowed developers to understand expectations clearly, reducing revisions and improving implementation quality.
+
+Action Item for Sprint 3
+
+Action:
+Before any task is moved to “In Progress,” the team will review and confirm the acceptance criteria collectively.
+
+Purpose:
+This step will minimize misunderstandings, improve test coverage, and reduce rework, leading to smoother sprint execution.
+
+Owner:
+Project Manager (with collaboration from Development and QA teams)
+
+Conclusion
+
+The Sprint 2 retrospective provided valuable insights into our working process. By implementing structured improvements and maintaining effective practices, the team can enhance productivity, reduce communication gaps, and deliver higher-quality outcomes in future sprints.
