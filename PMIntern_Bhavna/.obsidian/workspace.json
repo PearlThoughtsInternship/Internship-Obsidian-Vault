@@ -90,9 +90,37 @@
               "icon": "lucide-file",
               "title": "26 Feb - Getting What You Need Without Being Bossy"
             }
+          },
+          {
+            "id": "05a2401b411710d5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Feb 27 - Weekly Report.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Feb 27 - Weekly Report"
+            }
+          },
+          {
+            "id": "5945fa5e5f1d6686",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "March 2 -  Budget Tracking & Cost Control.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "March 2 -  Budget Tracking & Cost Control"
+            }
           }
         ],
-        "currentTab": 5
+        "currentTab": 7
       }
     ],
     "direction": "vertical"
@@ -265,10 +293,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "fe81bd5fa73c5144",
+  "active": "5945fa5e5f1d6686",
   "lastOpenFiles": [
-    "25 Feb - Workshop & Meeting Facilitation Deep Dive.md",
+    "Untitled",
+    "Feb 27 - Weekly Report.md",
+    "March 2 -  Budget Tracking & Cost Control.md",
     "26 Feb - Getting What You Need Without Being Bossy.md",
+    "25 Feb - Workshop & Meeting Facilitation Deep Dive.md",
     "24 Feb - Client Mastery & Meeting Facilitation.md",
     "23 Feb - Risk & Compliance in Real Projects.md",
     "Day 11 Daily Standups & Sprint Ceremonies.md",
