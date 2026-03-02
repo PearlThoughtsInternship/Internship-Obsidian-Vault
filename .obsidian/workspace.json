@@ -41,16 +41,30 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "PM Internship/Session Guides/Feb 26 2026.md",
+                "file": "PM Internship/Test Report.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Feb 26 2026"
+              "title": "Test Report"
+            }
+          },
+          {
+            "id": "bdc0fa1b311a5f8c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "PM Internship/Session Guides/March 02.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "March 02"
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -209,11 +223,14 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "2fb1cacb71163407",
+  "active": "bdc0fa1b311a5f8c",
   "lastOpenFiles": [
+    "PM Internship/Session Guides/March 02.md",
+    "test/Sample Note.md",
+    "PM Internship/Test Report.md",
+    "PM Internship/Session Guides/Feb 26 2026.md",
     "PMIntern_Bhavna/25 Feb - Workshop & Meeting Facilitation Deep Dive.md",
     "PM Internship/Session Guides/Feb 25 2026.md",
-    "PM Internship/Session Guides/Feb 26 2026.md",
     "PMIntern_Bhavna/24 Feb - Client Mastery & Meeting Facilitation.md",
     "PMIntern_Bhavna/23 Feb - Risk & Compliance in Real Projects.md",
     "PM-Intern-Pavithra/24 Feb - Client Mastery & Meeting Facilitation - The Micro Manager.md",
@@ -243,10 +260,7 @@
     "PM Internship/Session Guides/19 Feb 2026.md",
     "PMIntern_Bhavna/Day 10- Change Management & Scope Control.md",
     "PMIntern_Bhavna",
-    "PM-Intern-Deepika/Day 10,Change Management & Scope Control.md",
     "PM-Intern-Deepika",
-    "PM Intern Dhiraj Roy/Readme.md",
-    "PM Intern Dhiraj Roy/Day-10-WhatsApp-Change-Request.md",
     "PM Intern Dhiraj Roy",
     "How-We-Communicate/assets/teams-interface-annotated.png"
   ]
