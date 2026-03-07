@@ -55,6 +55,9 @@ Technical guides, learning materials, and useful links
 - **Full Stack Developer Internship**
 - **DevOps Engineer Internship** - [DevOps OKR](./DevOps/OKR.md)
 - **AI Engineering Internship** - [AI-Driven Legacy Modernization](./AI-Internship/README.md)
+- ## Learning Summary
+- Reviewed GitHub documentation and repository structure
+- Completed assignments and submitted Loom walkthrough videos
 
 ---
 
