@@ -16,7 +16,7 @@ These rules are **mandatory** and will be used for evaluation.
 
 ### Backend Details
 
-- **Framework:** Nest.js  
+- **Framework:** Next.js  
 - **Language:** TypeScript  
 - **Database:** PostgreSQL (managed via TypeORM)
 
